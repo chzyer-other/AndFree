@@ -14,3 +14,8 @@ Andfree provides a database orm. You can define your database structure with cod
 		public final static dbField data = dbField.text("data");//contact_id || keyword
 		public final static dbField music = dbField.text("music");//null: default; URI
 	}
+
+## How to Use
+
+In eclipse, import the whole Andfree project and set it as a library.
+Create a new project, and go into its ``properties -> android``, add library "AndFree".
