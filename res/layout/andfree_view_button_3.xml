@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:background="#fafafa"
+  android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true" >
+
+        <TextView
+            android:id="@+id/andfree_textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/andfree_view_text"
+            android:gravity="center"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:text="TextView1"
+            android:textColor="#282828"
+            android:textSize="18dp" />
+        
+        <TextView
+            android:id="@+id/andfree_textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/andfree_view_text"
+            android:gravity="center"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:text="TextView1"
+            android:textColor="#282828"
+            android:textSize="18dp" />
+
+        <TextView
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:id="@+id/andfree_textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView1"
+            android:gravity="center"
+            android:textColor="#282828"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+</RelativeLayout>

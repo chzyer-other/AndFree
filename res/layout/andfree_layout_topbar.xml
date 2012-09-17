@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:background="#e6edf2"
+  android:layout_width="match_parent"
+  android:layout_height="44dp">
+    <TextView android:text="" android:background="#60a4bb" android:layout_height="2px" android:id="@+id/andfree_bottom" android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:layout_width="match_parent"></TextView>
+    <TextView android:textSize="12dp" android:layout_width="wrap_content" android:layout_marginLeft="16dp" android:layout_marginTop="2dp" android:text="TextView1" android:textColor="#60a4bb" android:layout_height="wrap_content" android:id="@+id/andfree_textView1" android:layout_alignParentTop="true" android:layout_alignParentLeft="true"></TextView>
+    <TextView android:textSize="16dp" android:layout_width="wrap_content" android:text="TextView2" android:textColor="#60a4bb" android:layout_height="wrap_content" android:id="@+id/andfree_textView2" android:layout_below="@+id/andfree_textView1" android:layout_alignLeft="@+id/andfree_textView1"></TextView>
+    <ImageView android:src="@drawable/andfree_layout_topbar" android:id="@+id/andfree_imageView1" android:layout_marginBottom="2dp" android:layout_marginRight="6dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_above="@+id/andfree_bottom" android:layout_alignParentRight="true"></ImageView>
+    
+    <TextView android:layout_width="wrap_content" android:text="" android:background="#60a4bb" android:layout_height="4px" android:layout_alignRight="@+id/andfree_textView3" android:id="@+id/andfree_bottom2" android:layout_above="@+id/andfree_bottom" android:layout_alignLeft="@+id/andfree_textView3"></TextView>
+    <TextView android:layout_width="wrap_content" android:text="" android:visibility="gone" android:background="#60a4bb" android:layout_height="4px" android:layout_alignRight="@+id/andfree_textView4" android:id="@+id/andfree_bottom3" android:layout_above="@+id/andfree_bottom" android:layout_alignLeft="@+id/andfree_textView4"></TextView>
+    
+    <TextView android:layout_width="60dp" android:textSize="12dp" android:textColor="#282828" android:layout_marginRight="16dp" android:gravity="center" android:text="TextView4" android:layout_height="wrap_content" android:id="@+id/andfree_textView4" android:layout_alignTop="@+id/andfree_textView3" android:layout_toLeftOf="@+id/andfree_imageView1" android:layout_alignBottom="@+id/andfree_textView3"></TextView>
+    <TextView android:id="@+id/andfree_textView3" android:text="TextView3" android:gravity="center" android:layout_width="60dp" android:layout_height="wrap_content" android:textColor="#282828" android:textSize="12dp" android:layout_alignParentTop="true" android:layout_toLeftOf="@+id/andfree_textView4" android:layout_above="@+id/andfree_bottom"></TextView>
+    <TextView android:text="TextView5" android:textSize="12dp" android:visibility="gone" android:layout_height="wrap_content" android:textColor="#ffffff" android:gravity="center" android:background="#60a4bb" android:layout_width="wrap_content" android:id="@+id/andfree_textView5" android:layout_alignLeft="@+id/andfree_textView3" android:layout_alignRight="@+id/andfree_textView3" android:layout_alignTop="@+id/andfree_textView1" android:layout_above="@+id/andfree_bottom"></TextView>
+    <TextView android:text="TextView6" android:textSize="12dp" android:visibility="gone" android:layout_height="wrap_content" android:textColor="#ffffff" android:gravity="center" android:background="#60a4bb" android:layout_width="wrap_content" android:id="@+id/andfree_textView6" android:layout_alignLeft="@+id/andfree_textView4" android:layout_alignRight="@+id/andfree_textView4" android:layout_alignTop="@+id/andfree_textView1" android:layout_above="@+id/andfree_bottom"></TextView>
+
+    <TextView
+        android:id="@+id/andfree_textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/andfree_textView4"
+        android:text="" />
+
+    <ProgressBar
+    	android:visibility="gone"
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_alignLeft="@+id/andfree_textView7"
+        android:layout_centerVertical="true" />
+    
+</RelativeLayout>
