@@ -7,6 +7,7 @@ import org.chenye.andfree.func.ClsFunc;
 import org.chenye.andfree.func.ClsFunc.clsFace;
 import org.chenye.andfree.func.log;
 import org.chenye.andfree.obj.Line;
+import org.chenye.andfree.layout.BaseMainActivity;
 import org.chenye.andfree.layout.BaseMainItem;
 
 import android.content.Context;
@@ -17,14 +18,13 @@ import android.widget.TextView;
 
 public abstract class BaseItem {
 	protected Context m;
-	protected BaseItem baseitem = this;
+	protected BaseItem self = this;
 	protected ViewGroup item;
 	protected Hashtable<String, Object> data = new Hashtable<String, Object>();
 	
 	public BaseItem(Context mContext, Object... objs){
 		m = mContext;
 		init(objs);
-		setLayout(getLayoutId());
 	}
 	
 	public interface ItemClick {
@@ -37,6 +37,14 @@ public abstract class BaseItem {
 		return this;
 	}
 	
+	public String getContent(){
+		return "";
+	}
+	
+	public String getTag(){
+		return null;
+	}
+	
 	protected GroupCategory category;
 	public void setCategory(GroupCategory cate){
 		category = cate;
@@ -45,6 +53,10 @@ public abstract class BaseItem {
 	protected TextView line;
 	public void setLine(TextView txt){
 		line = txt;
+	}
+	
+	public TextView getLine(){
+		return line;
 	}
 	
 	Object[] pass_objs;
@@ -72,20 +84,16 @@ public abstract class BaseItem {
 	
 	protected abstract clsFace getFace();
 	
+	/** update self config */
 	public void update(Object... objs){
 		
 	}
 	
 	public abstract void reset();
 	
-	int base_layout;
-	protected void setLayout(int layout){
-		base_layout = layout;
-	}
-	
 	protected ViewGroup getViewGroup(){
 		final LayoutInflater inflater = LayoutInflater.from(m);
-		return (ViewGroup) inflater.inflate(base_layout, null);
+		return (ViewGroup) inflater.inflate(getLayoutId(), null);
 	}
 	
 	protected boolean isset(String field){
@@ -159,6 +167,10 @@ public abstract class BaseItem {
 		item.setVisibility(View.GONE);
 	}
 	
+	protected void flagSelfToCurrentBaseItem(BaseMainActivity m){
+		m.getCurrentMainItem().setCurrentBaseItem(this);
+	}
+	
 	protected void i(Object obj){
 		log.i(this, obj);
 	}
@@ -174,6 +186,28 @@ public abstract class BaseItem {
 	
 	protected Line obj(){
 		return line("obj");
+	}
+	
+	public void updateObj(){
+		line("obj").refreshFromDatabase();
+	}
+	
+	/** update layout if obj() updated */
+	public void updateLayout(){
+		if (obj() == null) return;
+		obj().refreshFromDatabase();
+	}
+	
+	public void moveToTop(){
+		if (category.isTopItem(item)){
+			updateLayout();
+			return;
+		}
+		category.removeLine(line);
+		category.remove(this);
+		item.removeAllViews();
+		item.setVisibility(View.GONE);
+		category.addTopItem(this);
 	}
 }
 

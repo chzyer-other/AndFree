@@ -1,14 +1,19 @@
 package org.chenye.andfree.layout;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
+
 import org.chenye.andfree.db.DB;
 import org.chenye.andfree.func.log;
 import org.chenye.andfree.widget.BaseItem;
+import org.chenye.andfree.widget.GroupCategory;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 public abstract class BaseMainItem {
+	protected BaseMainItem self = this;
 	protected BaseMainActivity m;
 	protected DB db;
 	ViewGroup container;
@@ -18,12 +23,21 @@ public abstract class BaseMainItem {
 		db = DB.getInstance(m);
 	}
 	
+	Hashtable<String, GroupCategory> group_tag = new Hashtable<String, GroupCategory>();
+	public void addGroupCategoryTag(GroupCategory item, String tag){
+		group_tag.put(tag, item);
+	}
+	
+	public GroupCategory getGroupCategoryByTag(String tag){
+		return group_tag.get(tag);
+	}
+	
 	BaseItem subitem;
-	public void setCurrentItem(BaseItem item){
+	public void setCurrentBaseItem(BaseItem item){
 		subitem = item;
 	}
 	
-	protected BaseItem getCurrentItem(){
+	protected BaseItem getCurrentBaseItem(){
 		return subitem;
 	}
 	
@@ -43,12 +57,18 @@ public abstract class BaseMainItem {
 		onStart(obj);
 		
 		m.setTitle(getLabel());
+		
+		//notify parent mainItem update it realtime
+		
 	}
 	
 	public final void resume(Object... objs){
 		m.removeTitle();
 		onResume(objs);
-		setCurrentItem(null);
+		if (getCurrentBaseItem() != null && ! resumeCheckDelete(objs)) {
+			getCurrentBaseItem().updateLayout();
+		}
+		setCurrentBaseItem(null);
 	}
 	
 	public void startForPage(Object... objs){
@@ -111,19 +131,45 @@ public abstract class BaseMainItem {
 		}
 	}
 	
-	protected boolean check_delete(Object... objs){
-		if (objs.length > 0 && objs[0].equals("delete")){
-			return true;
+	protected boolean resumeCheckDelete(Object... objs){
+		for (Object obj: objs){
+			if (obj.toString().toLowerCase().equals("delete")) return true;
 		}
 		return false;
 	}
 	
+	protected boolean resumeCheckUpdateLayout(Object... objs){
+		for (Object obj: objs){
+			if (obj.toString().toLowerCase().equals("updatelayout")) return true;
+		}
+		return false;
+	}
+	
+	ArrayList<String> msg_when_back = new ArrayList<String>();
+	public Object[] getMsgWhenBack(){
+		Object[] s = new Object[msg_when_back.size()];
+		for (int i=0; i<msg_when_back.size(); i++){
+			s[i] = msg_when_back.get(i);
+		}
+		msg_when_back.clear();
+		return s;
+	}
+	protected void addMsgWhenBack(String str){
+		if (msg_when_back.contains(str)) return;
+		msg_when_back.add(str);
+	}
+	
 	protected void deleteListItemAndPagedown(){
-		m.pageDown("delete");
+		addMsgWhenBack("delete");
+		m.pageDown(getMsgWhenBack());
 	}
 	
 	public void removeView(){
 		getContainer().removeAllViews();
+	}
+	
+	protected void removeCurrentBaseItem(){
+		getCurrentBaseItem().remove();
 	}
 	
 	protected void e(String str){

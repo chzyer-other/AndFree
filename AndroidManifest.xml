@@ -3,6 +3,6 @@
       package="org.chenye.andfree"
       >
     <uses-sdk android:minSdkVersion="9" />
-<activity android:name=".TopBarMenu" android:excludeFromRecents="true" android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+<activity android:name="org.chenye.limitsms.example.TopBarMenu" android:excludeFromRecents="true" android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
     
 </manifest>

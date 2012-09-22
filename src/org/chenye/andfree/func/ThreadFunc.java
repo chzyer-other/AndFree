@@ -54,6 +54,13 @@ public class ThreadFunc {
 				if (index >= calls.length - 1) return;
 				new async().execute(index + 1, result);
 			}
+			
+			@Override
+			protected void onProgressUpdate(Line... values) {
+				// TODO Auto-generated method stub
+				
+				super.onProgressUpdate(values);
+			}
 		}
 		
 		delay(delay, new View.OnClickListener() {

@@ -81,30 +81,30 @@ public class ItemText extends BaseItem{
 		}
 		
 		super.make();
-		widget.content.init(m, item, get("content"));
+		widget.content.init(item, get("content"));
 		
 		if ( ! isset("title")){
-			widget.title.hide(m, item);
+			widget.title.hide(item);
 			widget.content.txt().setTextSize(StrFunc.dp2pix(m, 8));
 		} else {
-			widget.title.init(m, item, get("title"));
+			widget.title.init(item, get("title"));
 		}
 		
 		if (isset("btn")){
-			widget.btn.init(m, item, get("btn"), click_btn).setHover(ThemeColor.item_hover).show();
+			widget.btn.init(item, get("btn"), click_btn).setHover(ThemeColor.item_hover).show();
 		}
 		return item;
 	}
 	
-	public widgetHelper getContent(){
-		return widget.title.select(item);
+	public String getContent(){
+		return widget.title.select(item).getText();
 	}
 	
 	View.OnClickListener click_btn = new View.OnClickListener() {
 		
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			if (isset("click")) itemclick("click").click(baseitem, v);
+			if (isset("click")) itemclick("click").click(self, v);
 			
 		}
 	};

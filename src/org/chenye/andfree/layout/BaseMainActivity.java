@@ -85,10 +85,10 @@ public abstract class BaseMainActivity extends dbActivity{
 			finish();
 			return;
 		}
-		pageDown();
+		pageDown(getCurrentMainItem().getMsgWhenBack());
 	}
 	
-	public BaseMainItem getCurrentItem(){
+	public BaseMainItem getCurrentMainItem(){
 		return getMainPage().getCurrentItem();
 	}
 	

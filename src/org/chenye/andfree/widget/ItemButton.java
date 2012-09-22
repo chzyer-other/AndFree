@@ -7,8 +7,8 @@ import org.chenye.andfree.obj.baseWidget;
 import org.chenye.andfree.obj.widgetHelper;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 
 public class ItemButton extends ItemIntent{
 
@@ -16,11 +16,10 @@ public class ItemButton extends ItemIntent{
 		super(mContext, objs);
 	}
 	
-	int paramsLength;
 	@Override
 	protected int getLayoutId() {
 		// TODO Auto-generated method stub
-		paramsLength = pass_objs.length;
+		int paramsLength = pass_objs.length;
 		int layout = R.layout.andfree_view_button;
 		if (paramsLength == 4) {
 			layout = R.layout.andfree_view_button_2;
@@ -38,11 +37,22 @@ public class ItemButton extends ItemIntent{
 	protected widget widget = new widget();
 	
 	@Override
+	public ItemButton setContent(String str){
+		set("title", str);
+		widget.right.init(item, str);
+		return this;
+	}
+	
+	public String getContent(){
+		return str("title");
+	}
+	
+	@Override
 	protected clsFace getFace() {
 		// TODO Auto-generated method stub
 		return new clsFace(){
 			@Override
-			public void click(OnClickListener obj) {
+			public void click(View.OnClickListener obj) {
 				// TODO Auto-generated method stub
 				if (isset("click_2")){
 					set("click_3", obj);
@@ -71,17 +81,18 @@ public class ItemButton extends ItemIntent{
 	@Override
 	public ViewGroup make() {
 		// TODO Auto-generated method stub
+		int paramsLength = pass_objs.length;
 		if (paramsLength == 2){
 			return super.make();
 		}		
 		item = getViewGroup();
-		widget.left.init(m, item, get("title"), get("click")).setHover(ThemeColor.item_hover);
+		widget.left.init(item, get("title"), get("click")).setHover(ThemeColor.item_hover);
 		
 		if (paramsLength == 4){
-			widget.right.init(m, item, get("title_2"), get("click_2")).setHover(ThemeColor.item_hover);
+			widget.right.init(item, get("title_2"), get("click_2")).setHover(ThemeColor.item_hover);
 		} else if (paramsLength == 6){
-			widget.mid.init(m, item, get("title_2"), get("click_2")).setHover(ThemeColor.item_hover);
-			widget.right.init(m, item, get("title_3"), get("click_3")).setHover(ThemeColor.item_hover);
+			widget.mid.init(item, get("title_2"), get("click_2")).setHover(ThemeColor.item_hover);
+			widget.right.init(item, get("title_3"), get("click_3")).setHover(ThemeColor.item_hover);
 		}
 		
 		return item;

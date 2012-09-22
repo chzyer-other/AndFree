@@ -15,4 +15,7 @@ public class BaseLog {
 		log.e(obj, msg);
 	}
 	
+	public static void log(Object obj, Object msg){
+		log.i(obj, msg);
+	}
 }

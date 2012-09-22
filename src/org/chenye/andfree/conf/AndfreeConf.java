@@ -11,6 +11,8 @@ public class AndfreeConf {
 		public static DebugField LOG = _f(true);
 	}
 
+	//auto
+	public static String PACKAGE_NAME = "org.chenye.andfree";
 	// version
 	public static String APP_NAME = "AndFree";
 	public static String LOG_TAG = "andfree";
@@ -33,6 +35,7 @@ public class AndfreeConf {
 	public static void update(Context obj){
 		if (UPDATE_CONF) return;
 		String packageName = obj.getPackageName();
+		PACKAGE_NAME = packageName;
 		try {
 			Class<?> c = Class.forName(packageName + "._andfree.Conf");
 			Field[] fs = c.getFields();

@@ -69,17 +69,17 @@ public class TopBar extends BaseBar{
 		};
 		
 		ViewGroup item = get_item(R.layout.andfree_layout_topbar);
-		widget.small_title.init(m, item, "");
-		widget.big_title.init(m, item, "title");
-		widget.tab1.init(m, item, "tab1", click_tab);
-		widget.tab1_bottom.init(m, item);
-		widget.tab2.init(m, item, "tab2", click_tab);
-		widget.tab2_bottom.init(m, item);
+		widget.small_title.init(item, "");
+		widget.big_title.init(item, "title");
+		widget.tab1.init(item, "tab1", click_tab);
+		widget.tab1_bottom.init(item);
+		widget.tab2.init(item, "tab2", click_tab);
+		widget.tab2_bottom.init(item);
 		
-		widget.btn1.init(m, item);
-		widget.btn2.init(m, item);
+		widget.btn1.init(item);
+		widget.btn2.init(item);
 		
-		widget.more.init(m, item, new View.OnClickListener() {
+		widget.more.init(item, new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub

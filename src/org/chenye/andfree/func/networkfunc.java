@@ -51,6 +51,7 @@ public class networkfunc {
     	public Line ret(Line ret){
     		return ret;
     	}
+    	public Line per(Line ret){return ret;}
     }
 
     public void post(final String url, final Line data, final onCallback call){

@@ -32,11 +32,17 @@ public class ItemEdit extends BaseItem{
 	
 	public ItemEdit setText(String text){
 		title = text;
+		if (maked()){
+			widget.edt.setText(title);
+		}
 		return this;
 	}
 	
 	public ItemEdit setHint(String hints){
 		hint = hints;
+		if (maked()){
+			widget.edt.edt().setHint(hints);
+		}
 		return this;
 	}
 	
@@ -44,12 +50,11 @@ public class ItemEdit extends BaseItem{
 		public static widgetHelper edt = txt(R.id.andfree_editText1);
 	}
 	
-	ViewGroup item;
 	@Override
 	public ViewGroup make(){
 		super.make();
 		
-		widget.edt.init(m, item, title);
+		widget.edt.init(item, title);
 		if (hint != null) widget.edt.edt().setHint(hint);
 		return item;
 	}

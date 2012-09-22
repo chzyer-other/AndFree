@@ -35,7 +35,7 @@ public class ItemNothing extends BaseItem{
 	public ViewGroup make() {
 		// TODO Auto-generated method stub
 		super.make();
-		widget.title.init(m, item, str("title"));
+		widget.title.init(item, str("title"));
 		return item;
 	}
 	

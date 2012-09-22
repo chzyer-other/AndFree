@@ -2,6 +2,7 @@ package org.chenye.andfree.obj;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -40,6 +41,15 @@ public class Line implements Iterable<Line>{
 	dbParse dbp;
 	public Line(){
 		type = -1;
+	}
+	
+	public Line reverse(){
+		Collections.reverse(array);
+		return this;
+	}
+	
+	public Class<?> getTableClass(){
+		return dbp.getTableClass();
 	}
 	
 	public static Line def(){
@@ -759,5 +769,13 @@ public class Line implements Iterable<Line>{
 			i++;
 		}
 		return new Tables(dbp.getTableClass()).where(wheres).count() > 0;
+	}
+	
+	public Line refreshFromDatabase(){
+		Line l = new Tables(dbp.getTableClass()).getPrimary(id());
+		for (Entry<Object, Object> i: l.valueSet()){
+			put(i.getKey(), i.getValue());
+		}
+		return this;
 	}
 }

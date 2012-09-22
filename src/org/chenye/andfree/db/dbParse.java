@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.chenye.andfree.conf.AndfreeConf;
 import org.chenye.andfree.obj.BaseLog;
 import org.chenye.andfree.obj.Line;
 
@@ -26,14 +27,13 @@ public class dbParse extends BaseLog{
 	}
 	public dbParse(String dbname){
 		this.dbname = dbname;
-		Class<?> cs_package;
-		try {
-			cs_package = Class.forName(this.getClass().getPackage().getName() + ".dbcore");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+		
+		Class<?>[] all_cs = all();
+		if (all_cs == null) {
+			error("error package");
 			return;
 		}
-		Class<?>[] all_cs = cs_package.getClasses();
+		
 		for(int i=0; i<all_cs.length; i++){
 			if (dbname.equals(all_cs[i].getSimpleName())){
 				cs = all_cs[i];
@@ -58,7 +58,7 @@ public class dbParse extends BaseLog{
 	
 	public static Class<?>[] all(){
 		try {
-			Class<?> cs_package = Class.forName(dbParse.class.getPackage().getName() + ".dbcore");
+			Class<?> cs_package = Class.forName(AndfreeConf.PACKAGE_NAME + "._andfree.dbcore");
 			return cs_package.getClasses();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

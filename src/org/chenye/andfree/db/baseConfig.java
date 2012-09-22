@@ -14,36 +14,30 @@ public class baseConfig {
 		public static final configField LAST_REMIND_VERSION = _f(pack, "lastRemindVersion", AndfreeConf.VERTION);
 	}
 	
+	private static String getClsName(Object obj){
+		String cls_name = obj.getClass().getSimpleName();
+		if (cls_name.toLowerCase().equals("class")){
+			cls_name = ((Class<?>) obj).getSimpleName();
+		} else if (cls_name.toLowerCase().equals("string")){
+			cls_name = obj + "";
+		}
+		return cls_name;
+	}
+	
 	protected static configField _f(Object obj, String name){
-		return _f(obj.getClass().getSimpleName(), name, "");
+		return new configField(getClsName(obj), name, "");
 	}
 	
 	protected static configField _f(Object obj, String name, int def){
-		return _f(obj.getClass().getSimpleName(), name, def + "");
+		return _f(getClsName(obj), name, def + "");
 	}
 	
 	protected static configField _f(Object obj, String name, boolean def){
-		return _f(obj.getClass().getSimpleName(), name, def ? "true" : "false");
+		return _f(getClsName(obj), name, def ? "true" : "false");
 	}
 	
 	protected static configField _f(Object obj, String name, String def){
-		return new configField(obj.getClass().getSimpleName(), name, def);
-	}
-	
-	protected static configField _f(String pack, String name){
-		return _f(pack, name, "");
-	}
-	
-	protected static configField _f(String pack, String name, int def){
-		return _f(pack, name, def + "");
-	}
-	
-	protected static configField _f(String pack, String name, boolean def){
-		return _f(pack, name, def ? "true" : "false");
-	}
-	
-	protected static configField _f(String pack, String name, String def){
-		return new configField(pack, name, def);
+		return new configField(getClsName(obj), name, def);
 	}
 	
 	public static class configField{

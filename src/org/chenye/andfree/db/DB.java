@@ -1,6 +1,7 @@
 package org.chenye.andfree.db;
 
 import org.chenye.andfree.func.log;
+import org.chenye.andfree.obj.BaseLog;
 import org.chenye.andfree.obj.Line;
 import org.chenye.andfree.obj.cursor;
 
@@ -11,14 +12,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-public class DB {
+public class DB extends BaseLog{
 	private Context mContext;
 	public SQLiteDatabase conn;
 	public dbInit dbinit;
 	private DB(){
 		
 	}
-	protected static DB instance = null;
+	public static DB instance = null;
 	public static DB getInstance(Context m){
 		if (instance != null) return instance;
 		instance = new DB(m);
@@ -86,6 +87,7 @@ public class DB {
 	}
 	
 	public boolean query(String sql){
+		log(sql);
 		try{
 			if ( ! conn.isOpen()) return false;
 			conn.execSQL(sql);

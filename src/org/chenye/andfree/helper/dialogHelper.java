@@ -33,7 +33,15 @@ public class dialogHelper extends BaseLog{
 	
 	static dialogHelper tmp_dialog;
 	
+	public static dialogHelper getInstance(){
+		return tmp_dialog;
+	}
 	
+	public static dialogHelper Input(Context mContext, Object... objs){
+		if (tmp_dialog != null) tmp_dialog.dismiss();
+		tmp_dialog = new dialogHelper(mContext, INPUT, objs).show();
+		return tmp_dialog;
+	}
 	
 	public static dialogHelper Alert(Context mContext, Object... objs){
 		dialogHelper dialog = new dialogHelper(mContext, ALERT, objs);

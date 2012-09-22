@@ -30,7 +30,7 @@ For get the result :
 	// Line is a multiple functions JSON data collector in Andfree
 
 
-Or you can get the same results by writing follows:
+As an alternative, you can get the same results by writing follows:
 	
 	Line data = new dbcore.popup(){{
 		select(data);
@@ -38,7 +38,7 @@ Or you can get the same results by writing follows:
 	}}.result();
 
 ``It means "SELECT data FROM popup WHERE type = 1"``
-## Data collector - 'Line'
+## Data collector - Line
 In android, there is many array type to choise. In andfree, there is only one, "Line".
 
 1. Line support json and merge "JSONObject" and "JSONArray" and then no need to write try{}catch(){} 

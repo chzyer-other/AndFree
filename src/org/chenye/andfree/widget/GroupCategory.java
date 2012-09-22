@@ -1,6 +1,7 @@
 package org.chenye.andfree.widget;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import org.chenye.andfree.R;
 import org.chenye.andfree.conf.ThemeColor;
@@ -9,6 +10,7 @@ import org.chenye.andfree.func.StrFunc;
 import org.chenye.andfree.func.ThreadFunc;
 import org.chenye.andfree.func.networkfunc.onCallbackRet;
 import org.chenye.andfree.layout.BaseMainItem;
+import org.chenye.andfree.obj.BaseLog;
 import org.chenye.andfree.obj.Line;
 import org.chenye.andfree.widget.ItemIntent.intentClick;
 
@@ -20,7 +22,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
-public class GroupCategory{
+public class GroupCategory extends BaseLog{
 	ViewGroup container;
 	String db_title;
 	View.OnClickListener click_config;
@@ -31,10 +33,24 @@ public class GroupCategory{
 		m = mContext;
 	}
 	
+	public void setTag(BaseMainItem item, String tag){
+		item.addGroupCategoryTag(this, tag);
+	}
+	
 	ArrayList<BaseItem> items = new ArrayList<BaseItem>();
 	ArrayList<TextView> lines = new ArrayList<TextView>();
+	Hashtable<String, BaseItem> tag_items = new Hashtable<String, BaseItem>();
+	public GroupCategory addItem(BaseItem item, String tag){
+		tag_items.put(tag, item);
+		items.add(item);
+		return this;
+	}
+	
 	public GroupCategory addItem(BaseItem... item){
 		for (BaseItem i:item){
+			if (i.getTag() != null){
+				tag_items.put(i.getTag(), i);
+			}
 			items.add(i);
 		}
 		return this;
@@ -44,6 +60,11 @@ public class GroupCategory{
 	public GroupCategory inMenu(){
 		inMenu = true;
 		return this;
+	}
+	
+	public boolean isTopItem(ViewGroup vg){
+		int index = container.indexOfChild(vg);
+		return index <= start_index + 1;
 	}
 	
 	public GroupCategory setConfig(final BaseMainItem item){
@@ -106,6 +127,13 @@ public class GroupCategory{
 		return this;
 	}
 	
+	public BaseItem getItemByTag(String tag){
+		if (tag_items.containsKey(tag)){
+			return tag_items.get(tag);
+		}
+		return null;
+	}
+	
 	int last_make_index = 0;
 	int start_index = 0;
 	public void make(){
@@ -137,7 +165,11 @@ public class GroupCategory{
 			lines.add(tv);
 			baseitem.setLine(tv);
 			if (inMenu) baseitem.inMenu();
-			addView(baseitem.make());
+			if (last_make_index <= 0){
+				addView(baseitem.make());
+			} else {
+				addBottomView(baseitem.make());
+			}
 		}
 		
 		last_make_index = items.size();
@@ -198,7 +230,13 @@ public class GroupCategory{
 	
 	public TextView newLine(int index){
 		TextView item = newLineObj(index);
-		container.addView(item, LayoutParams.MATCH_PARENT, 1);
+		if (last_make_index <= 0){
+			container.addView(item, LayoutParams.MATCH_PARENT, 1);
+		} else {
+			int last_index = container.indexOfChild(last_view);
+			container.addView(item, last_index + 1, new LayoutParams(LayoutParams.MATCH_PARENT, 1));
+			last_view = item;
+		}
 		return item;
 	}
 	
@@ -215,11 +253,19 @@ public class GroupCategory{
 		container.removeViewAt(count - 1);
 	}
 	
-	public void addView(View v){
-		container.addView(v);
+	View last_view;
+	public void addBottomView(View v){
+		int last_index = container.indexOfChild(last_view);
+		container.addView(v, last_index + 1);
+		last_view = v;
 	}
 	
-	public void addTopItem(BaseItem item){
+	public void addView(View v){
+		container.addView(v);
+		last_view = v;
+	}
+	
+	public GroupCategory addTopItem(BaseItem item){
 		if (items.size() > 0){
 			TextView txt = (TextView) container.getChildAt(start_index);
 			txt.setBackgroundColor(Color.parseColor("#e6e6e6"));
@@ -232,6 +278,7 @@ public class GroupCategory{
 		LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, 1);
 		container.addView(tv, start_index, lp);
 		
+		return this;
 	}
 
 	protected int getLayoutId() {

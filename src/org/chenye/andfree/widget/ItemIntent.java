@@ -4,6 +4,7 @@ import org.chenye.andfree.R;
 import org.chenye.andfree.conf.ThemeColor;
 import org.chenye.andfree.func.ClsFunc.clsFace;
 import org.chenye.andfree.func.UIFunc;
+import org.chenye.andfree.layout.BaseMainActivity;
 import org.chenye.andfree.layout.BaseMainItem;
 import org.chenye.andfree.obj.Line;
 import org.chenye.andfree.obj.baseWidget;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class ItemIntent extends BaseItem{
+	protected ItemIntent self = this;
 	public ItemIntent(Context mContext, Object... objs){
 		super(mContext, objs);
 	}
@@ -43,7 +45,7 @@ public class ItemIntent extends BaseItem{
 		};
 	}
 	
-	public class widget extends baseWidget {
+	protected class widget extends baseWidget {
 		public widgetHelper title = txt(R.id.andfree_textView1);
 		public widgetHelper arrow = img(R.id.andfree_imageView1);
 	}
@@ -73,12 +75,12 @@ public class ItemIntent extends BaseItem{
 	@Override
 	public ViewGroup make(){
 		super.make();
-		widget.title.init(m, item, get("title"));
+		widget.title.init(item, get("title"));
 		
 		
 		if (inMenu) {
 			widget.title.txt().setTextSize(16);
-			widget.arrow.hide(m, item);
+			widget.arrow.hide(item);
 		}
 		
 		item.setOnClickListener(click_intent);
@@ -103,7 +105,7 @@ public class ItemIntent extends BaseItem{
 			// TODO Auto-generated method stub
 			
 			if (get("mainitem") != null){
-				mainitem("mainitem").getContext().getCurrentItem().setCurrentItem(ItemIntent.this);
+				flagSelfToCurrentBaseItem((BaseMainActivity) m);
 				if (get("id") != null){
 					mainitem("mainitem").startForPage(get("id"));
 				} else {

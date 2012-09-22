@@ -2,6 +2,7 @@ package org.chenye.andfree.widget;
 
 import org.chenye.andfree.R;
 import org.chenye.andfree.conf.ThemeColor;
+import org.chenye.andfree.db.dbField;
 import org.chenye.andfree.db.baseConfig.configField;
 import org.chenye.andfree.func.ClsFunc.clsFace;
 import org.chenye.andfree.func.UIFunc;
@@ -52,8 +53,8 @@ public class ItemSelect extends BaseItem{
 	@Override
 	public ViewGroup make(){
 		super.make();
-		widget.title.init(m, item, get("title"));
-		widget.hint.init(m, item, get("hint"));
+		widget.title.init(item, get("title"));
+		widget.hint.init(item, get("hint"));
 		item.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
@@ -122,6 +123,15 @@ public class ItemSelect extends BaseItem{
 			set("hint", field);
 		}
 		select.put(new Line().put(field).put(values));
+		
+		if (isset("bind_line")){
+			Line data = line("bind_line");
+			dbField f = (dbField) get("bind_field");
+			if (values.equals(data.str(f))){
+				set("hint", field);
+				set("select_data", field);
+			}
+		}
 	}
 	
 	public ItemSelect setDefault(String value){
@@ -139,6 +149,14 @@ public class ItemSelect extends BaseItem{
 	public ItemSelect setSelect(Line data){
 		set("select_data", data.str(1));
 		if (isset("config")) config("config").set(data.str(1));
+		if (isset("bind_line")) {
+			Line line = line("bind_line");
+			dbField field = (dbField) get("bind_field");
+			new Line(line.getTableClass())
+				.put(field, data.str(1))
+				.put(line._field(), line.id())
+				.save();
+		}
 		widget.hint.select(item).setText(data.str(0));
 		return this;
 	}
@@ -150,7 +168,13 @@ public class ItemSelect extends BaseItem{
 	}
 
 	public interface SelectClick{
+		/** return false if not allow */
 		public boolean click(ItemSelect item, String value, String lable);
+	}
+	
+	public ItemSelect setConfig(configField conf){
+		set("config", conf);
+		return this;
 	}
 	
 	public ItemSelect setClick(SelectClick click){
@@ -164,4 +188,22 @@ public class ItemSelect extends BaseItem{
 		return R.layout.andfree_view_select;
 	}
 	
+	public ItemSelect bindDatabase(Line data, dbField field){
+		set("bind_line", data);
+		set("bind_field", field);
+		if (select.length() > 0){
+			for (Line i: select){
+				if (i.str(1).equals(data.str(field))){
+					set("hint", i.str(0));
+					set("select_data", i.str(1));
+					return this;
+				}
+			}
+			if (data.str(field) != null && data.str(field).length() > 0){
+				set("hint", data.str(field));
+				set("select_data", data.str(field));
+			}
+		}
+		return this;
+	}
 }

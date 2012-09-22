@@ -4,13 +4,14 @@ import java.util.Hashtable;
 
 import org.chenye.andfree.db.DB;
 import org.chenye.andfree.func.log;
+import org.chenye.andfree.obj.BaseLog;
 import org.chenye.andfree.obj.Line;
 import org.chenye.andfree.obj.cursor;
 
 import android.content.ContentResolver;
 import android.net.Uri;
 
-public class cpHelper {
+public class cpHelper extends BaseLog{
 	private static final String TYPE_SMS = "content://sms";
 	private static final String TYPE_THREAD = "content://thread"; // canonical_addresses
 	private static final String TYPE_MMS = "content://mms";
@@ -21,33 +22,35 @@ public class cpHelper {
 	private static Hashtable<String, cpHelper> instance = new Hashtable<String, cpHelper>();
 	private Line _queryData = Line.def();
 	public static cpHelper SMS(){
-		return getInstance(TYPE_SMS);
+		return getInstance(TYPE_SMS, "sms");
 	}
 	
 	public static cpHelper MMS(){
-		return getInstance(TYPE_MMS);
+		return getInstance(TYPE_MMS, "pdu");
 	}
 	
 	public static cpHelper MMS_PART(){
-		return getInstance(TYPE_MMS_PART);
+		return getInstance(TYPE_MMS_PART, "parts");
 	}
 	
 	public static cpHelper THREAD(){
-		return getInstance(TYPE_THREAD);
+		return getInstance(TYPE_THREAD, "threads");
 	}
 	
 	public static cpHelper CONTACT_PHONE(){
-		return getInstance(TYPE_CONTACT_PHONE);
+		return getInstance(TYPE_CONTACT_PHONE, "phones");
 	}
 	
 	public static cpHelper CONTACT(){
-		return getInstance(TYPE_CONTACT);
+		return getInstance(TYPE_CONTACT, "contact");
 	}
 	
-	private static cpHelper getInstance(String type){
+	private static cpHelper getInstance(String type, final String table_name){
 		if (instance.containsKey(type)) return instance.get(type);
-		instance.put(type, new cpHelper(type));
-		return getInstance(type);
+		instance.put(type, new cpHelper(type){{
+			currentTable = table_name;
+		}});
+		return getInstance(type, table_name);
 	}
 	
 
@@ -55,6 +58,7 @@ public class cpHelper {
 	String uri_string;
 	Uri type_uri;
 	String virtualTable;
+	String currentTable = "";
 	public cpHelper(String mType){
 		mType = formatUri(mType);
 		uri_string = mType;
@@ -65,6 +69,7 @@ public class cpHelper {
 	private String formatUri(String type){
 		if (type.equals(TYPE_THREAD)){
 			virtualTable = "threads";
+			currentTable = "threads";
 			return TYPE_SMS;
 		}
 		return type;
@@ -120,16 +125,24 @@ public class cpHelper {
 		return result().line(0);
 	}
 	
+	public String getWithField(){
+		return get().str(_queryData.str("select"));
+	}
+	
 	public Line getId(long id){
 		where("_id = %s", id);
 		return get();
 	}
 	
 	public Line result(){
+		Line l = Line.def();
 		if (virtualTable != null || _queryData.contains("join")){
-			return result_sql();
+			l = result_sql();
+		} else {
+			l = result_normal();
 		}
-		return result_normal();
+		_queryData.clear();
+		return l;
 	}
 	
 	public int count(){
@@ -139,21 +152,27 @@ public class cpHelper {
 	
 	private Line result_sql(){
 		_queryData.putIfNotExist("select", "*");
+		String tables = virtualTable == null ? currentTable : virtualTable;
 		String sql = String.format("%s FROM %s %s", 
-				_queryData.str("select"), virtualTable, virtualTable.substring(0, 1));
+				_queryData.str("select"), tables, tables.substring(0, 1));
 		if (_queryData.contains("join")){
 			sql += " LEFT JOIN " + _queryData.str("join");
 		}
 		_queryData.putIfNotExist("where", "1=1");
-		_queryData.put("order", "_id DESC");
+		_queryData.putIfNotExist("order", tables.substring(0, 1) + "._id DESC");
 		sql += String.format(" WHERE %s ORDER BY %s", _queryData.str("where"), _queryData.str("order"));
 		if (_queryData.contains("limit")){
 			sql += " LIMIT " + _queryData.str("limit");
 		}
 		
-		cursor cur = new cursor(
-			c.query(type_uri, new String[] {sql}, null, null, null)
-		);
+		cursor cur = null;
+		try{
+			cur = new cursor(
+				c.query(type_uri, new String[] {sql + " --"}, null, null, null)
+			);
+		} catch(Exception ex){
+			error(ex);
+		}
 		if (cursor.invalid(cur)) return Line.def();
 		Line l = cur.toLine();
 		cur.close();
@@ -199,6 +218,7 @@ public class cpHelper {
 	}
 	
 	public long update(Line line){
+		if (line.invalid()) return -1;
 		return updateId(line, line.integer("_id"));
 	}
 	
@@ -211,6 +231,7 @@ public class cpHelper {
 	}
 	
 	public void delete(Line obj){
+		if (obj.invalid()) return;
 		if (uri_string.equals(TYPE_SMS)){
 			
 			String where = "";

@@ -65,22 +65,22 @@ public class widgetHelper {
 		return this;
 	}
 	
-	public widgetHelper init(Context mContext, ViewGroup vg, Object... objs){
+	public widgetHelper init(ViewGroup vg, Object... objs){
 		setContainer(vg);
-		init(mContext, objs);
+		init(vg.getContext(), objs);
 		setTags(R.id.parent, vg);
 		return this;
 	}
 	
 	public widgetHelper select(ViewGroup v){
 		widgetHelper mWidget = new widgetHelper(type, id, wrapId);
-		mWidget.init(m, v);
+		mWidget.init(v);
 		return mWidget;
 	}
 	
-	public void hide(Context mContext, ViewGroup vg){
+	public void hide(ViewGroup vg){
 		setContainer(vg);
-		hide(mContext);
+		hide(vg.getContext());
 	}
 	
 	public void hide(Context mContext){

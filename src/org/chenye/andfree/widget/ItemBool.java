@@ -2,9 +2,11 @@ package org.chenye.andfree.widget;
 
 import org.chenye.andfree.R;
 import org.chenye.andfree.conf.ThemeColor;
+import org.chenye.andfree.db.dbField;
 import org.chenye.andfree.db.baseConfig.configField;
 import org.chenye.andfree.func.ClsFunc.clsFace;
 import org.chenye.andfree.func.UIFunc;
+import org.chenye.andfree.obj.Line;
 import org.chenye.andfree.obj.baseWidget;
 import org.chenye.andfree.obj.widgetHelper;
 
@@ -63,9 +65,9 @@ public class ItemBool extends BaseItem{
 	@Override
 	public ViewGroup make(){
 		super.make();
-		widget.title.init(m, item, get("title"));
-		widget.hint.init(m, item, get("hint"));
-		widget.pic.init(m, item, click_item, img_switch[integer("check")]);
+		widget.title.init(item, get("title"));
+		widget.hint.init(item, get("hint"));
+		widget.pic.init(item, click_item, img_switch[integer("check")]);
 		item.setTag(R.id.hover, ThemeColor.item_hover);
 		item.setOnClickListener(click_item);
 		UIFunc.setHover(item);
@@ -111,6 +113,16 @@ public class ItemBool extends BaseItem{
 			if (get("config") != null){
 				config("config").set(bool("check"));
 			}
+			if (isset("bind_line")){
+				final int check = integer("check");
+				final Line l = line("bind_line");
+				new Line(l.getTableClass()){{
+				dbField f = ((dbField) get("bind_field"));
+					put(f, check);
+					put(l._field(), l.id());
+					save();
+				}};
+			}
 			widget.pic.select(item).setImageResource(img_switch[integer("check")]);
 			if (isset("click")){
 				if (bool("check")){
@@ -128,6 +140,11 @@ public class ItemBool extends BaseItem{
 		
 	}
 
-
+	public ItemBool bindDatabase(Line line, dbField field){
+		set("bind_line", line);
+		set("bind_field", field);
+		set("check", line.bool(field));
+		return this;
+	}
 
 }
