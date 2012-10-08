@@ -11,9 +11,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class dbActivity extends Activity{
+public class BaseActivity extends Activity{
 	protected DB db;
-	protected dbActivity m = this;
+	protected BaseActivity m = this;
 	public ProgressDialog mpDialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class dbActivity extends Activity{
 		finish();
 	}
 	
-	public dbActivity setResult(Line line){
+	public BaseActivity setResult(Line line){
 		setResult(true, line.toIntent());
 		return this;
 	}
@@ -58,11 +58,11 @@ public class dbActivity extends Activity{
 		setResult(result_ok ? Activity.RESULT_OK : Activity.RESULT_CANCELED, data);
 	}
 	
-	protected void e(Object str){
+	protected void error(Object str){
 		log.e(this, str);
 	}
 	
-	protected void i(Object obj){
+	protected void log(Object obj){
 		log.i(this, obj);
 	}
 
