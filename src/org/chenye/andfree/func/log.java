@@ -11,7 +11,10 @@ import android.widget.Toast;
 
 public final class log {
 	private static String getObj(Object cls){
-		return "[" + cls.getClass().getSimpleName() + "@" + cls.hashCode() + "] ";
+		if ( ! (cls instanceof String)) {
+			cls = cls.getClass().getSimpleName();
+		}
+		return "[" + cls + "@" + cls.hashCode() + "] ";
 	}
 	
 	public static void e(Object cls, String funcName, Exception ex){

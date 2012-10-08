@@ -54,7 +54,7 @@ public class baseWidget{
 		return new widgetHelper("processbar", id);
 	}
 	
-	public static widgetHelper hide(dbActivity m, int id){
+	public static widgetHelper hide(BaseActivity m, int id){
 		widgetHelper w = new widgetHelper("View", id);
 		w.obj().setVisibility(View.GONE);
 		return null;

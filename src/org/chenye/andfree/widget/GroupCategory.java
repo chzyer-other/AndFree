@@ -68,13 +68,18 @@ public class GroupCategory extends BaseLog{
 	}
 	
 	public GroupCategory setConfig(final BaseMainItem item){
-		click_config = new View.OnClickListener() {
+		setConfig(new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				item.startForPage();
 			}
-		};
+		});
+		return this;
+	}
+	
+	public GroupCategory setConfig(View.OnClickListener click){
+		click_config = click;
 		return this;
 	}
 	

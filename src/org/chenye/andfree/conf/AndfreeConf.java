@@ -2,6 +2,8 @@ package org.chenye.andfree.conf;
 
 import java.lang.reflect.Field;
 
+import org.chenye.andfree.db.AndfreeDBcore;
+
 import android.content.Context;
 
 public class AndfreeConf {
@@ -13,6 +15,7 @@ public class AndfreeConf {
 
 	//auto
 	public static String PACKAGE_NAME = "org.chenye.andfree";
+	public static String DBCORE_PACKAGE_NAME = AndfreeDBcore.class.getCanonicalName();
 	// version
 	public static String APP_NAME = "AndFree";
 	public static String LOG_TAG = "andfree";
@@ -37,30 +40,21 @@ public class AndfreeConf {
 		String packageName = obj.getPackageName();
 		PACKAGE_NAME = packageName;
 		try {
-			Class<?> c = Class.forName(packageName + "._andfree.Conf");
-			Field[] fs = c.getFields();
-			for (Field f: fs){
-				try {
-					AndfreeConf.class.getField(f.getName()).set(AndfreeConf.class, f.get(c));
-				} catch (NoSuchFieldException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			getFieldFromPackage(packageName + "._andfree.Conf");
+			DBCORE_PACKAGE_NAME = AndfreeConf.PACKAGE_NAME + "._andfree.dbcore";
+		} catch (Exception e) {
 		}
 		UPDATE_CONF = true;
+	}
+	
+	private static void getFieldFromPackage(String packageName) throws Exception {
+		Class<?> c = Class.forName(packageName);
+		Field[] fs = c.getFields();
+		for (Field f: fs){
+			try {
+				AndfreeConf.class.getField(f.getName()).set(AndfreeConf.class, f.get(c));
+			} catch (NoSuchFieldException e) {
+			}
+		}
 	}
 }

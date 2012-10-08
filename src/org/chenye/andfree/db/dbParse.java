@@ -58,7 +58,7 @@ public class dbParse extends BaseLog{
 	
 	public static Class<?>[] all(){
 		try {
-			Class<?> cs_package = Class.forName(AndfreeConf.PACKAGE_NAME + "._andfree.dbcore");
+			Class<?> cs_package = Class.forName(AndfreeConf.DBCORE_PACKAGE_NAME);
 			return cs_package.getClasses();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

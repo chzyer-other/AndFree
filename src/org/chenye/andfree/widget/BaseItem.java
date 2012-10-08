@@ -31,6 +31,8 @@ public abstract class BaseItem {
 		public void click(BaseItem item, View v);
 	}
 	
+	
+	
 	protected abstract int getLayoutId();
 	
 	public BaseItem setContent(String field){
@@ -42,7 +44,13 @@ public abstract class BaseItem {
 	}
 	
 	public String getTag(){
+		if (isset("tag")) return str("tag");
 		return null;
+	}
+	
+	public BaseItem setTag(String tag){
+		set("tag", tag);
+		return this;
 	}
 	
 	protected GroupCategory category;
@@ -161,8 +169,10 @@ public abstract class BaseItem {
 	}
 	
 	public void remove(){
-		category.removeLine(line);
-		category.remove(this);
+		if (category != null) {
+			category.removeLine(line);
+			category.remove(this);
+		}
 		item.removeAllViews();
 		item.setVisibility(View.GONE);
 	}
@@ -180,7 +190,9 @@ public abstract class BaseItem {
 	}
 	
 	protected void setObj(Line line){
-		setId(line);
+		int id = line.id();
+		if (id < 0) id = line._id();
+		if (id > 0) setId(id);
 		set("obj", line);
 	}
 	

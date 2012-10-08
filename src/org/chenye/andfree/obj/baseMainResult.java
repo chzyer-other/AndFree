@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 public class baseMainResult extends BaseLog{
 	String commandStr;
 	Object tmp;
-	dbActivity m;
+	BaseActivity m;
 	
 	public baseMainResult(String command) {
 		commandStr = command;
@@ -24,7 +24,7 @@ public class baseMainResult extends BaseLog{
 		return new baseMainResult(command);
 	}
 
-	public int CODE(dbActivity m) {
+	public int CODE(BaseActivity m) {
 		return m.getActivityResultCode(commandStr);
 	}
 
@@ -45,7 +45,7 @@ public class baseMainResult extends BaseLog{
 		return (View) tmp;
 	}
 	
-	private baseMainResult REGISTER(dbActivity mContext, onActivityResult callback) {
+	private baseMainResult REGISTER(BaseActivity mContext, onActivityResult callback) {
 		m = mContext;
 		//i("register event " + commandStr + " => " + callback.hashCode());
 		m.registerActivityResult(commandStr, callback);
@@ -56,19 +56,19 @@ public class baseMainResult extends BaseLog{
 		m.unregisterActivityResult(commandStr);
 	}
 	
-	public void SEND(dbActivity mContext, onActivityResult callback, Class<?> cls, Line Line){
+	public void SEND(BaseActivity mContext, onActivityResult callback, Class<?> cls, Line Line){
 		m = mContext;
 		Intent intent = new Intent(m, cls);
 		intent.setData(Uri.parse(Line.toString()));
 		SEND(mContext, callback, intent);
 	}
 	
-	public void SEND(dbActivity mContext, onActivityResult callback, Class<?> cls){
+	public void SEND(BaseActivity mContext, onActivityResult callback, Class<?> cls){
 		m = mContext;
 		SEND(mContext, callback, new Intent(m, cls));
 	}
 	
-	public void SEND(dbActivity mContext, onActivityResult callback, Intent intent){
+	public void SEND(BaseActivity mContext, onActivityResult callback, Intent intent){
 		REGISTER(mContext, callback);
 		m.startActivityForResult(intent, CODE(m));
 	}

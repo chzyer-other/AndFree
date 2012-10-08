@@ -4,19 +4,17 @@ import org.chenye.andfree.R;
 import org.chenye.andfree.func.StrFunc;
 import org.chenye.andfree.func.timefunc;
 import org.chenye.andfree.obj.Line;
-import org.chenye.andfree.obj.dbActivity;
-import org.chenye.andfree.widget.ItemIntent;
-import org.chenye.andfree.widget.ItemText;
+import org.chenye.andfree.obj.BaseActivity;
 import org.chenye.andfree.widget.GroupCategory;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsoluteLayout;
 
-public class Menu extends dbActivity{
+@SuppressWarnings("deprecation")
+public class Menu extends BaseActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -28,6 +26,7 @@ public class Menu extends dbActivity{
 		setContentView(R.layout.andfree_example_menu);
 		findViewById(R.id.parent).setOnClickListener(finish);
 		View v = findViewById(R.id.scrollView1);
+		
 		AbsoluteLayout.LayoutParams lp = (AbsoluteLayout.LayoutParams) v.getLayoutParams();
 		if (l.str("x").equals("right")){
 			l.put("x", getWidthPix());
@@ -89,7 +88,6 @@ public class Menu extends dbActivity{
 		
 		
 		if (keyCode == 24){
-			i(timefunc.time() - presstime);
 			if (timefunc.time() - presstime < 500 && presstime > 0 && timefunc.time() - presstime > 100){
 				count++;
 				if (count >= pressCount){

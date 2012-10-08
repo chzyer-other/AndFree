@@ -132,6 +132,7 @@ public class Line implements Iterable<Line>{
 		return false;
 	}
 	
+	
 	private void implementObj(String str){
 		String lines = str;
 		int obj_start = 0;
@@ -378,13 +379,26 @@ public class Line implements Iterable<Line>{
 		return integer("_id");
 	}
 	
+	public Object get(Object key){
+		if (key != null && key instanceof dbField){
+			key = ((dbField) key).getName();
+		}
+		
+		if (key instanceof String){
+			return data.get(key);
+		} else {
+			return array.get((Integer) key);
+		}
+	}
+	
+	
 	public String str(Object key){
- 		if (key != null && key.getClass().getSimpleName().equals("dbField")){
+ 		if (key != null && key instanceof dbField){
 			key = ((dbField) key).getName();
 		}
 		
 		String ret;
-		if (key.getClass().getSimpleName().equals("String")){
+		if (key instanceof String){
 			ret = data.get(key) + "";
 		} else {
 			ret = array.get((Integer) key) + "";
@@ -575,6 +589,15 @@ public class Line implements Iterable<Line>{
 		
 	}
 	
+	public String[] toStringArray(){
+		try{
+			return array.toArray(new String[array.size()]);
+		}catch (Exception ex){
+			e(ex);
+			return null;
+		}
+	}
+	
 	public Set<Entry<Object, Object>> valueSet(){
 		return data.entrySet();
 	}
@@ -686,6 +709,11 @@ public class Line implements Iterable<Line>{
 			}
 		}
 		return null;
+	}
+	
+	public String type(String key){
+		if ( ! contains(key)) return "null";
+		return data.get(key).getClass().getSimpleName().toLowerCase();
 	}
 	
 	public String encodeUnicode(String str){

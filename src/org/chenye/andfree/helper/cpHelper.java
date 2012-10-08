@@ -236,7 +236,13 @@ public class cpHelper extends BaseLog{
 			
 			String where = "";
 			if (obj.contains("_id")) where = "_id = " + obj.integer("_id");
-			if (obj.contains("where") && obj.str("where").equals("all")) where = "_id > 0";
+			if (obj.contains("where")){
+				if (obj.str("where").equals("all")){
+					where = "_id > 0";
+				} else {
+					where = obj.str("where");
+				}
+			}
 			c.delete(Uri.parse("content://sms/conversations/" + obj.str("thread_id")), where, null);
 		}
 		

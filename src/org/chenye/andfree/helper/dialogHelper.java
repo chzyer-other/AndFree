@@ -3,7 +3,7 @@ package org.chenye.andfree.helper;
 import java.util.ArrayList;
 
 import org.chenye.andfree.R;
-import org.chenye.andfree.conf.lang;
+import org.chenye.andfree.conf.AndfreeLang;
 import org.chenye.andfree.func.ClsFunc;
 import org.chenye.andfree.func.ClsFunc.clsFace;
 import org.chenye.andfree.obj.BaseLog;
@@ -135,7 +135,7 @@ public class dialogHelper extends BaseLog{
 		if (navName != null && click != null){
 			dialog.setPositiveButton(navName, click);
 		}
-		dialog.setNegativeButton(lang.cancel, cancel);
+		dialog.setNegativeButton(AndfreeLang.cancel, cancel);
 	}
 	
 	public dialogHelper(Context mContext){

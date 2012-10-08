@@ -41,7 +41,9 @@ public class fileFunc {
 	}
 	
 	public static String readString(String dir, String filename){
-		return enable_gzip ? gzipFunc.uncompressToString(read(dir, filename)) : new String(read(dir, filename));
+		byte[] ret = read(dir, filename);
+		if (ret == null) return "";
+		return enable_gzip ? gzipFunc.uncompressToString(ret) : new String(ret);
 	}
 	
 	public static byte[] read(String dir, String filename){

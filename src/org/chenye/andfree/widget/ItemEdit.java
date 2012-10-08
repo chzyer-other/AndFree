@@ -6,6 +6,7 @@ import org.chenye.andfree.obj.baseWidget;
 import org.chenye.andfree.obj.widgetHelper;
 
 import android.content.Context;
+import android.text.InputType;
 import android.view.ViewGroup;
 
 public class ItemEdit extends BaseItem{
@@ -46,6 +47,11 @@ public class ItemEdit extends BaseItem{
 		return this;
 	}
 	
+	public ItemEdit setPaswType(){
+		set("type", InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		return this;
+	}
+	
 	static class widget extends baseWidget {
 		public static widgetHelper edt = txt(R.id.andfree_editText1);
 	}
@@ -55,11 +61,17 @@ public class ItemEdit extends BaseItem{
 		super.make();
 		
 		widget.edt.init(item, title);
+		if (isset("type")) {
+			widget.edt.edt().setInputType(integer("type"));
+		}
+		
 		if (hint != null) widget.edt.edt().setHint(hint);
 		return item;
 	}
 	
-	public String getText(){
+	@Override
+	public String getContent() {
+		// TODO Auto-generated method stub
 		return widget.edt.select(item).getText();
 	}
 

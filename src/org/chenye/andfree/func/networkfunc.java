@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -25,6 +26,7 @@ import org.chenye.andfree.helper.cpHelper;
 import org.chenye.andfree.obj.Line;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -46,12 +48,22 @@ public class networkfunc {
     	public void call(Line ret);
     }
     
+    
+    
     public static class onCallbackRet {
     	public Line call(Line ret){return null;}
     	public Line ret(Line ret){
     		return ret;
     	}
     	public Line per(Line ret){return ret;}
+    }
+    
+    public interface onCallbackString {
+    	public String onString(String ret);
+    }
+    
+    public interface onCallbackBitmap {
+    	public String onBitmap(Bitmap ret);
     }
 
     public void post(final String url, final Line data, final onCallback call){
@@ -60,7 +72,7 @@ public class networkfunc {
 			@Override
 			protected Line doInBackground(Object... params) {
 				// TODO Auto-generated method stub
-				String ret = post(url, "json", data.toUTF8());
+				String ret = post(url, data);
 				if (ret == null) return Line.def();
 				return new Line(ret);
 			}
@@ -121,11 +133,14 @@ public class networkfunc {
 		return null;		
     }
     
-    public String post(String url, String field, String data){    
+    public String post(String url, Line data){    
     	
 		HttpPost httpPost = new HttpPost("http://" + host + url);
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair(field, data));
+		for (Entry<Object, Object> item: data.valueSet()){
+			params.add(new BasicNameValuePair(item.getKey() + "", data.encodeUnicode(item.getValue() + "")));
+		}
+		
 		HttpResponse httpResponse;
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
