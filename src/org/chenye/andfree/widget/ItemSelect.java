@@ -106,6 +106,11 @@ public class ItemSelect extends BaseItem{
 		return item;
 	}
 	
+	@Override
+	public String getContent(){
+		return str("hint");
+	}
+	
 	public String getData(){
 		return str("select_data");
 	}
