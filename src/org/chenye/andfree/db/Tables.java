@@ -5,6 +5,8 @@ import org.chenye.andfree.func.log;
 import org.chenye.andfree.obj.BaseLog;
 import org.chenye.andfree.obj.Line;
 
+import android.content.ContentValues;
+
 public class Tables extends BaseLog{
 	protected DB db;
 	protected dbParse dbp;
@@ -100,7 +102,11 @@ public class Tables extends BaseLog{
 	}
 	
 	public Line get(){
-		return result().line(0);
+		Line d = result().line(0);
+		if (_queryData.str("select").contains(",")) return d;
+		Line d2 = d.line(_queryData.str("select"));
+		if (d2.invalid()) return d;
+		return d2;
 	}
 	
 	public Line getPrimary(int id){
@@ -177,24 +183,28 @@ public class Tables extends BaseLog{
 	
 	
 	public long update(Line line, String field, String value){
+		if (field.contains("`")){
+			return update(line, field, value, "1=1");
+		}
 		return update(line, "`" + field + "`= '" + value + "'");
 	}
 	
 	public long update(Line line, int id){
 		return update(line, dbp.getPrimaryKey(), id + "");
 	}
-	/**
-	 * 
-	 * @param data ContentValues
-	 * @param where
-	 * @return return the num of row affect
-	 */
-	public long update(Line data, String where, String... wheres){
+
+	public long update(Line data, String... wheres){
+		String where = "";
 		try{
 			for (String w: wheres){
 				where += " AND " + w;
 			}
-			return db.update(dbp.getName(), dbp.filter(data), where);
+			if (where.startsWith(" AND ")){
+				where = where.substring(5);
+			}
+			ContentValues cv = dbp.filter(data);
+			log.d(this, "[update " + dbp.getName() + "]" + cv + "[where] " + where);
+			return db.update(dbp.getName(), cv, where);
 		}catch(Exception ex){
 			e(ex);
 			return -1;

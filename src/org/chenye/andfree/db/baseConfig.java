@@ -63,11 +63,11 @@ public class baseConfig {
 		}
 		
 		public String str(){
-			if (new AndfreeDBcore.config().where(sql()).count() == 0){
+			if (new BaseDBcore.config().where(sql()).count() == 0){
 				set(def);
 				return def;
 			}
-			return new AndfreeDBcore.config().select(AndfreeDBcore.config.value).where(sql()).getField();
+			return new BaseDBcore.config().select(BaseDBcore.config.value).where(sql()).getField();
 		}
 		
 		public String bool(String true_string, String false_string){
@@ -100,10 +100,14 @@ public class baseConfig {
 			set(data.toString());
 		}
 		
+		public void set(Line data){
+			set(data.toString());
+		}
+		
 		public void set(String data){
-			Line line = new Line(AndfreeDBcore.config.class);
-			line.put(AndfreeDBcore.config.key, toString());
-			line.put(AndfreeDBcore.config.value, data);
+			Line line = new Line(BaseDBcore.config.class);
+			line.put(BaseDBcore.config.key, toString());
+			line.put(BaseDBcore.config.value, data);
 			line.save();
 		}
 		

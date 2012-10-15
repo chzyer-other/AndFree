@@ -9,80 +9,80 @@ package org.chenye.andfree;
 
 public final class R {
     public static final class anim {
-        public static final int popup_enter=0x7f040000;
-        public static final int submenu_enter=0x7f040001;
-        public static final int submenu_exit=0x7f040002;
+        public static int popup_enter=0x7f040000;
+        public static int submenu_enter=0x7f040001;
+        public static int submenu_exit=0x7f040002;
     }
     public static final class attr {
     }
     public static final class drawable {
-        public static final int andfree_example_menu_bg=0x7f020000;
-        public static final int andfree_group_category_config=0x7f020001;
-        public static final int andfree_layout_topbar=0x7f020002;
-        public static final int andfree_view_bool_switcher=0x7f020003;
-        public static final int andfree_view_bool_switcher_hover=0x7f020004;
-        public static final int andfree_view_edit=0x7f020005;
-        public static final int andfree_view_intent=0x7f020006;
-        public static final int andfree_view_item=0x7f020007;
-        public static final int andfree_view_select=0x7f020008;
-        public static final int andfree_view_text=0x7f020009;
+        public static int andfree_example_menu_bg=0x7f020000;
+        public static int andfree_group_category_config=0x7f020001;
+        public static int andfree_layout_topbar=0x7f020002;
+        public static int andfree_view_bool_switcher=0x7f020003;
+        public static int andfree_view_bool_switcher_hover=0x7f020004;
+        public static int andfree_view_edit=0x7f020005;
+        public static int andfree_view_intent=0x7f020006;
+        public static int andfree_view_item=0x7f020007;
+        public static int andfree_view_select=0x7f020008;
+        public static int andfree_view_text=0x7f020009;
     }
     public static final class id {
-        public static final int andfree_bottom=0x7f060016;
-        public static final int andfree_bottom1=0x7f060014;
-        public static final int andfree_bottom2=0x7f060019;
-        public static final int andfree_bottom3=0x7f06001b;
-        public static final int andfree_editText1=0x7f060020;
-        public static final int andfree_imageView1=0x7f060015;
-        public static final int andfree_linearLayout1=0x7f060021;
-        public static final int andfree_textView1=0x7f060013;
-        public static final int andfree_textView2=0x7f060017;
-        public static final int andfree_textView3=0x7f060018;
-        public static final int andfree_textView4=0x7f06001a;
-        public static final int andfree_textView5=0x7f06001c;
-        public static final int andfree_textView6=0x7f06001d;
-        public static final int andfree_textView7=0x7f06001e;
-        public static final int asynctask=0x7f060004;
-        public static final int cv=0x7f06000e;
-        public static final int drawable=0x7f06000c;
-        public static final int edittext=0x7f060005;
-        public static final int hover=0x7f06000a;
-        public static final int id=0x7f060007;
-        public static final int imageview=0x7f060002;
-        public static final int index=0x7f06000f;
-        public static final int json=0x7f06000b;
-        public static final int line=0x7f060000;
-        public static final int linearLayout1=0x7f060012;
-        public static final int name=0x7f060009;
-        public static final int onclick=0x7f060006;
-        public static final int params=0x7f060003;
-        public static final int parent=0x7f06000d;
-        public static final int progressBar1=0x7f06001f;
-        public static final int scrollView1=0x7f060011;
-        public static final int tag=0x7f060008;
-        public static final int textview=0x7f060001;
-        public static final int wrap_child=0x7f060010;
+        public static int andfree_bottom=0x7f060016;
+        public static int andfree_bottom1=0x7f060014;
+        public static int andfree_bottom2=0x7f060019;
+        public static int andfree_bottom3=0x7f06001b;
+        public static int andfree_editText1=0x7f060020;
+        public static int andfree_imageView1=0x7f060015;
+        public static int andfree_linearLayout1=0x7f060021;
+        public static int andfree_textView1=0x7f060013;
+        public static int andfree_textView2=0x7f060017;
+        public static int andfree_textView3=0x7f060018;
+        public static int andfree_textView4=0x7f06001a;
+        public static int andfree_textView5=0x7f06001c;
+        public static int andfree_textView6=0x7f06001d;
+        public static int andfree_textView7=0x7f06001e;
+        public static int asynctask=0x7f060004;
+        public static int cv=0x7f06000e;
+        public static int drawable=0x7f06000c;
+        public static int edittext=0x7f060005;
+        public static int hover=0x7f06000a;
+        public static int id=0x7f060007;
+        public static int imageview=0x7f060002;
+        public static int index=0x7f06000f;
+        public static int json=0x7f06000b;
+        public static int line=0x7f060000;
+        public static int linearLayout1=0x7f060012;
+        public static int name=0x7f060009;
+        public static int onclick=0x7f060006;
+        public static int params=0x7f060003;
+        public static int parent=0x7f06000d;
+        public static int progressBar1=0x7f06001f;
+        public static int scrollView1=0x7f060011;
+        public static int tag=0x7f060008;
+        public static int textview=0x7f060001;
+        public static int wrap_child=0x7f060010;
     }
     public static final class interpolator {
-        public static final int decelerate_quad=0x7f050000;
+        public static int decelerate_quad=0x7f050000;
     }
     public static final class layout {
-        public static final int andfree_example_menu=0x7f030000;
-        public static final int andfree_group_category=0x7f030001;
-        public static final int andfree_group_category_line=0x7f030002;
-        public static final int andfree_layout_topbar=0x7f030003;
-        public static final int andfree_view_bool=0x7f030004;
-        public static final int andfree_view_button=0x7f030005;
-        public static final int andfree_view_button_2=0x7f030006;
-        public static final int andfree_view_button_3=0x7f030007;
-        public static final int andfree_view_edit=0x7f030008;
-        public static final int andfree_view_intent=0x7f030009;
-        public static final int andfree_view_more=0x7f03000a;
-        public static final int andfree_view_nothing=0x7f03000b;
-        public static final int andfree_view_select=0x7f03000c;
-        public static final int andfree_view_text=0x7f03000d;
+        public static int andfree_example_menu=0x7f030000;
+        public static int andfree_group_category=0x7f030001;
+        public static int andfree_group_category_line=0x7f030002;
+        public static int andfree_layout_topbar=0x7f030003;
+        public static int andfree_view_bool=0x7f030004;
+        public static int andfree_view_button=0x7f030005;
+        public static int andfree_view_button_2=0x7f030006;
+        public static int andfree_view_button_3=0x7f030007;
+        public static int andfree_view_edit=0x7f030008;
+        public static int andfree_view_intent=0x7f030009;
+        public static int andfree_view_more=0x7f03000a;
+        public static int andfree_view_nothing=0x7f03000b;
+        public static int andfree_view_select=0x7f03000c;
+        public static int andfree_view_text=0x7f03000d;
     }
     public static final class style {
-        public static final int AlertDialogCustom=0x7f070000;
+        public static int AlertDialogCustom=0x7f070000;
     }
 }

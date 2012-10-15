@@ -25,6 +25,7 @@ public class dbParse extends BaseLog{
 		cs = cls;
 		fields = cs.getFields();
 	}
+	
 	public dbParse(String dbname){
 		this.dbname = dbname;
 		
@@ -162,7 +163,15 @@ public class dbParse extends BaseLog{
 	public ContentValues filter(Line data){
 		ContentValues d = new ContentValues();
 		for (Entry<Object, Object> o:data.valueSet()){
-			d.put("`" + o.getKey() + "`", o.getValue() + "");
+			Object obj = o.getValue();
+			String key = "`" + o.getKey() + "`";
+			if (obj instanceof Boolean){
+				d.put(key, ((Boolean) obj) ? 1 : 0);
+			} else if (obj instanceof Integer){
+				d.put(key, (Integer) obj);
+			} else {
+				d.put(key, obj + "");
+			}
 		}
 		return d;
 	}

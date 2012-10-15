@@ -34,6 +34,8 @@ public class Line implements Iterable<Line>{
 	public static final int BACKSLASH = 92;
 	public static final int COLON = 58;
 	
+	private boolean showString = false;
+	private class nullClass{}
 	String dataString;
 	int type;
 	Map<Object, Object> data = new HashMap<Object, Object>();
@@ -46,6 +48,15 @@ public class Line implements Iterable<Line>{
 	public Line reverse(){
 		Collections.reverse(array);
 		return this;
+	}
+	
+	public ArrayList<String> getSortKeys(){
+		ArrayList<String> keys= new ArrayList<String>();
+		for (Object o: data.keySet()){
+			keys.add(o + "");
+		}
+		Collections.sort(keys);
+		return keys;
 	}
 	
 	public Class<?> getTableClass(){
@@ -80,7 +91,7 @@ public class Line implements Iterable<Line>{
 	public Line(Class<?> cls){
 		this();
 		setTable(cls);
-		toString();
+		if (showString) toString();
 	}
 	
 	public Line(dbParse mdbp){
@@ -92,20 +103,20 @@ public class Line implements Iterable<Line>{
 		this();
 		data = map;
 		type = OBJ;
-		toString();
+		if (showString) toString();
 	}
 	
 	public Line(ArrayList<Object> a){
 		this();
 		array = a;
 		type = ARRAY;
-		toString();
+		if (showString) toString();
 	}
 	
 	public Line(String str){
 		type = str.startsWith("{") ? OBJ : ARRAY;
 		implementObj(str);
-		toString();
+		if (showString) toString();
 		//i("]".charAt(0) + 1 - 1);
 	}
 	
@@ -227,6 +238,18 @@ public class Line implements Iterable<Line>{
 		return this;
 	}
 
+	public Line putNull(Object keyObj){
+		String key = keyObj + "";
+		if (key.length() == 0) return putNull();
+		data.put(key, new nullClass());
+		return this;
+	}
+	
+	public Line putNull(){
+		array.add(new nullClass());
+		return this;
+	}
+	
 	public Line put(Object keyObj, long value){
 		String key = keyObj + "";
 		if (key.length() == 0) return put(value);
@@ -341,6 +364,8 @@ public class Line implements Iterable<Line>{
 			put(k, Double.parseDouble(v));
 		} else if (v.toLowerCase().equals("false") || v.toLowerCase().equals("true")){
 			put(k, Boolean.parseBoolean(v));
+		} else if (v.equals("null")){
+			putNull(k);
 		} else {
 			long vl = Long.parseLong(v);
 			if (vl < Integer.MAX_VALUE && vl > Integer.MIN_VALUE){
@@ -598,6 +623,8 @@ public class Line implements Iterable<Line>{
 		}
 	}
 	
+	
+	
 	public Set<Entry<Object, Object>> valueSet(){
 		return data.entrySet();
 	}
@@ -680,7 +707,7 @@ public class Line implements Iterable<Line>{
 			
 			i("[update " + dbp.getName() + "]" + this);
 
-			t.update(this, "1=1", wheres);
+			t.update(this, wheres);
 			return -2;
 			
 		}

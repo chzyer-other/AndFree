@@ -37,7 +37,6 @@ public class DB extends BaseLog{
 		return mContext;
 	}
 	
-	/* ���캯��,���context*/
 	public DB(Context context){
 		mContext = context;
 		open();
@@ -47,7 +46,7 @@ public class DB extends BaseLog{
 		conn = db;
 		instance = this;
 	}
-	// ����ݿ�,������ݿ����
+
 	public void open(){
 		if (dbinit != null) return;
 		dbinit = new dbInit(mContext);

@@ -2,7 +2,7 @@ package org.chenye.andfree.conf;
 
 import java.lang.reflect.Field;
 
-import org.chenye.andfree.db.AndfreeDBcore;
+import org.chenye.andfree.db.BaseDBcore;
 
 import android.content.Context;
 
@@ -15,7 +15,7 @@ public class AndfreeConf {
 
 	//auto
 	public static String PACKAGE_NAME = "org.chenye.andfree";
-	public static String DBCORE_PACKAGE_NAME = AndfreeDBcore.class.getCanonicalName();
+	public static String DBCORE_PACKAGE_NAME = BaseDBcore.class.getCanonicalName();
 	// version
 	public static String APP_NAME = "AndFree";
 	public static String LOG_TAG = "andfree";
