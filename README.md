@@ -14,9 +14,9 @@ AndFree本身是一个Android项目的library, 可以download后在eclipse中导
    - 提供常用的辅助函数封装
    - 基于Activity给其添加更多特性
    - Class-XML一对一模式提供控件封装
-   - 统一全局, 唯一一个数据集类(Line), 支持JSON输入和解析
+   - 统一全局, 唯一一个数据集类(Line), 支持JSON输入和解析, 数据库输出的格式也是Line
    - Activity默认提供Activity Result路由, 不用将全部代码集中于Activity而是可以分散到子类中
-   - 系统控件封装, 全部使用统一的接口(WidgetHelper), 还有代码与XML中id的关系绑定
+   - 系统控件封装, 全部使用统一的接口(WidgetHelper), 还有代码与XML中id的关系绑定, 毕竟对于TextView也好, EditText, Button也罢, 传一个String给他, 都是为了给他赋初始值, 用WidgetHelper就能办到!
    - 支持单Activity带多个子页面并有层级关系(子级数量不限制, 并内置一个过渡效果), 类似IOS那种模式
    - 统一ContentProvider和数据库接口
    - 内置我写的一些常用控件(类似Preference界面那样), 如果想写设置界面的话基本可以秒杀.(绝对比Preference好写)
@@ -81,6 +81,9 @@ For get the result :
 As an alternative, you can get the same results by writing follows:
 	
 	Line data = new dbcore.popup(){{
+		//you may set the target table, maybe it will no need this in the future(I can't fix it in a while)
+		setDBParse(dbcore.popup.class);
+		
 		select(data);
 		where(type.v(1));
 	}}.result();
