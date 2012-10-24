@@ -1,15 +1,19 @@
 # AndFree  
 # 中文说明
-###前言
+前言
+---
 andfree是我历经1年的android开发, 最后整理出来的, 其前身未成形时曾用于两个项目, 可能由于LZ在接触Android前较为熟悉python, php, js, 所以可能andfree中会有一些上述语言的影子, 希望Andfree能够给各位开发者带来一些便利~
 
-###使用
+使用
+---
 AndFree本身是一个Android项目的library, 可以download后在eclipse中导入, 最后在要用的项目中的`perproties->android`引用andfree, 就可以使用了.
 
-###协议
+协议
+---
 采用最自由的MIT开源协议
 
-###特性
+特性
+---
    - 提供完整的数据库类封装
    - 提供常用的辅助函数封装
    - 基于Activity给其添加更多特性
@@ -49,15 +53,18 @@ AndFree本身是一个Android项目的library, 可以download后在eclipse中导
 #English Documents
 The Android Framework provides some helper functions, some simple widget items, database orm and a layout framework.
 
-## How to Use
+How to Use
+---
 
 1. In eclipse, import the whole Andfree project and set it as a library.
 2. Create a new project, and go into its ``properties -> android``, add library "AndFree".
 
-## Layout
+Layout
+---
 It's possable to build a android project without any layout designed. It also provides some widget like combo, switch button, etc. that you can set up then by code easily.
 
-## Database
+Database
+---
 Andfree provides a database orm. You can define your database structure with code like follows:
 
 	public class dbcore extends baseCore{
@@ -89,7 +96,8 @@ As an alternative, you can get the same results by writing follows:
 	}}.result();
 
 ``It means "SELECT data FROM popup WHERE type = 1"``
-## Data collector - Line
+Data collector - Line
+---
 In android, there is many array type to choise. In andfree, there is only one, "Line".
 
 1. Line support json and merge "JSONObject" and "JSONArray" and then no need to write try{}catch(){} 
