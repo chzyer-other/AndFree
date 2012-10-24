@@ -84,6 +84,7 @@ public class TopBar extends BaseBar{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				if ( ! enableMenu) return;
+				
 				result.showMenu.SEND(m, new onActivityResult() {
 					
 					public void call(boolean result_ok, Intent data) {

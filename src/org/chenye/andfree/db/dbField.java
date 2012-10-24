@@ -29,19 +29,64 @@ public class dbField{
 		this.name = name;
 	}
 	
-	public String v(int i){
-		return "`" + name + "` = " + i;
+	public String like(String field){
+		return " AND `" + name + "` LIKE '" + field + "'";
 	}
 	
-	public String v(String i){
-		if (i.startsWith(">") || i.startsWith("<")){
-			return "`" + name + "` " + i;
-		}
-		return "`" + name + "` = '" + i + "'";
+	public String orLike(String field){
+		return " OR " + like(field).substring(5);
+	}
+	
+	public String equal(boolean i){
+		return equal(i ? 1 : 0);
+	}
+	
+	public String equal(int i){
+		return " AND `" + name + "` = " + i;
+	}
+	
+	public String notEqual(int i){
+		return " AND `" + name + "` != " + i;
+	}
+
+	public String equal(String i){
+		return " AND `" + name + "` = '" + i + "'";
+	}
+	
+	public String bigger(int i){
+		return " AND `" + name + "` > " + i + "";
+	}
+	
+	public String smaller(int i){
+		return " AND `" + name + "` < " + i + "";
 	}
 	
 	public String in(Line data){
-		return "`" + name + "` in (" + data.toSQL() + ")";
+		return " AND `" + name + "` in (" + data.toSQL() + ")";
+	}
+	
+	public String orEquals(int i){
+		return " OR " + equal(i).substring(5);
+	}
+	
+	public String orEquals(boolean i){
+		return orEquals(i ? 1 : 0);
+	}
+	
+	public String orEquals(String i){
+		return " OR " + equal(i).substring(5);
+	}
+	
+	public String orIn(Line data){
+		return " OR " + in(data).substring(5);
+	}
+	
+	public String orBigger(int i){
+		return " OR " + bigger(i).substring(5);
+	}
+	
+	public String orSmaller(int i){
+		return " OR " + smaller(i).substring(5);
 	}
 	
 	@Override

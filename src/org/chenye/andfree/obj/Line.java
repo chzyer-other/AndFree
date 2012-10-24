@@ -14,6 +14,9 @@ import org.chenye.andfree.db.dbField;
 import org.chenye.andfree.db.dbParse;
 import org.chenye.andfree.func.log;
 import org.chenye.andfree.func.timefunc;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -35,9 +38,16 @@ public class Line implements Iterable<Line>{
 	public static final int COLON = 58;
 	
 	private boolean showString = false;
-	private class nullClass{}
+	private boolean debug_string = true;
+	public String _str;
+	private class nullClass{
+		@Override
+		public String toString() {
+			return "null";
+		}
+	}
 	String dataString;
-	int type;
+	int type = -1;
 	Map<Object, Object> data = new HashMap<Object, Object>();
 	ArrayList<Object> array = new ArrayList<Object>();
 	dbParse dbp;
@@ -114,11 +124,84 @@ public class Line implements Iterable<Line>{
 	}
 	
 	public Line(String str){
+		str = str.trim();
+		if ( ! isLine(str)) return;
 		type = str.startsWith("{") ? OBJ : ARRAY;
-		implementObj(str);
+		//implementObj(str);
+		try {
+			if (type == OBJ){
+				formatJSONObject(new JSONObject(str), false);
+			} else if (type == ARRAY) {
+				formatJSONArray(new JSONArray(str), false);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (showString) toString();
 		//i("]".charAt(0) + 1 - 1);
 	}
+	
+	Line formatJSONObject(JSONObject obj, boolean buildnew) throws JSONException{
+		Line l = null;
+		if (buildnew) {
+			l = new Line();
+		}
+		for (Iterator<?> iter = obj.keys(); iter.hasNext();) { //先遍历整个 people 对象
+			String key = (String) iter.next();
+			Object o = obj.get(key);
+			if (o == null){
+				o = new nullClass();
+			} else if (o instanceof JSONArray){ 
+				o = formatJSONArray((JSONArray) o, true);
+			} else if (o instanceof JSONObject){
+				o = formatJSONObject((JSONObject) o, true);
+			}
+			
+			if (buildnew){
+				l.put(key, o);
+			} else {
+				put(key, o);
+			}
+		}
+		
+		if (buildnew) {
+			return l;
+		}
+		
+		return this;
+	}
+		
+	Line formatJSONArray(JSONArray obj, boolean buildnew) throws JSONException{
+		Line l = null;
+		if (buildnew) {
+			l = new Line();
+		}
+		
+		for (int i=0; i<obj.length(); i++){
+			Object o = obj.get(i);
+			if (o == null){
+				o = new nullClass();
+			} else if (o instanceof JSONArray){
+				o = formatJSONArray((JSONArray) o, true);
+			} else if (o instanceof JSONObject){
+				o = formatJSONObject((JSONObject) o, true);
+			}
+			
+			if (buildnew){
+				l.put(o);
+			} else {
+				put(o);
+			}
+		}
+		
+		if (buildnew) {
+			return l;
+		}
+		
+		return this;
+	}
+	
 	
 	public boolean valid(){
 		return ! invalid();
@@ -138,13 +221,19 @@ public class Line implements Iterable<Line>{
 	}
 	
 	public static boolean isLine(String str){
-		if (str.startsWith("{") && str.endsWith("}")) return true;
-		if (str.startsWith("[") && str.endsWith("]")) return true;
+		str = str.trim();
+		if (str.startsWith("{") && str.endsWith("}")) {
+			return true;
+		}
+		if (str.startsWith("[") && str.endsWith("]")) {
+			return true;
+		}
 		return false;
 	}
 	
 	
-	private void implementObj(String str){
+	protected void implementObj(String str){
+		// FIXME NOT USE
 		String lines = str;
 		int obj_start = 0;
 		boolean startCollect = false;
@@ -159,7 +248,13 @@ public class Line implements Iterable<Line>{
 				inQuot = ! inQuot;
 			}
 			
-			if (c == OBJ_LEFT || c == ARRAY_LEFT){
+			if (startCollect && inQuot){
+				if ( ! readedField && type == OBJ){
+					field.append(c);
+				} else {
+					value.append(c);
+				}
+			} else if (c == OBJ_LEFT || c == ARRAY_LEFT){
 				obj_start++;
 				if (obj_start == 1) startCollect = true;
 				else value.append(c);
@@ -211,6 +306,11 @@ public class Line implements Iterable<Line>{
 	}
 	
 	public Line putIfNotExist(Object keyObj, String value){
+		if (contains(keyObj)) return this;
+		return put(keyObj, value);
+	}
+	
+	public Line putIfNotExist(Object keyObj, Line value){
 		if (contains(keyObj)) return this;
 		return put(keyObj, value);
 	}
@@ -511,6 +611,10 @@ public class Line implements Iterable<Line>{
 			str.append("]");
 		}
 		
+		if (debug_string) {
+			_str = str.toString();
+			return _str;
+		}
 		//dataString = str;
 		return str.toString();
 	}
@@ -708,7 +812,11 @@ public class Line implements Iterable<Line>{
 			i("[update " + dbp.getName() + "]" + this);
 
 			t.update(this, wheres);
-			return -2;
+			Line data = t.where(wheres).get();
+			for (Entry<Object, Object> d: data.valueSet()){
+				put(d.getKey(), d.getValue());
+			}
+			return _id();
 			
 		}
 	}
@@ -820,7 +928,7 @@ public class Line implements Iterable<Line>{
 		String[] wheres = new String[field.length];
 		int i=0;
 		for (dbField f: field){
-			wheres[i] = f.v(str(f));
+			wheres[i] = f.equal(str(f));
 			i++;
 		}
 		return new Tables(dbp.getTableClass()).where(wheres).count() > 0;

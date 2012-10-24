@@ -1,5 +1,7 @@
 package org.chenye.andfree.db;
 
+import java.util.Map.Entry;
+
 import org.chenye.andfree.func.StrFunc;
 import org.chenye.andfree.func.log;
 import org.chenye.andfree.obj.BaseLog;
@@ -46,9 +48,44 @@ public class Tables extends BaseLog{
 	}
 	
 	public Tables where(String... wheres){
-		String where = StrFunc.arraytoString(wheres, " AND ");
+		String where = "";
+		for (String w: wheres){
+			where += w;
+		}
+		if (where.startsWith(" AND ")){
+			where = where.substring(5);
+		}
+		if (where.startsWith(" OR ")){
+			where = where.substring(4);
+		}
 		_queryData.put("where", where);
 		return this;
+	}
+	
+	public Tables whereContinue(String where){
+		if ( ! _queryData.contains("where") ||
+				_queryData.str("where").length() <= 0){
+			where(where);
+			return this;
+		}
+		
+		where = _queryData.str("where") + where;
+		_queryData.put("where", where);
+		return this;
+	}
+	
+	public Tables wherePrev(String where){
+		if ( ! _queryData.contains("where") ||
+				_queryData.str("where").length() <= 0){
+			whereContinue(where);
+			return this;
+		}
+		
+		where = "(" + _queryData.str("where") + ")" + where;
+		_queryData.put("where", where);
+		return this;
+		
+		
 	}
 	
 	public Tables limit(int limit){
@@ -104,9 +141,10 @@ public class Tables extends BaseLog{
 	public Line get(){
 		Line d = result().line(0);
 		if (_queryData.str("select").contains(",")) return d;
-		Line d2 = d.line(_queryData.str("select"));
-		if (d2.invalid()) return d;
-		return d2;
+		if (Line.isLine(_queryData.str("select"))){
+			return new Line(_queryData.str("select"));
+		}
+		return d;
 	}
 	
 	public Line getPrimary(int id){
@@ -115,7 +153,16 @@ public class Tables extends BaseLog{
 	}
 	
 	public String getField(){
-		return get().str(_queryData.str("select"));
+		Line l = get();
+		for (Entry<Object, Object> a: l.valueSet()){
+			try{
+				return a.getValue() + "";
+			} catch (Exception ex){
+				return null;
+			}
+		}
+		return null;
+		
 	}
 	
 	public int count(){

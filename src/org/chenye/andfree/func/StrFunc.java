@@ -14,6 +14,7 @@ import android.content.Context;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.util.Base64;
 
 public class StrFunc extends BaseLog{
 	public static String arraytoString(String[] arrays, String split){
@@ -34,7 +35,14 @@ public class StrFunc extends BaseLog{
 	}
 	
 	public static String base64encode(String str){
-		//return Base64.encodeToString(str.getBytes(), Base64.DEFAULT);
+		return Base64.encodeToString(str.getBytes(), Base64.DEFAULT);
+	}
+	
+	public static String base64decode(String str){
+		return new String(Base64.decode(str, Base64.DEFAULT));
+	}
+	
+	public static String stringEncode(String str){
 		if (str == null) return "";
 		try {
 			byte[] b = str.getBytes("UTF-8"); 
@@ -46,7 +54,7 @@ public class StrFunc extends BaseLog{
 		}
 	}
 	
-	public static String base64decode(String str){
+	public static String stringDecode(String str){
 		if (str == null) {
 			error(new StrFunc(), "base64decode->get null source");
 			return null;
@@ -262,5 +270,21 @@ public class StrFunc extends BaseLog{
 			return phone.substring(3);
 		}
 		return phone;
+	}
+	
+	public static Line findall(String regex, String source) {
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(source);
+		Line datas = new Line();
+		while (m.find()){
+			Line d = new Line();
+			for (int i=1; i<m.groupCount(); i++){
+				d.put(m.group(i));
+			}
+			if (d.invalid()) continue;
+			datas.put(d.length() == 1 ? d.str(0) : d);
+		}
+		
+		return datas;
 	}
 }

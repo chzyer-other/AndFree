@@ -67,7 +67,8 @@ public class baseConfig {
 				set(def);
 				return def;
 			}
-			return new BaseDBcore.config().select(BaseDBcore.config.value).where(sql()).getField();
+			String str = new BaseDBcore.config().select(BaseDBcore.config.value).where(sql()).getField();
+			return str;
 		}
 		
 		public String bool(String true_string, String false_string){

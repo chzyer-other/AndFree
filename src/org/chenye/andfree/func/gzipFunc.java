@@ -13,16 +13,10 @@ public class gzipFunc {
         return encode;  
     }  
   
-    /* 
-     * ���� ���룬Ĭ�ϱ��룺UTF-8 
-     */  
     public void setEncode(String encode) {  
     	gzipFunc.encode = encode;  
     }  
   
-    /* 
-     * �ַ�ѹ��Ϊ�ֽ����� 
-     */  
     public static byte[] compressToByte(String str){  
         if (str == null || str.length() == 0) {  
             return null;  
@@ -39,9 +33,6 @@ public class gzipFunc {
         return out.toByteArray();  
     }  
   
-    /* 
-     * �ַ�ѹ��Ϊ�ֽ����� 
-     */  
     public static byte[] compressToByte(String str,String encoding){  
         if (str == null || str.length() == 0) {  
             return null;  
