@@ -24,11 +24,11 @@ AndFree本身是一个Android项目的library, 可以download后在eclipse中导
    
    		Systems.showGuide.set(true);
    		if (Systems.showGuide.bool()){
-   			//show guide layout
+   			// TODO show guide layout
    		}
    - 还有静态的配置类, 并可设置依赖关系, 比如说我有两个模块 A, B, 两个模块都有一个Log功能, 然后我可以通过静态配置来决定这两个log功能执不执行. Conf.LOG_A.和Conf.LOG_B
    	
-   		//_f可以理解为一个生成DebugField的函数.
+   		//_f可以理解为一个生成DebugField的函数.(代码里面真的是_f, 哈哈贪方便)
    		public static DebugField LOG_A = _f(true);
    		public static DebugField LOG_B = _f(true);
    	然后我还想要一个全局的LOG开关, 一关闭这个的话, 全局的LOG都不显示, 这个时候就需要依赖关系
@@ -40,7 +40,11 @@ AndFree本身是一个Android项目的library, 可以download后在eclipse中导
    	这样, 一旦依赖的配置是False, LOG_A和LOG_B将始终被解析为false, 当LOG为true是, 其他两个依赖他的debug才起作用
    		
    - 代码定义数据库结构, 好处是程序能根据代码自动更新数据库结构, 对, AndFree会自动更新数据库结构(前提是你要修改数据库的版本号AndFree才会检查~)
-   - 特效大概就这么多, 目的只有一个, 让安卓的开发更加快速, 下面还会有详细的使用说明(code)
+   - 特性大概就这么多, 目的只有一个, 让安卓的开发更加快速, 下面还会有详细的使用说明(code)
+
+其他功能?
+-----
+有有有~ 我还有一个用于网络爬虫(特别是登录型的)的插件, 基于AndFree, 叫[AndFree_Query](https://github.com/chzyer/AndFree_Query), 可以看下
 
 #English Documents
 The Android Framework provides some helper functions, some simple widget items, database orm and a layout framework.
