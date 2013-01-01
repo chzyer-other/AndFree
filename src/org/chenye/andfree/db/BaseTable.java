@@ -10,4 +10,5 @@ public class BaseTable extends Tables{
 		Class<?> cls = obj.getClass();
 		setDBParse(cls);
 	}
+	
 }

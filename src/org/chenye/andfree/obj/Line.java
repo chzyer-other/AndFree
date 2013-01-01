@@ -13,7 +13,11 @@ import org.chenye.andfree.db.Tables;
 import org.chenye.andfree.db.dbField;
 import org.chenye.andfree.db.dbParse;
 import org.chenye.andfree.func.log;
-import org.chenye.andfree.func.timefunc;
+import org.chenye.andfree.func.FuncTime;
+import org.chenye.andfree.msgpack.IDictPicker;
+import org.chenye.andfree.msgpack.IListPicker;
+import org.chenye.andfree.msgpack.MsgPackByte;
+import org.chenye.andfree.msgpack.MsgPackUnpack;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-public class Line implements Iterable<Line>{
+public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 	public static final int OBJ = 0;
 	public static final int ARRAY = 1;
 	
@@ -53,6 +57,24 @@ public class Line implements Iterable<Line>{
 	dbParse dbp;
 	public Line(){
 		type = -1;
+	}
+	
+	public static Line fromMsgPack(byte[] b){
+		Object obj = MsgPackUnpack.parse(b);
+		if (obj == null){
+			return null;
+		}
+		return (Line) obj;
+	}
+	
+	public byte[] toMsgPack(){
+		MsgPackByte b = new MsgPackByte();
+		if (isArray()){
+			b.putList(this);
+		} else {
+			b.putDict(this);
+		}
+		return b.buffer().array();
 	}
 	
 	public Line reverse(){
@@ -497,7 +519,7 @@ public class Line implements Iterable<Line>{
 	}
 	
 	public String time(Object key){
-		return timefunc.formatTime(Long.parseLong(str(key) + ""));
+		return FuncTime.formatTime(Long.parseLong(str(key) + ""));
 	}
 	
 	public int _id(){
@@ -651,7 +673,7 @@ public class Line implements Iterable<Line>{
 	}
 	
 	public Line find(int id){
-		return new Tables(dbp.getTableClass()).getPrimary(id);
+		return new Tables(dbp.getTableClass()).getByPrimaryKey(id);
 	}
 		
 	public boolean eof(){
@@ -672,6 +694,10 @@ public class Line implements Iterable<Line>{
 			if (array.size() > 0) type = ARRAY;
 		}
 		return type;
+	}
+	
+	public boolean isArray(){
+		return array.size() > 0;
 	}
 	
 	public boolean contains(Object kv){
@@ -935,10 +961,45 @@ public class Line implements Iterable<Line>{
 	}
 	
 	public Line refreshFromDatabase(){
-		Line l = new Tables(dbp.getTableClass()).getPrimary(id());
+		Line l = new Tables(dbp.getTableClass()).getByPrimaryKey(id());
 		for (Entry<Object, Object> i: l.valueSet()){
 			put(i.getKey(), i.getValue());
 		}
 		return this;
+	}
+
+	public Iterator<Object> values() {
+		return array.iterator();
+	}
+
+	public boolean isListValid() {
+		return getType() == ARRAY;
+	}
+
+	public boolean isDictValid() {
+		return getType() == OBJ;
+	}
+
+	public boolean isset(dbField mark) {
+		if ( ! contains(mark)){
+			return false;
+		}
+		
+		String str = str(mark);
+		return str != null && str.length() > 0;
+	}
+
+	public String join(String string) {
+		if (isArray()){
+			StringBuilder sb = new StringBuilder();
+			for (int i=0; i<length(); i++){
+				if (i > 0){
+					sb.append(string);
+				}
+				sb.append(str(i));
+			}
+			return sb.toString();
+		}
+		return null;
 	}
 }

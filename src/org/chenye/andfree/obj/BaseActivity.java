@@ -1,14 +1,18 @@
 package org.chenye.andfree.obj;
 
+import in.hitme.android._andfree.Conf;
+
 import org.chenye.andfree.conf.AndfreeConf;
 import org.chenye.andfree.db.DB;
-import org.chenye.andfree.func.StrFunc;
+import org.chenye.andfree.func.FuncStr;
 import org.chenye.andfree.func.log;
 import org.chenye.andfree.obj.ActivityResult.onActivityResult;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 public class BaseActivity extends Activity{
@@ -18,8 +22,32 @@ public class BaseActivity extends Activity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getContext() == null){
+        	instance = m;
+        }
         AndfreeConf.update(this);
         db = DB.getInstance(m);
+        Conf.SCREEN_WIDTH = getWidth();
+        init();
+    }
+    
+    private void init(){
+    	Intent intent = getIntent();
+    	
+    	if (intent != null){
+    		Uri uri = intent.getData();
+    		if (uri != null){
+    			onIntent(new Line(uri.toString()));
+    		}
+    	}
+    	onInit();
+    }
+    protected void onInit(){}
+    protected void onIntent(Line data){}
+    
+    protected static Context instance;
+    public static Context getContext(){
+    	return instance;
     }
 	
 	@Override
@@ -27,8 +55,11 @@ public class BaseActivity extends Activity{
 		super.onDestroy();
 	}
 	
-	public void toast(String str){
-		log.toast(m, str);
+	public void toast(Object str){
+		if (str instanceof Exception){
+			str = ((Exception) str).getMessage();
+		}
+		log.toast(m, str.toString());
 	}
 	
 	int width = 0;
@@ -38,10 +69,26 @@ public class BaseActivity extends Activity{
 	}
 	
 	public int getWidth(){
-    	return StrFunc.pixel2dp(m, getWidthPix());
+    	return FuncStr.pixel2dp(m, getWidthPix());
     }
 	public int getHeight(){
 		return getWindowManager().getDefaultDisplay().getHeight();
+	}
+	
+	public void startActivity(Class<?> cls){
+		Intent i = new Intent(this, cls);
+		startActivity(i);
+	}
+	
+	public void startActivity(Class<?> cls, Line ret){
+		Intent i = new Intent(this, cls);
+		i.setData(Uri.parse(ret.toString()));
+		startActivity(i);
+	}
+	
+	public void switchActivity(Class<?> cls){
+		startActivity(cls);
+		finish();
 	}
 	
 	public void setResultAndFinish(Intent data){
@@ -62,7 +109,7 @@ public class BaseActivity extends Activity{
 		log.e(this, str);
 	}
 	
-	protected void log(Object obj){
+	public void log(Object obj){
 		log.i(this, obj);
 	}
 

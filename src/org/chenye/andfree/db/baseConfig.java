@@ -5,7 +5,7 @@ import org.chenye.andfree.obj.Line;
 
 import android.text.Editable;
 
-public class baseConfig {
+public class BaseConfig {
 	public final static class first{
 		static final String pack = "first";
 		public static final configField LAST_INSTALL_DATE = _f(pack, "installDate", 0);
@@ -48,6 +48,10 @@ public class baseConfig {
 			this.pack = pack;
 			this.name = name;
 			this.def = def;
+		}
+		
+		public boolean Changed(){
+			return ! str().equals(def);
 		}
 		
 		public String def(){
@@ -110,6 +114,10 @@ public class baseConfig {
 			line.put(BaseDBcore.config.key, toString());
 			line.put(BaseDBcore.config.value, data);
 			line.save();
+		}
+		
+		public void setDefault(){
+			set(def);
 		}
 		
 		public boolean equals(Object key){

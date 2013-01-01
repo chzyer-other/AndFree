@@ -67,7 +67,7 @@ Database
 ---
 Andfree provides a database orm. You can define your database structure with code like follows:
 
-	public class dbcore extends baseCore{
+	public class dbcore extends baseDBcore{
 		public static class popup extends BaseDBcore{
 			public final static dbField _id = dbField.primaryInt("_id");
 			public final static dbField type = dbField.integer("type", 0); //0:contact; 1:keyword

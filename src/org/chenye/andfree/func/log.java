@@ -33,20 +33,35 @@ public final class log {
 		e(getObj(cls) + getMsgFromException(ex));
 	}
 	
-	public static void i(Object obj, Object object){
-		if (object == null) {
+	public static void i(Object obj, Object... object){
+		if (object.length <= 0) {
 			i(obj, "null");
 			return;
 		}
-		i(obj, object.toString());
+		StringBuilder sb = new StringBuilder();
+		sb.append(getObj(obj));
+		for (Object o: object){
+			if (o == null) continue;
+			sb.append(o.toString());
+			sb.append(",");
+		}
+		i(sb.toString());
 	}
 	
 	public static void i(Object obj, long str){
 		i(obj, str + "");
 	}
 	
-	public static void i(Object obj, String func, String str){
-		i(getObj(obj) + "[" + func+ "] " + str);
+	public static void i(Object obj, String func, String... str){
+		StringBuilder sb = new StringBuilder();
+		sb.append(getObj(obj));
+		sb.append("[");
+		sb.append(func);
+		sb.append("]");
+		for (String s: str){
+			sb.append(s);
+		}
+		i(sb.toString());
 	}
 	
 	public static void i(Object obj, String str){

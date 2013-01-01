@@ -1,9 +1,8 @@
 package org.chenye.andfree.db;
 
 import org.chenye.andfree.conf.AndfreeConf;
-import org.chenye.andfree.db.DB;
+import org.chenye.andfree.func.FuncTime;
 import org.chenye.andfree.func.log;
-import org.chenye.andfree.func.timefunc;
 import org.chenye.andfree.obj.Line;
 
 import android.content.Context;
@@ -39,9 +38,9 @@ public class dbInit extends SQLiteOpenHelper{
 	}
 	
 	public void onChange(DB db){
-		baseConfig.first.LAST_INSTALL_DATE.set(timefunc.time());
-		baseConfig.first.RATE_REMINDED.set(false);
-		baseConfig.first.RUN.set(true);
+		BaseConfig.first.LAST_INSTALL_DATE.set(FuncTime.time());
+		BaseConfig.first.RATE_REMINDED.set(false);
+		BaseConfig.first.RUN.set(true);
 	}
 	
 	public static void UpdateTable(DB db){

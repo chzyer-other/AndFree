@@ -2,7 +2,7 @@ package org.chenye.andfree.db;
 
 import java.util.Map.Entry;
 
-import org.chenye.andfree.func.StrFunc;
+import org.chenye.andfree.func.FuncStr;
 import org.chenye.andfree.func.log;
 import org.chenye.andfree.obj.BaseLog;
 import org.chenye.andfree.obj.Line;
@@ -50,12 +50,15 @@ public class Tables extends BaseLog{
 	public Tables where(String... wheres){
 		String where = "";
 		for (String w: wheres){
+			if (w.length() == 0) continue;
+			if ( ! w.startsWith(" AND ") && ! w.startsWith(" OR ")) {
+				w = " AND " + w;
+			}
 			where += w;
 		}
 		if (where.startsWith(" AND ")){
 			where = where.substring(5);
-		}
-		if (where.startsWith(" OR ")){
+		} else if (where.startsWith(" OR ")){
 			where = where.substring(4);
 		}
 		_queryData.put("where", where);
@@ -105,7 +108,11 @@ public class Tables extends BaseLog{
 	}
 	
 	public Tables order(dbField field){
-		return order(field, "DESC");
+		return order(field, false);
+	}
+	
+	public Tables order(dbField field, boolean forward){
+		return order(field, forward ? "ASC" : "DESC");
 	}
 	
 	public Tables order(dbField field, String forward){
@@ -121,7 +128,10 @@ public class Tables extends BaseLog{
 	public Line result(){
 		String sql = "";
 		_queryData.putIfNotExist("select", "*");
-		
+		if (dbp.getName().length() == 0){
+			error("please set dbParse before use {{}} ");
+			return null;
+		}
 		sql += String.format("SELECT %s FROM %s %s", _queryData.str("select"), dbp.getName(), dbp.getName().substring(0, 1));
 		
 		if (_queryData.contains("join")){
@@ -147,7 +157,7 @@ public class Tables extends BaseLog{
 		return d;
 	}
 	
-	public Line getPrimary(int id){
+	public Line getByPrimaryKey(int id){
 		where(String.format("`%s` = %s", dbp.getPrimaryKey(), id));
 		return get();
 	}
@@ -228,30 +238,18 @@ public class Tables extends BaseLog{
 		}
 	}
 	
-	
-	public long update(Line line, String field, String value){
-		if (field.contains("`")){
-			return update(line, field, value, "1=1");
-		}
-		return update(line, "`" + field + "`= '" + value + "'");
-	}
-	
 	public long update(Line line, int id){
-		return update(line, dbp.getPrimaryKey(), id + "");
+		return update(line, "`" + dbp.getPrimaryKey() + "` = " + id);
 	}
 
 	public long update(Line data, String... wheres){
-		String where = "";
+		
 		try{
-			for (String w: wheres){
-				where += " AND " + w;
-			}
-			if (where.startsWith(" AND ")){
-				where = where.substring(5);
-			}
+			where(wheres);
+			
 			ContentValues cv = dbp.filter(data);
-			log.d(this, "[update " + dbp.getName() + "]" + cv + "[where] " + where);
-			return db.update(dbp.getName(), cv, where);
+			log.d(this, "[update " + dbp.getName() + "]" + cv + "[where] " + _queryData.str("where"));
+			return db.update(dbp.getName(), cv, _queryData.str("where"));
 		}catch(Exception ex){
 			e(ex);
 			return -1;
@@ -286,10 +284,19 @@ public class Tables extends BaseLog{
 	 * @param where
 	 */
 	public void delete(String... wheres){
-		String where = StrFunc.arraytoString(wheres, " and ");
+		if (wheres[0].startsWith(" OR ")){
+			wheres[0] = wheres[0].substring(4);
+		} else if (wheres[0].startsWith(" AND ")){
+			wheres[0] = wheres[0].substring(5);
+		}
+		String where = FuncStr.arraytoString(wheres, "");
 		String sql = "DELETE FROM " + dbp.getName() + " WHERE " + where;
 		db.query(sql);
 		i("[delete " + dbp.getName() + "] " + where);
+	}
+	
+	public final void empty(){
+		delete("_id >0");
 	}
 
 	//---------------------------------------------------------------
