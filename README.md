@@ -6,7 +6,7 @@ andfree是我历经1年的android开发, 最后整理出来的, 其前身未成�
 
 使用
 ---
-AndFree本身是一个Android项目的library, 可以download后在eclipse中导入, 最后在要用的项目中的`perproties->android`引用andfree, 就可以使用了.
+AndFree是一套代码, 只要把AndFree放到项目目录里面并且设置为源文件夹即可使用
 
 协议
 ---
@@ -18,12 +18,10 @@ AndFree本身是一个Android项目的library, 可以download后在eclipse中导
    - 提供常用的辅助函数封装
    - 基于Activity给其添加更多特性
    - Class-XML一对一模式提供控件封装
-   - 统一全局, 唯一一个数据集类(Line), 支持JSON输入和解析, 数据库输出的格式也是Line
+   - 统一全局, 唯一一个数据集类(Line), 支持JSON/[MsgPack](http://msgpack.org)的输入和输出, 数据库输出的格式也是Line (内置[msgpack-for-android](https://github.com/chzyer/msgpack-for-android))
    - Activity默认提供Activity Result路由, 不用将全部代码集中于Activity而是可以分散到子类中
-   - 系统控件封装, 全部使用统一的接口(WidgetHelper), 还有代码与XML中id的关系绑定, 毕竟对于TextView也好, EditText, Button也罢, 传一个String给他, 都是为了给他赋初始值, 用WidgetHelper就能办到!
-   - 支持单Activity带多个子页面并有层级关系(子级数量不限制, 并内置一个过渡效果), 类似IOS那种模式
+   - 系统控件封装, 继承于类IWidget, 针对一些常用的控件比如button, imageview, textview, edittext, linearlayout, relativelayout进行一些封装
    - 统一ContentProvider和数据库接口
-   - 内置我写的一些常用控件(类似Preference界面那样), 如果想写设置界面的话基本可以秒杀.(绝对比Preference好写)
    - 内置动态配置, 主要是用于保存设置类的数据(实质是使用数据库内建一张config的表, 并做一些封装), 在我写的默认控件中也对动态配置信息进行支持, 比如给一个开关指定一个配置字段, 开关会根据用户的操作自动操作数据库 :), 自己使用的话, 语法类似于下面
    
    		Systems.showGuide.set(true);
@@ -43,12 +41,12 @@ AndFree本身是一个Android项目的library, 可以download后在eclipse中导
    		public static DebugField LOG_B = _f(true, LOG);
    	这样, 一旦依赖的配置是False, LOG_A和LOG_B将始终被解析为false, 当LOG为true是, 其他两个依赖他的debug才起作用
    		
-   - 代码定义数据库结构, 好处是程序能根据代码自动更新数据库结构, 对, AndFree会自动更新数据库结构(前提是你要修改数据库的版本号AndFree才会检查~)
-   - 特性大概就这么多, 目的只有一个, 让安卓的开发更加快速, 下面还会有详细的使用说明(code)
+   - 代码定义数据库结构, 好处是程序能根据代码自动更新数据库结构, 对, AndFree会自动更新数据库结构(前提是你要修改数据库的版本号AndFree才会检查)
+   - 特性大概就这么多, 目的只有一个, 让安卓的开发更加快速, 下面还会有详细的使用说明
 
 其他功能?
 -----
-有有有~ 我还有一个用于网络爬虫(特别是登录型的)的插件, 基于AndFree, 叫[AndFree_Query](https://github.com/chzyer/AndFree_Query), 可以看下
+慢慢来吧
 
 #English Documents
 The Android Framework provides some helper functions, some simple widget items, database orm and a layout framework.
