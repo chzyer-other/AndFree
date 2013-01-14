@@ -1,6 +1,7 @@
 package org.chenye.andfree.func;
 
 import org.chenye.andfree.conf.AndfreeConf;
+import org.chenye.andfree.conf.AndfreeDebug;
 import org.chenye.andfree.obj.Line;
 import org.chenye.andfree.obj.cursor;
 
@@ -81,7 +82,7 @@ public final class log {
 	}
 	
 	private static void i(String str){
-		if ( ! AndfreeConf.DEBUG.LOG.DO()) return;
+		if ( ! AndfreeDebug.LOG.DO()) return;
 		Log.i(AndfreeConf.LOG_TAG, str);
 	}
 	
@@ -89,7 +90,7 @@ public final class log {
 		e(getObj(obj) + str);
 	}
 	private static void e(String str){
-		if ( ! AndfreeConf.DEBUG.LOG.DO()) return;
+		if ( ! AndfreeDebug.LOG.DO()) return;
 		Log.e(AndfreeConf.LOG_TAG, str);
 	}
 	
@@ -98,7 +99,7 @@ public final class log {
 	}
 	
 	private static void d(String str){
-		if ( ! AndfreeConf.DEBUG.LOG.DO()) return;
+		if ( ! AndfreeDebug.LOG.DO()) return;
 		Log.d(AndfreeConf.LOG_TAG, str);
 	}
 	
@@ -107,7 +108,7 @@ public final class log {
 	}
 	
 	private static void w(String str){
-		if ( ! AndfreeConf.DEBUG.LOG.DO()) return;
+		if ( ! AndfreeDebug.LOG.DO()) return;
 		Log.w(AndfreeConf.LOG_TAG, str);
 	}
 	
@@ -116,7 +117,7 @@ public final class log {
 	}
 	
 	private static void v(String str){
-		if ( ! AndfreeConf.DEBUG.LOG.DO()) return;
+		if ( ! AndfreeDebug.LOG.DO()) return;
 		Log.v(AndfreeConf.LOG_TAG, str);
 	}
 	

@@ -16,7 +16,7 @@ public class DebugField {
 	}
 
 	public boolean DO() {
-		if (AndfreeConf.DEBUG.ALL_DENIED)
+		if (AndfreeDebug.ALL_DENIED)
 			return false;
 		for (int i = 0; i < depanys.length; i++) {
 			if (depanys[i].inWhen()) {

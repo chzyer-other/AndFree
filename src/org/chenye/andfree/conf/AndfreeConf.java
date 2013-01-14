@@ -16,10 +16,7 @@ import android.os.Environment;
 
 public class AndfreeConf {
 	// debug
-	public static class DEBUG {
-		public static boolean ALL_DENIED = false; // denied all debug
-		public static DebugField LOG = _f(true);
-	}
+	
 
 	//auto
 	public static String PACKAGE_NAME = "org.chenye.andfree";
@@ -36,9 +33,7 @@ public class AndfreeConf {
 	
 	private static boolean UPDATE_CONF = false;
 
-	protected static DebugField _f(boolean now, DebugField... depenys) {
-		return new DebugField(now, depenys);
-	}
+	
 	
 	public static void update(Context obj){
 		if (UPDATE_CONF) return;
@@ -50,7 +45,6 @@ public class AndfreeConf {
 		try {
 			OnStart.UpdateLayoutIdRange(Class.forName(packageName + ".R"));
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		DBCORE_PACKAGE_NAME = AndfreeConf.PACKAGE_NAME + "._andfree.dbcore";
@@ -59,14 +53,12 @@ public class AndfreeConf {
 		MsgPackUnpack.setGetDict(new IGetDictPicker() {
 			
 			public IDictPicker ret() {
-				// TODO Auto-generated method stub
 				return new Line();
 			}
 		});
 		MsgPackUnpack.setGetList(new IGetListPicker() {
 			
 			public IListPicker ret() {
-				// TODO Auto-generated method stub
 				return new Line();
 			}
 		});
