@@ -1,5 +1,3 @@
-# AndFree  
-# 中文说明
 前言
 ---
 andfree是我历经1年的android开发, 最后整理出来的, 其前身未成形时曾用于两个项目, 可能由于LZ在接触Android前较为熟悉python, php, js, 所以可能andfree中会有一些上述语言的影子, 希望Andfree能够给各位开发者带来一些便利~
