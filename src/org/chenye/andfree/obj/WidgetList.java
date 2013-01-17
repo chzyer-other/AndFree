@@ -2,7 +2,6 @@ package org.chenye.andfree.obj;
 
 import java.lang.reflect.Field;
 
-import org.chenye.andfree.conf.S;
 import org.chenye.andfree.func.log;
 import org.chenye.andfree.widget.AFButton;
 import org.chenye.andfree.widget.AFEdit;
@@ -12,7 +11,6 @@ import org.chenye.andfree.widget.AFRadio;
 import org.chenye.andfree.widget.AFRadioList;
 import org.chenye.andfree.widget.AFRlayout;
 import org.chenye.andfree.widget.AFText;
-import org.chenye.andfree.widget.ExpandWidget;
 import org.chenye.andfree.widget.ICopy;
 import org.chenye.andfree.widget.IWidget;
 
@@ -22,27 +20,6 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 public class WidgetList {
-	/**
-	 * <li> setTag(parent_widget, ExpandWidget) </li>
-	 * <li> IWidget.addTo(ExpandWidget) </li>
-	 * <li> inflate </li>
-	 * @param ew
-	 * @param v
-	 */
-	private void initAll(ExpandWidget ew, IWidget<?, ?> v){
-		Context m = ew.getContext();
-		Field[] fields = getClass().getFields();
-		for (Field f:fields){
-			IWidget<?, ?> widget = getWidget(f);
-			if (widget == null){
-				continue;
-			}
-			widget.inflate(m);
-			widget.setTags(S.parent_widget, ew);
-		}
-		v.addTo(ew);
-	}
-	
 	public void initAll(ViewGroup vg, IWidget<?, ?> v, int width, int height){
 		initAll(vg.getContext(), v);
 		v.addTo(vg, width, height);
@@ -112,7 +89,7 @@ public class WidgetList {
 			ICopy<?> obj = (ICopy<?>) f.get(this);
 			f.set(this, obj.copy());
 		} catch (Exception e) {
-			log.i(this, "implements " + field + " ICopy");
+			log.i(this, "implements " + field + " with ICopy");
 		}
 		
 	}

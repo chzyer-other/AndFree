@@ -60,37 +60,71 @@ public abstract class IWidget<T, E> extends BaseLog implements ICopy<T> {
 		if (isNoId()){
 			return;
 		}
-		
-		
 		inflate(vg.findViewById(_id));
 	}
 	
+	/**
+	 * may get Parent(ViewGroup) from this
+	 * <br> use setTags(S.parent)
+	 * @param vg
+	 * @return
+	 */
 	public T setParent(ViewGroup vg){
 		setTags(S.parent, vg);
 		return self;
 	}
 	
+	/**
+	 * get the parent from getTags(S.parent)
+	 * @return
+	 */
 	public ViewGroup getParent(){
 		return (ViewGroup) getTag(S.parent);
 	}
 	
+	/**
+	 * getTag and parse to Integer
+	 * @param id
+	 * @return
+	 */
 	public int getIntTag(int id){
 		return (Integer) v.getTag(id);
 	}
 	
+	/**
+	 * getTag and parse to Bool
+	 * @param id
+	 * @return if tag not instance of Boolean, it will return False when "" or 0; 
+	 */
 	public boolean getBoolTag(int id){
 		Object obj = v.getTag(id);
 		if (obj == null){
 			setTags(id, false);
 			return false;
 		}
-		return (Boolean) obj;
+		if (obj instanceof Boolean){
+			return (Boolean) obj;
+		}
+		String str = obj.toString();
+		return str.equals("0") || str.length() == 0;
 	}
 	
+	/**
+	 * getTag
+	 * @param id
+	 * @return
+	 */
 	public Object getTag(int id){
 		return v.getTag(id);
 	}
 	
+	/**
+	 * get LayoutParams and parse to LinearLayout.LayoutParams
+	 * <br> if got null, will return <b>a new LinearLayout.LayoutParams</b>
+	 * <br> if the LayoutParams got not equals LinearLayout.LayoutParams, will return <b>null</b>
+	 * @param v
+	 * @return LinearLayout.LayoutParams
+	 */
 	protected LinearLayout.LayoutParams getLinearParams(View v){
 		try{
 		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) v.getLayoutParams();
@@ -180,13 +214,30 @@ public abstract class IWidget<T, E> extends BaseLog implements ICopy<T> {
 		v = view;
 	}
 	
+	/**
+	 * set the Width
+	 * @param width
+	 * @return
+	 */
 	public T setWidth(int width){
 		return setSize(width, -5);
 	}
+	
+	/**
+	 * set Height
+	 * @param height
+	 * @return
+	 */
 	public T setHeight(int height){
 		return setSize(-5, height);
 	}
 	
+	/**
+	 * set the width and height for the widget
+	 * @param width
+	 * @param height
+	 * @return
+	 */
 	public T setSize(int width, int height){
 		LayoutParams lp = (LayoutParams) getLayoutParams();
 		if (width != -5){
@@ -199,13 +250,34 @@ public abstract class IWidget<T, E> extends BaseLog implements ICopy<T> {
 		return self;
 	}
 	
+	/**
+	 * set padding for all(dip)
+	 * @param all
+	 * @return
+	 */
 	public T setPadding(int all){
 		return setPadding(all, all, all, all);
 	}
+	
+	/**
+	 * set padding(dip)
+	 * @param left
+	 * @param top
+	 * @param right
+	 * @param bottom
+	 * @return
+	 */
 	public T setPadding(int left, int top, int right, int bottom){
 		v.setPadding(px(left), px(top), px(right), px(bottom));
 		return self;
 	}
+	
+	/**
+	 * set left and right padding(dip)
+	 * @param left
+	 * @param right
+	 * @return
+	 */
 	public T setPaddingHorizontal(int left, int right){
 		return setPadding(left, dp(v.getPaddingTop()), right, dp(v.getPaddingBottom()));
 	}
@@ -219,10 +291,19 @@ public abstract class IWidget<T, E> extends BaseLog implements ICopy<T> {
 		return self;
 	}
 	
+	/**
+	 * get the height of view
+	 * @return
+	 */
 	public int getHeight(){
 		return v.getHeight();
 	}
 	
+	/**
+	 * set Tags(id, object, id, object, ...)
+	 * @param objs
+	 * @return
+	 */
 	public T setTags(Object... objs){
 		if (v == null) return self;
 		for (int i=0; i<objs.length; i+=2){
@@ -233,27 +314,57 @@ public abstract class IWidget<T, E> extends BaseLog implements ICopy<T> {
 		return self;
 	}
 	
-	public LayoutParams getLayoutParams(){
+	/**
+	 * get ViewGroup.LayoutParams
+	 * @return
+	 */
+	public ViewGroup.LayoutParams getLayoutParams(){
 		return v.getLayoutParams();
 	}
 	
+	/**
+	 * set backgroup with resource id
+	 * @param res
+	 * @return
+	 */
 	public T setBackgroundResource(int res){
 		v.setBackgroundResource(res);
 		return self;
 	}
 	
+	/**
+	 * set LayoutParams(width, height)
+	 * @param width
+	 * @param height
+	 * @return
+	 */
 	public T setLayoutParams(int width, int height){
 		return setLayoutParams(new ViewGroup.LayoutParams(px(width), px(height)));
 	}
+	
+	/**
+	 * set ViewGroup.LayoutParams
+	 * @param params
+	 * @return
+	 */
 	public T setLayoutParams(ViewGroup.LayoutParams params){
 		v.setLayoutParams(params);
 		return self;
 	}
 	
+	/**
+	 * set background transparent color
+	 * @return
+	 */
 	public T setBackgroundTransparent(){
 		return setBackgroundColor("");
 	}
 	
+	/**
+	 * set background with color (#xxxxxx)
+	 * @param color
+	 * @return
+	 */
 	public T setBackgroundColor(String color){
 		int c;
 		if (color.length() != 0){
@@ -264,6 +375,11 @@ public abstract class IWidget<T, E> extends BaseLog implements ICopy<T> {
 		return setBackgroundColor(c);
 	}
 	
+	/**
+	 * set background color (Color int)
+	 * @param color
+	 * @return
+	 */
 	public T setBackgroundColor(int color){
 		v.setBackgroundColor(color);
 		return self;
@@ -303,7 +419,7 @@ public abstract class IWidget<T, E> extends BaseLog implements ICopy<T> {
 	/**
 	 * Initialize new child instance.
 	 * @return 
-	 * E; 
+	 * E; viewfsadfasdf
 	 * null if failure;
 	 *
 	 */

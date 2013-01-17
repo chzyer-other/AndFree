@@ -3,14 +3,8 @@ package org.chenye.andfree.func;
 import org.chenye.andfree.func.FuncNet.onCallbackRet;
 import org.chenye.andfree.obj.Line;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.IBinder;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 public class FuncThread {
 	static class delay extends AsyncTask<Object, Object, View.OnClickListener>{
@@ -20,10 +14,8 @@ public class FuncThread {
 			try {
 				Thread.sleep((Integer) params[0]);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
-			// TODO Auto-generated method stub
 			return (View.OnClickListener) params[1];
 		}
 		
@@ -32,16 +24,38 @@ public class FuncThread {
 			obj.onClick(null);
 		}
 	}
+	
+	/**
+	 * delay some time and execute some callback
+	 * @param delay
+	 * @param click
+	 */
 	public static void delay(int delay, View.OnClickListener click){
+		if (delay <= 0) {
+			click.onClick(null);
+			return;
+		}
 		new delay().execute(delay, click);
 	}
 	
+	/**
+	 * execute some function in async
+	 * @param calls
+	 */
+	public static void async(onCallbackRet... calls){
+		async(0, calls);
+	}
+	
+	/**
+	 * execute some function in async and delay
+	 * @param delay
+	 * @param calls
+	 */
 	public static void async(int delay, final onCallbackRet... calls){
 		class async extends AsyncTask<Object, Line, Line>{
 			int index;
 			@Override
 			protected Line doInBackground(Object... indexs) {
-				// TODO Auto-generated method stub
 				index = (Integer) indexs[0];
 				Line data = indexs.length > 1 ? (Line) indexs[1] : null;
 				return calls[index].call(data);
@@ -49,7 +63,6 @@ public class FuncThread {
 		
 			@Override
 			protected void onPostExecute(Line result) {
-				// TODO Auto-generated method stub
 				result = calls[index].ret(result);
 				if (index >= calls.length - 1) return;
 				new async().execute(index + 1, result);
@@ -57,8 +70,6 @@ public class FuncThread {
 			
 			@Override
 			protected void onProgressUpdate(Line... values) {
-				// TODO Auto-generated method stub
-				
 				super.onProgressUpdate(values);
 			}
 		}
@@ -66,32 +77,8 @@ public class FuncThread {
 		delay(delay, new View.OnClickListener() {
 			
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub	
 				new async().execute(0);
 			}
 		});
-	}
-	
-	public static void hide_keybroad(Activity m){
-		InputMethodManager imm = (InputMethodManager)m.getSystemService(Activity.INPUT_METHOD_SERVICE);
-		if (m.getCurrentFocus() == null) return;
-		IBinder windowtoken = m.getCurrentFocus().getWindowToken();
-		imm.hideSoftInputFromWindow(windowtoken, InputMethodManager.HIDE_NOT_ALWAYS);
-	}
-	
-		
-	public static void getConversation(Context m, int thread){
-		m.startActivity(getConversationIntent(thread));
-	}
-	
-	public static Intent getConversationIntent(int thread){
-		return new Intent()
-		.setClassName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity")
-		.setData(Uri.parse("content://mms-sms/conversations/" + thread));
-	}
-	
-	public static boolean isFlyme(){
-		int version = Integer.parseInt(android.os.Build.VERSION.SDK);
-		return version >= 15;
 	}
 }

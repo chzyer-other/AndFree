@@ -42,7 +42,7 @@ public class AFEdit extends IWidget<AFEdit, EditText> implements IWidgetText<AFE
 		return self;
 	}
 
-	public AFEdit emptyText() {
+	public AFEdit setEmptyText() {
 		return setText("");
 	}
 

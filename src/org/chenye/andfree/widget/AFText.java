@@ -42,7 +42,7 @@ public class AFText extends IWidget<AFText, TextView> implements IWidgetText<AFT
 		return this;
 	}
 
-	public AFText emptyText() {
+	public AFText setEmptyText() {
 		return setText("");
 	}
 

@@ -54,7 +54,7 @@ public class AFRlayout extends IWidget<AFRlayout, RelativeLayout> implements IWi
 		return this;
 	}
 
-	public AFRlayout removeLastest() {
+	public AFRlayout removeLast() {
 		return removeViewAt(_e.getChildCount() - 1);
 	}
 	public AFRlayout removeViewAt(int index) {

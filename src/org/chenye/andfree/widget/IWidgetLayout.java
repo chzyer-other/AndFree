@@ -12,10 +12,18 @@ public interface IWidgetLayout<T> {
 	public T addViewEqualDiv(View v);
 	public T addViewEqualDiv(IWidget<?, ?> v);
 	
+	/**
+	 * remove all views
+	 * @return
+	 */
 	public T removeAllViews();
 	public T setMargins(int left, int top, int right, int bottom);
 	
-	public T removeLastest();
+	/**
+	 * remove the last view
+	 * @return
+	 */
+	public T removeLast();
 	public T removeViewAt(int index);
 	
 	public T setLayoutTo(Dialog d, int width, int height);

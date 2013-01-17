@@ -110,7 +110,7 @@ public class AFLlayout extends IWidget<AFLlayout, LinearLayout> implements IWidg
 		_e.setOrientation(LinearLayout.HORIZONTAL);
 		return this;
 	}
-	public AFLlayout removeLastest() {
+	public AFLlayout removeLast() {
 		return removeViewAt(_e.getChildCount() - 1);
 	}
 	public AFLlayout removeViewAt(int index) {
