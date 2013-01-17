@@ -46,6 +46,7 @@ public class WidgetAnimate {
 				next();
 			}
 		};
+		
 		if (type == FADEOUT){
 			v.fadeOut(duration, next);
 		} else if (type == FADEIN){

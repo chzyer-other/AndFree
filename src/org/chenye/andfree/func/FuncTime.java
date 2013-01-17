@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.chenye.andfree.obj.AFLog;
+
 public class FuncTime {
 	public static String[] weekDays = {"Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"};
 	public static String[] weekDays_cn = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
@@ -125,18 +127,18 @@ public class FuncTime {
 	}
 	
 	public void getflag(){
-		log.d(this, "spend time: " + (time() - tmp_time));
+		AFLog.d(this, "spend time: " + (time() - tmp_time));
 		tmp_time = 0;
 	}
 	
 	public void getflag(String m){
-		log.d(this, m + " spend time: " + (time() - tmp_time));
+		AFLog.d(this, m + " spend time: " + (time() - tmp_time));
 		tmp_time = 0;
 		setflag();
 	}
 	
 	public void getflag(Object m){
-		log.d(this, m.getClass().getName() + " spend time: " + (time() - tmp_time));
+		AFLog.d(this, m.getClass().getName() + " spend time: " + (time() - tmp_time));
 		tmp_time = 0;
 		setflag();
 	}

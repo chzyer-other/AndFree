@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import org.chenye.andfree.conf.AndfreeConf;
 import org.chenye.andfree.obj.Line;
+import org.chenye.andfree.obj.AFLog;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -89,10 +90,10 @@ public class FuncFile {
 	}
 	
 	public static void e(Exception ex){
-		log.e(new FuncFile(), ex);
+		AFLog.e(new FuncFile(), ex);
 	}
 	
 	public static void i(Object o){
-		log.i(new FuncFile(), o);
+		AFLog.i(new FuncFile(), o);
 	}
 }

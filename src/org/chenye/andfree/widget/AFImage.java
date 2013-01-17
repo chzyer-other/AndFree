@@ -2,7 +2,7 @@ package org.chenye.andfree.widget;
 
 import java.io.File;
 
-import org.chenye.andfree.db.BaseDBcore;
+import org.chenye.andfree.db.AFCore;
 import org.chenye.andfree.func.FuncFile;
 import org.chenye.andfree.func.FuncStr;
 import org.chenye.andfree.func.FuncTime;
@@ -74,12 +74,12 @@ public class AFImage extends IWidget<AFImage, ImageView>{
 	
 	int tryTime = 0;
 	public AFImage setImageUrl(final String url){
-		Line data = new BaseDBcore.ImageCache().where(
-			BaseDBcore.ImageCache.path.equal(url)
+		Line data = new AFCore.ImageCache().where(
+			AFCore.ImageCache.path.equal(url)
 		).get();
 		if (data.valid()){
 			Bitmap bm = FuncFile.readBitmap(
-					new File(data.str(BaseDBcore.ImageCache.file))
+					new File(data.str(AFCore.ImageCache.file))
 			);
 			if (bm != null){
 				setImageBitmap(bm);
@@ -91,11 +91,11 @@ public class AFImage extends IWidget<AFImage, ImageView>{
 			@Override
 			public void onSuccess(byte[] binaryData) {
 				File f = FuncFile.saveToSDCard(FuncStr.getRandomString(32), binaryData);
-				Line data = new Line(BaseDBcore.ImageCache.class);
-				data.put(BaseDBcore.ImageCache.path, url);
-				data.put(BaseDBcore.ImageCache.file, f.toString());
-				data.put(BaseDBcore.ImageCache.createTime, FuncTime.time());
-				data.save(BaseDBcore.ImageCache.path);
+				Line data = new Line(AFCore.ImageCache.class);
+				data.put(AFCore.ImageCache.path, url);
+				data.put(AFCore.ImageCache.file, f.toString());
+				data.put(AFCore.ImageCache.createTime, FuncTime.time());
+				data.save(AFCore.ImageCache.path);
 				tryTime = 0;
 				setImageBinary(binaryData);
 			}

@@ -1,16 +1,14 @@
-package org.chenye.andfree.func;
+package org.chenye.andfree.obj;
 
 import org.chenye.andfree.conf.AndfreeConf;
 import org.chenye.andfree.conf.AndfreeDebug;
-import org.chenye.andfree.obj.Line;
-import org.chenye.andfree.obj.cursor;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-public final class log {
+public final class AFLog {
 	private static String getObj(Object cls){
 		if ( ! (cls instanceof String)) {
 			cls = cls.getClass().getSimpleName();
@@ -77,7 +75,7 @@ public final class log {
 		i(line.toString());
 	}
 	
-	public static void i(cursor cur){
+	public static void i(AFCursor cur){
 		i(cur.toString());
 	}
 	

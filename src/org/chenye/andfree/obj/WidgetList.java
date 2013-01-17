@@ -2,7 +2,6 @@ package org.chenye.andfree.obj;
 
 import java.lang.reflect.Field;
 
-import org.chenye.andfree.func.log;
 import org.chenye.andfree.widget.AFButton;
 import org.chenye.andfree.widget.AFEdit;
 import org.chenye.andfree.widget.AFImage;
@@ -89,7 +88,7 @@ public class WidgetList {
 			ICopy<?> obj = (ICopy<?>) f.get(this);
 			f.set(this, obj.copy());
 		} catch (Exception e) {
-			log.i(this, "implements " + field + " with ICopy");
+			AFLog.i(this, "implements " + field + " with ICopy");
 		}
 		
 	}

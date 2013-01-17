@@ -3,13 +3,13 @@ package org.chenye.andfree.db;
 import java.util.Map.Entry;
 
 import org.chenye.andfree.func.FuncStr;
-import org.chenye.andfree.func.log;
-import org.chenye.andfree.obj.BaseLog;
+import org.chenye.andfree.obj.AFLogActivity;
 import org.chenye.andfree.obj.Line;
+import org.chenye.andfree.obj.AFLog;
 
 import android.content.ContentValues;
 
-public class Tables extends BaseLog{
+public class Tables extends AFLogActivity{
 	protected DB db;
 	protected dbParse dbp;
 	
@@ -248,7 +248,7 @@ public class Tables extends BaseLog{
 			where(wheres);
 			
 			ContentValues cv = dbp.filter(data);
-			log.d(this, "[update " + dbp.getName() + "]" + cv + "[where] " + _queryData.str("where"));
+			AFLog.d(this, "[update " + dbp.getName() + "]" + cv + "[where] " + _queryData.str("where"));
 			return db.update(dbp.getName(), cv, _queryData.str("where"));
 		}catch(Exception ex){
 			e(ex);
@@ -272,7 +272,7 @@ public class Tables extends BaseLog{
 	 */
 	public void delete(Line line){
 		if (line._field().length() <= 0) {
-			log.e(this, "delete cur failure! Cause by not appoint the table name or id field");
+			AFLog.e(this, "delete cur failure! Cause by not appoint the table name or id field");
 			return;
 		}
 		String where = line._field() + " = " + line.str(line._field());
@@ -329,10 +329,10 @@ public class Tables extends BaseLog{
 	}
 	
 	public void e(Exception ex){
-		log.e(this, ex);
+		AFLog.e(this, ex);
 	}
 	
 	public void i(String str){
-		log.i(this, str);
+		AFLog.i(this, str);
 	}
 }

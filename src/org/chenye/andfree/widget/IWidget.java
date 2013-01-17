@@ -1,13 +1,13 @@
 package org.chenye.andfree.widget;
 
-import in.hitme.android._animate.Fade;
-import in.hitme.android._animate.Shake;
 
 import java.lang.reflect.Constructor;
 import java.util.Hashtable;
 
+import org.chenye.andfree.animate.Fade;
+import org.chenye.andfree.animate.Shake;
 import org.chenye.andfree.conf.S;
-import org.chenye.andfree.obj.BaseLog;
+import org.chenye.andfree.obj.AFLogActivity;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -24,8 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
-public abstract class IWidget<T, E> extends BaseLog implements ICopy<T> {
-	public static long[] layoutRange = new long[2];
+public abstract class IWidget<T, E> extends AFLogActivity implements ICopy<T> {
+	private static long[] layoutRange = new long[2];
 	public static boolean inLayoutRandge(int id){
 		return id >= layoutRange[0] && id <= layoutRange[1];
 	}
@@ -446,7 +446,7 @@ public abstract class IWidget<T, E> extends BaseLog implements ICopy<T> {
 	 * @return this
 	 */
 	public T shake(){
-		startAnimation(Shake.shake(_m));
+		Shake.shake(v, 2);
 		return self;
 	}
 	
@@ -602,5 +602,10 @@ public abstract class IWidget<T, E> extends BaseLog implements ICopy<T> {
 	public T setRelativeLayoutParams(int width, int height){
 		v.setLayoutParams(new RelativeLayout.LayoutParams(px(width), px(height)));
 		return self;
+	}
+
+	public static void UpdateLayoutRange(long min, long max) {
+		layoutRange[0] = min;
+		layoutRange[1] = max;		
 	}
 }

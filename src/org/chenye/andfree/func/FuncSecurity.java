@@ -6,6 +6,7 @@ import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
 
 import org.chenye.andfree.conf.AndfreeConf;
+import org.chenye.andfree.obj.AFLog;
 
 import android.util.Base64;
 
@@ -70,6 +71,6 @@ public class FuncSecurity {
 	}
 	
 	private static void e(Exception ex){
-		log.e(FuncSecurity.class, ex);
+		AFLog.e(FuncSecurity.class, ex);
 	}
 }

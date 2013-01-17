@@ -4,8 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 
-import org.chenye.andfree.func.log;
 import org.chenye.andfree.obj.WidgetList;
+import org.chenye.andfree.obj.AFLog;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -107,6 +107,6 @@ public abstract class ExpandWidget extends RelativeLayout {
 	}
 	
 	public void log(Object... obj){
-		log.i(this, obj);
+		AFLog.i(this, obj);
 	}
 }

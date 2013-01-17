@@ -1,10 +1,10 @@
 package org.chenye.andfree.db;
 
 import org.chenye.andfree.db.DB;
-import org.chenye.andfree.obj.BaseLog;
+import org.chenye.andfree.obj.AFLogActivity;
 import org.chenye.andfree.obj.Line;
 
-public class TableEnsure extends BaseLog{
+public class TableEnsure extends AFLogActivity{
 	public void test(){
 		DB db = DB.getInstance();
 		String sql = "SELECT * FROM sqlite_master WHERE type='table' AND name != 'android_metadata'";

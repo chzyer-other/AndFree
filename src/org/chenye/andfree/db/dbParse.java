@@ -4,13 +4,13 @@ import java.lang.reflect.Field;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.chenye.andfree.conf.AndfreeConf;
-import org.chenye.andfree.obj.BaseLog;
+import org.chenye.andfree.conf.AndfreeStaticConfigure;
+import org.chenye.andfree.obj.AFLogActivity;
 import org.chenye.andfree.obj.Line;
 
 import android.content.ContentValues;
 
-public class dbParse extends BaseLog{
+public class dbParse extends AFLogActivity{
 	public static final String FIELD_TEXT = "TEXT";
 	public static final String FIELD_INT = "INTEGER";
 	Field[] fields;
@@ -59,10 +59,9 @@ public class dbParse extends BaseLog{
 	
 	public static Class<?>[] all(){
 		try {
-			Class<?> cs_package = Class.forName(AndfreeConf.DBCORE_PACKAGE_NAME);
+			Class<?> cs_package = Class.forName(AndfreeStaticConfigure.DBCORE_PACKAGE);
 			return cs_package.getClasses();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			return null;
 		}
 	}

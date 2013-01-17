@@ -3,7 +3,7 @@ package org.chenye.andfree.helper;
 import java.util.ArrayList;
 
 import org.chenye.andfree.conf.AndfreeLang;
-import org.chenye.andfree.obj.BaseLog;
+import org.chenye.andfree.obj.AFLogActivity;
 import org.chenye.andfree.obj.Line;
 
 import android.app.AlertDialog;
@@ -14,7 +14,7 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class HelperDialog extends BaseLog{
+public class HelperDialog extends AFLogActivity{
 	Context m;
 	public static final int DIALOG = 0;
 	public static final int PROCESS = 1;

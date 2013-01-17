@@ -1,21 +1,20 @@
 package org.chenye.andfree.obj;
 
-import org.chenye.andfree.func.log;
 
-public class BaseLog {
+public class AFLogActivity {
 	public void log(Object obj){
-		log.i(this, obj);
+		AFLog.i(this, obj);
 	}
 	
 	public void error(Object obj){
-		log.e(this, obj);
+		AFLog.e(this, obj);
 	}
 	
 	public static void error(Object obj, Object msg){
-		log.e(obj, msg);
+		AFLog.e(obj, msg);
 	}
 	
 	public static void log(Object obj, Object msg){
-		log.i(obj, msg);
+		AFLog.i(obj, msg);
 	}
 }

@@ -12,7 +12,6 @@ import java.util.Set;
 import org.chenye.andfree.db.Tables;
 import org.chenye.andfree.db.dbField;
 import org.chenye.andfree.db.dbParse;
-import org.chenye.andfree.func.log;
 import org.chenye.andfree.func.FuncTime;
 import org.chenye.andfree.msgpack.IDictPicker;
 import org.chenye.andfree.msgpack.IListPicker;
@@ -661,15 +660,15 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 	}
 	
 	public void i(Object obj){
-		log.i(this, obj);
+		AFLog.i(this, obj);
 	}
 	
 	public void e(Exception ex){
-		log.e(this, ex);
+		AFLog.e(this, ex);
 	}
 	
 	public void e(String o){
-		log.e(this, o);
+		AFLog.e(this, o);
 	}
 	
 	public Line find(int id){

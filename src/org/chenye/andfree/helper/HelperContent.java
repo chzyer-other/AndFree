@@ -3,15 +3,15 @@ package org.chenye.andfree.helper;
 import java.util.Hashtable;
 
 import org.chenye.andfree.db.DB;
-import org.chenye.andfree.func.log;
-import org.chenye.andfree.obj.BaseLog;
+import org.chenye.andfree.obj.AFLogActivity;
 import org.chenye.andfree.obj.Line;
-import org.chenye.andfree.obj.cursor;
+import org.chenye.andfree.obj.AFCursor;
+import org.chenye.andfree.obj.AFLog;
 
 import android.content.ContentResolver;
 import android.net.Uri;
 
-public class HelperContent extends BaseLog{
+public class HelperContent extends AFLogActivity{
 	private static final String TYPE_SMS = "content://sms";
 	private static final String TYPE_THREAD = "content://thread"; // canonical_addresses
 	private static final String TYPE_MMS = "content://mms";
@@ -165,15 +165,15 @@ public class HelperContent extends BaseLog{
 			sql += " LIMIT " + _queryData.str("limit");
 		}
 		
-		cursor cur = null;
+		AFCursor cur = null;
 		try{
-			cur = new cursor(
+			cur = new AFCursor(
 				c.query(type_uri, new String[] {sql + " --"}, null, null, null)
 			);
 		} catch(Exception ex){
 			error(ex);
 		}
-		if (cursor.invalid(cur)) return Line.def();
+		if (AFCursor.invalid(cur)) return Line.def();
 		Line l = cur.toLine();
 		cur.close();
 		return l;
@@ -199,15 +199,15 @@ public class HelperContent extends BaseLog{
 			sortOrder += " LIMIT " + _queryData.str("limit");
 		}
 		
-		cursor cur = null;
+		AFCursor cur = null;
 		try{
-		cur = new cursor(
+		cur = new AFCursor(
 			c.query(type_uri, projection, selection, null, sortOrder)
 		);
 		} catch (Exception ex) {
-			log.e(this, ex);
+			AFLog.e(this, ex);
 		}
-		if (cursor.invalid(cur)) return Line.def();
+		if (AFCursor.invalid(cur)) return Line.def();
 		Line l = cur.toLine();
 		cur.close();
 		return l;
@@ -254,10 +254,10 @@ public class HelperContent extends BaseLog{
 	}
 	
 	public void e(Exception str){
-		log.e(this, str);
+		AFLog.e(this, str);
 	}
 	
 	public void e(String str){
-		log.e(this, str);
+		AFLog.e(this, str);
 	}
 }

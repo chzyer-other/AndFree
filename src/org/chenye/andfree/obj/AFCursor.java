@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import org.chenye.andfree.db.dbParse;
-import org.chenye.andfree.func.log;
 
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 
-public class cursor {
+public class AFCursor {
 	public Cursor mc = null;
 	public static final String CODING_ISO = "iso-8859-1";
 	
@@ -21,11 +20,11 @@ public class cursor {
 	boolean failure = false;
 	dbParse dbp;
 	
-	public cursor(){
+	public AFCursor(){
 		
 	}
 	
-	public cursor(Cursor c){
+	public AFCursor(Cursor c){
 		this.mc = c;
 		count = length();
 		if (c == null){
@@ -65,11 +64,11 @@ public class cursor {
 		}
 	}
 	
-	public static boolean valid(cursor cur){
+	public static boolean valid(AFCursor cur){
 		return ! invalid(cur);
 	}
 	
-	public static boolean invalid(cursor cur){
+	public static boolean invalid(AFCursor cur){
 		if (cur == null) return true;
 		boolean ret = cur.count <= 0;
 		if (ret) cur.close();
@@ -81,12 +80,12 @@ public class cursor {
 		return mc.getCount();
 	}
 	
-	public cursor copyField(String oldfield, String newfield){
+	public AFCursor copyField(String oldfield, String newfield){
 		put(newfield, getString(oldfield));
 		return this;
 	}
 	
-	public cursor moveField(String oldfield, String newfield){
+	public AFCursor moveField(String oldfield, String newfield){
 		copyField(oldfield, newfield);
 		remove(oldfield);
 		return this;
@@ -98,7 +97,7 @@ public class cursor {
 	}
 	
 	ContentValues encoding = new ContentValues();
-	public cursor encode(String field, String code){
+	public AFCursor encode(String field, String code){
 		encoding.put(field, code);
 		return this;
 	}
@@ -162,7 +161,7 @@ public class cursor {
 		beforePut(field);
 		tmp_put.put(field, value);
 	}
-	public cursor putAll(String field, String value){
+	public AFCursor putAll(String field, String value){
 		beforePut(field);
 		all_put.put(field, value);
 		return this;
@@ -271,7 +270,7 @@ public class cursor {
 	
 	boolean firstNext = true;
 	public boolean next(){
-		if (cursor.invalid(this)) return false;
+		if (AFCursor.invalid(this)) return false;
 		if (failure) return false;
 		
 		if (firstNext){
@@ -482,16 +481,16 @@ public class cursor {
 	 * print all row data to json
 	 * @return
 	 */
-	public cursor print(){
+	public AFCursor print(){
 		if (dbp != null && count <= 0) {
 			e("tables " + dbp.getName() + " is empty");
 			return this;
 		}
 		
 		savePos();
-		if (dbp != null) log.d(this, ">> start print table " + dbp.getName() + "(count:" + count + ")");
+		if (dbp != null) AFLog.d(this, ">> start print table " + dbp.getName() + "(count:" + count + ")");
 		while(next()){
-			log.i(this);
+			AFLog.i(this);
 		}
 		loadPos();
 		return this;
@@ -570,10 +569,10 @@ public class cursor {
 	
 	
 	private void e(String str){
-		log.e(this, str);
+		AFLog.e(this, str);
 	}
 	
 	private void e(Exception ex){
-		log.e(this, ex);
+		AFLog.e(this, ex);
 	}
 }

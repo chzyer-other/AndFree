@@ -67,11 +67,11 @@ public class BaseConfig {
 		}
 		
 		public String str(){
-			if (new BaseDBcore.config().where(sql()).count() == 0){
+			if (new AFCore.config().where(sql()).count() == 0){
 				set(def);
 				return def;
 			}
-			String str = new BaseDBcore.config().select(BaseDBcore.config.value).where(sql()).getField();
+			String str = new AFCore.config().select(AFCore.config.value).where(sql()).getField();
 			return str;
 		}
 		
@@ -110,9 +110,9 @@ public class BaseConfig {
 		}
 		
 		public void set(String data){
-			Line line = new Line(BaseDBcore.config.class);
-			line.put(BaseDBcore.config.key, toString());
-			line.put(BaseDBcore.config.value, data);
+			Line line = new Line(AFCore.config.class);
+			line.put(AFCore.config.key, toString());
+			line.put(AFCore.config.value, data);
 			line.save();
 		}
 		

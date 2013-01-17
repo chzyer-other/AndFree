@@ -1,33 +1,27 @@
 package org.chenye.andfree.obj;
 
-import in.hitme.android._andfree.Conf;
-
-import org.chenye.andfree.conf.AndfreeConf;
-import org.chenye.andfree.db.DB;
+import org.chenye.andfree.conf.AndfreeHook;
+import org.chenye.andfree.conf.AndfreeHookSetup;
 import org.chenye.andfree.func.FuncStr;
-import org.chenye.andfree.func.log;
 import org.chenye.andfree.obj.ActivityResult.onActivityResult;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-public class BaseActivity extends Activity{
-	protected DB db;
-	protected BaseActivity m = this;
-	public ProgressDialog mpDialog;
+public class AFActivity extends Activity{
+	protected AFActivity m = this;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getContext() == null){
         	instance = m;
         }
-        AndfreeConf.update(this);
-        db = DB.getInstance(m);
-        Conf.SCREEN_WIDTH = getWidth();
+        AndfreeHookSetup.setup(this);
+        AndfreeHook.RunHookProgramStart();
+        AndfreeHook.RunHookActivityEnter(this);
         init();
     }
     
@@ -59,7 +53,7 @@ public class BaseActivity extends Activity{
 		if (str instanceof Exception){
 			str = ((Exception) str).getMessage();
 		}
-		log.toast(m, str.toString());
+		AFLog.toast(m, str.toString());
 	}
 	
 	int width = 0;
@@ -96,7 +90,7 @@ public class BaseActivity extends Activity{
 		finish();
 	}
 	
-	public BaseActivity setResult(Line line){
+	public AFActivity setResult(Line line){
 		setResult(true, line.toIntent());
 		return this;
 	}
@@ -106,11 +100,11 @@ public class BaseActivity extends Activity{
 	}
 	
 	protected void error(Object str){
-		log.e(this, str);
+		AFLog.e(this, str);
 	}
 	
 	public void log(Object obj){
-		log.i(this, obj);
+		AFLog.i(this, obj);
 	}
 
 	ActivityResult activityResult = new ActivityResult();

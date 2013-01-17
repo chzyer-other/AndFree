@@ -1,6 +1,6 @@
 package org.chenye.andfree.widget;
 
-import org.chenye.andfree.func.log;
+import org.chenye.andfree.obj.AFLog;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -86,21 +86,21 @@ public abstract class ExpandWidgetScroll extends ScrollView {
 			}
 		}
 		super.onSizeChanged(w, h, oldw, oldh);
-		log.i(this, "onSizeChanged", w, h, oldw, oldh);
+		AFLog.i(this, "onSizeChanged", w, h, oldw, oldh);
 	}
 	
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		int specMode = MeasureSpec.getMode(heightMeasureSpec);
         int specSize = MeasureSpec.getSize(MeasureSpec.getMode(heightMeasureSpec));
-        log.i(this, MeasureSpec.getSize(heightMeasureSpec));
+        AFLog.i(this, MeasureSpec.getSize(heightMeasureSpec));
 
-		log.i(this, "onMeasure", specMode, specSize, widthMeasureSpec, heightMeasureSpec);
+		AFLog.i(this, "onMeasure", specMode, specSize, widthMeasureSpec, heightMeasureSpec);
 	};
 	
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		super.onLayout(changed, l, t, r, b);
-		log.i(this, "onLayout", changed, l, t, r, b);
+		AFLog.i(this, "onLayout", changed, l, t, r, b);
 	};
 	
 	AFEdit _edt;

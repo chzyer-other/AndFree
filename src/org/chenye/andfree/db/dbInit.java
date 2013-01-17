@@ -2,8 +2,8 @@ package org.chenye.andfree.db;
 
 import org.chenye.andfree.conf.AndfreeConf;
 import org.chenye.andfree.func.FuncTime;
-import org.chenye.andfree.func.log;
 import org.chenye.andfree.obj.Line;
+import org.chenye.andfree.obj.AFLog;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -31,7 +31,7 @@ public class dbInit extends SQLiteOpenHelper{
 	@Override
 	public void onUpgrade(SQLiteDatabase data, int oldVersion, int newVersion) {
 		DB db = new DB(data);
-		log.w(this, "old db version: " + oldVersion + ", new Version : " + newVersion);
+		AFLog.w(this, "old db version: " + oldVersion + ", new Version : " + newVersion);
 		UpdateTable(db);
 		UpdateField(db);
 		onChange(db);

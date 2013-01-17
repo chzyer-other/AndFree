@@ -1,9 +1,12 @@
 package org.chenye.andfree.db;
 
-import org.chenye.andfree.func.log;
-import org.chenye.andfree.obj.BaseLog;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import org.chenye.andfree.obj.AFLogActivity;
 import org.chenye.andfree.obj.Line;
-import org.chenye.andfree.obj.cursor;
+import org.chenye.andfree.obj.AFCursor;
+import org.chenye.andfree.obj.AFLog;
 
 
 import android.content.ContentValues;
@@ -12,7 +15,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-public class DB extends BaseLog{
+public class DB extends AFLogActivity{
 	private Context mContext;
 	public SQLiteDatabase conn;
 	public dbInit dbinit;
@@ -28,7 +31,7 @@ public class DB extends BaseLog{
 	
 	public static DB getInstance(){
 		if (instance == null){
-			log.e(new DB(), "null instance");
+			AFLog.e(new DB(), "null instance");
 		}
 		return instance;
 	}
@@ -53,7 +56,7 @@ public class DB extends BaseLog{
 		try{
 			conn = dbinit.getReadableDatabase();
 		} catch (Exception ex){
-			log.e(this, ex);
+			error(ex);
 		}
 		d(name() + " open ");
 	}
@@ -75,7 +78,7 @@ public class DB extends BaseLog{
 				e("fetch get null cursor");
 				return null;
 			}			
-			cursor c = new cursor(cur);
+			AFCursor c = new AFCursor(cur);
 			Line l = c.toLine();
 			c.close();
 			return l;
@@ -147,14 +150,16 @@ public class DB extends BaseLog{
 	}
 	
 	private void e(String str){
-		log.e(this, str);
+		AFLog.e(this, str);
 	}
 	
 	private void e(Exception ex){
-		log.e(this, ex);
+		StringWriter str = new StringWriter();
+		ex.printStackTrace(new PrintWriter(str));
+		e(str.toString());
 	}
 	
 	private void d(String str){
-		log.d(this, str);
+		AFLog.d(this, str);
 	}
 }

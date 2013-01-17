@@ -24,6 +24,7 @@ import org.apache.http.util.EntityUtils;
 import org.chenye.andfree.db.DB;
 import org.chenye.andfree.helper.HelperContent;
 import org.chenye.andfree.obj.Line;
+import org.chenye.andfree.obj.AFLog;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -111,7 +112,7 @@ public class FuncNet {
     }
     
     public String get(String url){
-    	log.i(this, "http://" + host + url);
+    	AFLog.i(this, "http://" + host + url);
 		HttpGet httpGet = new HttpGet("http://" + host + url);
 		
 		DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -156,7 +157,7 @@ public class FuncNet {
 			
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
 				String result = EntityUtils.toString(httpResponse.getEntity());
-				log.i(this, result);
+				AFLog.i(this, result);
 				return result;
 			}
 			i(httpResponse.getStatusLine().getStatusCode());
@@ -174,11 +175,11 @@ public class FuncNet {
     }
     
     public void e(Exception ex){
-    	log.e(this, ex);
+    	AFLog.e(this, ex);
     }
 
     public void i(Object obj){
-    	log.i(this, obj);
+    	AFLog.i(this, obj);
     }
     
     public static boolean isWiFiActive(Context inContext) {  
