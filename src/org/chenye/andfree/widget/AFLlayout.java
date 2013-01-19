@@ -71,6 +71,7 @@ public class AFLlayout extends IWidget<AFLlayout, LinearLayout> implements IWidg
 	public AFLlayout setMargins(int all){
 		return setMargins(all, all, all, all);
 	}
+	
 	public AFLlayout setMargins(int left, int top, int right, int bottom) {
 		ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) _e.getLayoutParams();
 		if (lp == null){
@@ -94,8 +95,6 @@ public class AFLlayout extends IWidget<AFLlayout, LinearLayout> implements IWidg
 		return this;
 	}
 	
-
-	
 	@Override
 	protected void inflate(View v) {
 		super.inflate(v);
@@ -110,27 +109,53 @@ public class AFLlayout extends IWidget<AFLlayout, LinearLayout> implements IWidg
 		_e.setOrientation(LinearLayout.HORIZONTAL);
 		return this;
 	}
+	
 	public AFLlayout removeLast() {
 		return removeViewAt(_e.getChildCount() - 1);
 	}
+	
 	public AFLlayout removeViewAt(int index) {
 		_e.removeViewAt(index);
 		return this;
-	}
-	public AFLlayout copy() {
-		LinearLayout l = newChildInstance();
-		return new AFLlayout(l);
 	}
 
 	public AFLlayout setWeight(int i){
 		_e.setWeightSum(i);
 		return this;
 	}
+	
 	public AFLlayout setLayoutTo(Dialog d, int width, int height) {
 		d.setContentView(obj(), new ViewGroup.LayoutParams(px(width), px(height)));
 		return this;
 	}
+	
 	public int getChildCount() {
 		return _e.getChildCount();
+	}
+	
+	public AFLlayout addTopView(IWidget<?, ?> v) {
+		return addTopView(v.view());
+	}
+	
+	public AFLlayout addTopView(View v) {
+		_e.addView(v, 0);
+		return this;
+	}
+	
+	public AFLlayout addBottomView(IWidget<?, ?> v) {
+		return addBottomView(v.view());
+	}
+	public AFLlayout addBottomView(View v) {
+		_e.addView(v, getChildCount());
+		return this;
+	}
+	
+	public AFLlayout removeView(IWidget<?, ?> v) {
+		return removeView(v.view());
+	}
+	
+	public AFLlayout removeView(View v) {
+		_e.removeView(v);
+		return this;
 	}
 }

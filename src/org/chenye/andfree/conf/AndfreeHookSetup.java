@@ -51,7 +51,7 @@ public class AndfreeHookSetup implements HookItem{
 	}
 	
 	private void setupDatabaseCore(){
-		AndfreeStaticConfigure.DBCORE_PACKAGE = AndfreeStaticConfigure.APPLICATION_PACKAGE;
+		AndfreeStaticConfigure.DBCORE_PACKAGE = String.format("%s._andfree.dbcore", AndfreeStaticConfigure.APPLICATION_PACKAGE);
 	}
 	
 	private void setupIWidgetLayoutRange(){

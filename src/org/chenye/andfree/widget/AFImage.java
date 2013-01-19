@@ -46,10 +46,6 @@ public class AFImage extends IWidget<AFImage, ImageView>{
 		return this;
 	}
 	
-	public AFImage copy() {
-		return new AFImage(newChildInstance());
-	}
-	
 	public AFImage setImageBitmap(Bitmap bm){
 		_e.setImageBitmap(bm);
 		return this;

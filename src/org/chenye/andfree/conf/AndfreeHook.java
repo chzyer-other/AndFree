@@ -3,22 +3,23 @@ package org.chenye.andfree.conf;
 import java.util.ArrayList;
 
 import org.chenye.andfree.obj.AFActivity;
-import org.chenye.andfree.obj.AFLogActivity;
+import org.chenye.andfree.obj.AFLogObj;
 
 /**
  * <b>AndfreeHook:</b>
  * can add hook what can run some code in some step <br>
  * <h2>How to add Hook</h2>
- * <code>
+ * <hr>
+ * <pre>
  * AndfreeHook.AddHook(new HookItem(){<br>
  * 		public void onProgramStart(){<br>
  * 			//do some code when program start<br>
  * 		}<br>
  * });
- * </code>
+ * </pre>
  *
  */
-public class AndfreeHook extends AFLogActivity{
+public class AndfreeHook extends AFLogObj{
 	private static AndfreeHook _instance;
 	public static AndfreeHook getInstance(){
 		if (_instance == null){

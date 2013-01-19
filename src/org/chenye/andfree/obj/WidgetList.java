@@ -3,6 +3,7 @@ package org.chenye.andfree.obj;
 import java.lang.reflect.Field;
 
 import org.chenye.andfree.widget.AFButton;
+import org.chenye.andfree.widget.AFCheck;
 import org.chenye.andfree.widget.AFEdit;
 import org.chenye.andfree.widget.AFImage;
 import org.chenye.andfree.widget.AFLlayout;
@@ -10,7 +11,6 @@ import org.chenye.andfree.widget.AFRadio;
 import org.chenye.andfree.widget.AFRadioList;
 import org.chenye.andfree.widget.AFRlayout;
 import org.chenye.andfree.widget.AFText;
-import org.chenye.andfree.widget.ICopy;
 import org.chenye.andfree.widget.IWidget;
 
 import android.app.Activity;
@@ -78,21 +78,6 @@ public class WidgetList {
 		}
 	}
 	
-	/**
-	 * PLEASE IMPLEMENT ICopy FOR THE OBJECT
-	 * @param field
-	 */
-	public void newInstance(String field){
-		try {
-			Field f = getClass().getField(field);
-			ICopy<?> obj = (ICopy<?>) f.get(this);
-			f.set(this, obj.copy());
-		} catch (Exception e) {
-			AFLog.i(this, "implements " + field + " with ICopy");
-		}
-		
-	}
-	
 	private IWidget<?, ?> getWidget(Field f){
 		try {
 			return (IWidget<?, ?>) f.get(this);
@@ -100,6 +85,10 @@ public class WidgetList {
 			
 		}
 		return null;
+	}
+	
+	protected AFCheck check(int id){
+		return new AFCheck(id);
 	}
 	
 	protected AFText txt(int id){

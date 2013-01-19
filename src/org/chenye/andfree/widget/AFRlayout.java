@@ -57,13 +57,10 @@ public class AFRlayout extends IWidget<AFRlayout, RelativeLayout> implements IWi
 	public AFRlayout removeLast() {
 		return removeViewAt(_e.getChildCount() - 1);
 	}
+	
 	public AFRlayout removeViewAt(int index) {
 		_e.removeViewAt(index);
 		return this;
-	}
-
-	public AFRlayout copy() {
-		return new AFRlayout(newChildInstance());
 	}
 
 	public AFRlayout setLayoutTo(Dialog d, int width, int height) {
@@ -89,4 +86,30 @@ public class AFRlayout extends IWidget<AFRlayout, RelativeLayout> implements IWi
 		return this;
 	}
 
+	public AFRlayout addTopView(IWidget<?, ?> v) {
+		return addTopView(v.view());
+	}
+	
+	public AFRlayout addTopView(View v) {
+		_e.addView(v, 0);
+		return this;
+	}
+
+	public AFRlayout addBottomView(IWidget<?, ?> v) {
+		return addBottomView(v.view());
+	}
+
+	public AFRlayout addBottomView(View v) {
+		_e.addView(v, getChildCount());
+		return this;
+	}
+
+	public AFRlayout removeView(View v) {
+		_e.removeView(v);
+		return this;
+	}
+
+	public AFRlayout removeView(IWidget<?, ?> v) {
+		return removeView(v.view());
+	}
 }

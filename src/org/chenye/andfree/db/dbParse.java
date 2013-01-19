@@ -5,12 +5,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.chenye.andfree.conf.AndfreeStaticConfigure;
-import org.chenye.andfree.obj.AFLogActivity;
+import org.chenye.andfree.obj.AFLogObj;
 import org.chenye.andfree.obj.Line;
 
 import android.content.ContentValues;
 
-public class dbParse extends AFLogActivity{
+public class dbParse extends AFLogObj{
 	public static final String FIELD_TEXT = "TEXT";
 	public static final String FIELD_INT = "INTEGER";
 	Field[] fields;
@@ -18,7 +18,7 @@ public class dbParse extends AFLogActivity{
 	String dbname;
 	String[] columnsType;
 	String[] columnsName;
-	dbField[] columnsObj;
+	DBField[] columnsObj;
 	private String primaryKey = null;
 	public dbParse(Class<?> cls){
 		dbname = cls.getSimpleName();
@@ -111,14 +111,14 @@ public class dbParse extends AFLogActivity{
 		return findColumn(key) < 0 ? false : true;
 	}
 	
-	public dbField[] getColumnsObj(){
+	public DBField[] getColumnsObj(){
 		if (columnsObj != null) return columnsObj;
-		dbField[] objs = new dbField[fields.length];
+		DBField[] objs = new DBField[fields.length];
 		String[] names = getColumnsName();
 		for(int i=0; i<objs.length; i++){
-			dbField f;
+			DBField f;
 			try {
-				f = (dbField) fields[i].get(fields[i].getName());
+				f = (DBField) fields[i].get(fields[i].getName());
 			} catch (IllegalArgumentException e) {
 				continue;
 			} catch (IllegalAccessException e) {
@@ -133,7 +133,7 @@ public class dbParse extends AFLogActivity{
 	
 	public String[] getColumnsType(){
 		if (columnsType != null) return columnsType;
-		dbField[] objs = getColumnsObj();
+		DBField[] objs = getColumnsObj();
 		String[] cols = new String[objs.length];
 		for(int i=0; i<objs.length; i++){
 			cols[i] = objs[i].type();
@@ -148,9 +148,9 @@ public class dbParse extends AFLogActivity{
 	
 	public String getPrimaryKey(){
 		if (primaryKey != null) return primaryKey;
-		dbField[] objs = getColumnsObj();
+		DBField[] objs = getColumnsObj();
 		
-		for(dbField obj:objs){
+		for(DBField obj:objs){
 			if (obj.primary()){
 				primaryKey = obj.getName();
 				break;
@@ -177,7 +177,7 @@ public class dbParse extends AFLogActivity{
 	
 	public void filter(ContentValues data){
 		Set<Entry<String, Object>> iterator = data.valueSet();
-		dbField[] f = getColumnsObj();
+		DBField[] f = getColumnsObj();
 		for(Entry<String, Object> s:iterator){
 			int pos = findColumn(s.getKey());
 			if (pos < 0 || (f[pos].primary() && f[pos].isInt())){

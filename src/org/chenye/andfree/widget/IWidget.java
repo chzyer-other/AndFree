@@ -2,12 +2,13 @@ package org.chenye.andfree.widget;
 
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 
 import org.chenye.andfree.animate.Fade;
 import org.chenye.andfree.animate.Shake;
 import org.chenye.andfree.conf.S;
-import org.chenye.andfree.obj.AFLogActivity;
+import org.chenye.andfree.obj.AFLogObj;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -24,7 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
-public abstract class IWidget<T, E> extends AFLogActivity implements ICopy<T> {
+public abstract class IWidget<T, E> extends AFLogObj {
 	private static long[] layoutRange = new long[2];
 	public static boolean inLayoutRandge(int id){
 		return id >= layoutRange[0] && id <= layoutRange[1];
@@ -607,5 +608,40 @@ public abstract class IWidget<T, E> extends AFLogActivity implements ICopy<T> {
 	public static void UpdateLayoutRange(long min, long max) {
 		layoutRange[0] = min;
 		layoutRange[1] = max;		
+	}
+	
+	public T newInstance(){
+		try {
+			Constructor<E> cls = _cls.getConstructor(Context.class);
+			E e = cls.newInstance(_m);
+			onInit(e.getClass());
+			_m = ((View) e).getContext();
+			_e = e;
+			v = (View) e;
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return self;
+	}
+	
+	public T setOnLongClickListener(View.OnLongClickListener click) {
+		v.setOnLongClickListener(click);
+		return self;
 	}
 }

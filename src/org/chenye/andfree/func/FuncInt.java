@@ -1,4 +1,4 @@
-package org.chenye.andfree.helper;
+package org.chenye.andfree.func;
 
 import java.util.Random;
 

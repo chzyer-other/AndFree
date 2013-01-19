@@ -2,7 +2,7 @@ package org.chenye.andfree.obj;
 
 import java.nio.ByteBuffer;
 
-public class IntBitBuffer extends AFLogActivity{
+public class IntBitBuffer extends AFLogObj{
 	private long header = -1;
 	private static int HEADER_LENGTH = 32;
 	private int _point = 0;

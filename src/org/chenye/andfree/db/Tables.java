@@ -3,13 +3,13 @@ package org.chenye.andfree.db;
 import java.util.Map.Entry;
 
 import org.chenye.andfree.func.FuncStr;
-import org.chenye.andfree.obj.AFLogActivity;
+import org.chenye.andfree.obj.AFLogObj;
 import org.chenye.andfree.obj.Line;
 import org.chenye.andfree.obj.AFLog;
 
 import android.content.ContentValues;
 
-public class Tables extends AFLogActivity{
+public class Tables extends AFLogObj{
 	protected DB db;
 	protected dbParse dbp;
 	
@@ -32,9 +32,9 @@ public class Tables extends AFLogActivity{
 		return "[Table]" + dbp.getName();
 	}
 	
-	public Tables select(dbField... fields){
+	public Tables select(DBField... fields){
 		String sql = "";
-		for (dbField field: fields){
+		for (DBField field: fields){
 			sql += ", " + field.toString();
 		}
 		if (sql.startsWith(", ")) sql = sql.substring(2);
@@ -87,13 +87,10 @@ public class Tables extends AFLogActivity{
 		where = "(" + _queryData.str("where") + ")" + where;
 		_queryData.put("where", where);
 		return this;
-		
-		
 	}
 	
 	public Tables limit(int limit){
-		
-		return limit("0, " + limit);
+		return limit(0, limit);
 	}
 	
 	public int getLimit(){
@@ -102,20 +99,25 @@ public class Tables extends AFLogActivity{
 		return Integer.parseInt(str);
 	}
 	
-	public Tables limit(String limit){
-		_queryData.put("limit", limit);
+	public Tables limit(int start, int length) {
+		_queryData.put("limit", String.format("%s, %s", start, length));
 		return this;
 	}
 	
-	public Tables order(dbField field){
+	public Tables order(String... str){
+		_queryData.put("order", FuncStr.Join(str, ", "));
+		return this;
+	}
+	
+	public Tables order(DBField field){
 		return order(field, false);
 	}
 	
-	public Tables order(dbField field, boolean forward){
+	public Tables order(DBField field, boolean forward){
 		return order(field, forward ? "ASC" : "DESC");
 	}
 	
-	public Tables order(dbField field, String forward){
+	public Tables order(DBField field, String forward){
 		_queryData.put("order", field + " " + forward + " ");
 		return this;
 	}

@@ -3,7 +3,7 @@ package org.chenye.andfree.helper;
 import java.util.ArrayList;
 
 import org.chenye.andfree.conf.AndfreeLang;
-import org.chenye.andfree.obj.AFLogActivity;
+import org.chenye.andfree.obj.AFLogObj;
 import org.chenye.andfree.obj.Line;
 
 import android.app.AlertDialog;
@@ -14,7 +14,7 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class HelperDialog extends AFLogActivity{
+public class HelperDialog extends AFLogObj{
 	Context m;
 	public static final int DIALOG = 0;
 	public static final int PROCESS = 1;
@@ -109,7 +109,7 @@ public class HelperDialog extends AFLogActivity{
 	ArrayList<String> items_label = new ArrayList<String>();
 	ArrayList<Line> items_Line = new ArrayList<Line>();
 	ArrayList<OnClickListener> items_click = new ArrayList<View.OnClickListener>();
-	dataClick items_dialog_click;
+	OnClickLine items_dialog_click;
 	public HelperDialog addItem(String hint, View.OnClickListener click){
 		items_label.add(hint);
 		items_click.add(click);
@@ -122,7 +122,7 @@ public class HelperDialog extends AFLogActivity{
 		return this;
 	}
 	
-	public HelperDialog setDialogClick(dataClick mClick){
+	public HelperDialog setLineClick(OnClickLine mClick){
 		items_dialog_click = mClick;
 		return this;
 	}
@@ -245,7 +245,7 @@ public class HelperDialog extends AFLogActivity{
 		});
 	}
 	
-	public interface dataClick{
+	public interface OnClickLine{
 		public void onClick(Line data);
 	}
 	

@@ -1,11 +1,9 @@
 package org.chenye.andfree.widget;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.lang.reflect.Field;
 
-import org.chenye.andfree.obj.WidgetList;
 import org.chenye.andfree.obj.AFLog;
+import org.chenye.andfree.obj.WidgetList;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -39,11 +37,7 @@ public abstract class ExpandWidget extends RelativeLayout {
 			m = context;
 			onInit(isInEditMode());
 		} catch (Exception ex){
-			ByteArrayOutputStream bs = new ByteArrayOutputStream();
-			PrintStream ps = new PrintStream(bs);
-			ex.printStackTrace(ps);
-			String str = new String(bs.toByteArray());
-			log(str);
+			error(ex);
 		}
 	}
 
@@ -97,16 +91,33 @@ public abstract class ExpandWidget extends RelativeLayout {
 				IWidget<?, ?> obj = (IWidget<?, ?>) f.get(w);
 				obj.inflate(vg);
 			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				error(e);
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				error(e);
 			}
 		}
 	}
 	
+	public void removeSelfFromParent(){
+		ViewGroup vg = null;
+		try{
+			vg = (ViewGroup) getParent();
+		} catch (Exception ex) {
+			return;
+		}
+		if (vg == null) return;
+		vg.removeView(this);
+	}
+	
 	public void log(Object... obj){
 		AFLog.i(this, obj);
+	}
+	
+	public void error(Object obj) {
+		AFLog.e(this, obj);
+	}
+	
+	public void toast(String str) {
+		AFLog.toast(m, str);
 	}
 }

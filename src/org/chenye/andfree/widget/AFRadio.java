@@ -27,8 +27,4 @@ public class AFRadio extends IWidget<AFRadio, RadioButton>{
 		return this;
 	}
 
-	public AFRadio copy() {
-		return new AFRadio(newChildInstance());
-	}
-
 }

@@ -1,9 +1,14 @@
 package org.chenye.andfree.widget;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.widget.Button;
 
 public class AFButton extends IWidget<AFButton, Button> implements IWidgetText<AFButton>{
+	public AFButton(Context context) {
+		super(new Button(context));
+	}
+	
 	public AFButton(Button e) {
 		super(e);
 	}
@@ -18,10 +23,6 @@ public class AFButton extends IWidget<AFButton, Button> implements IWidgetText<A
 	@Override
 	public AFButton init(Object... objs) {
 		return null;
-	}
-	
-	public AFButton copy() {
-		return new AFButton();
 	}
 	
 	public boolean isTextEmpty() {

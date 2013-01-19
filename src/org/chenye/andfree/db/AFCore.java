@@ -1,15 +1,15 @@
 package org.chenye.andfree.db;
 
 public class AFCore extends baseCore{
-	public static class config extends BaseTable{
-		public static final dbField key = dbField.primaryText("key");
-		public static final dbField value = dbField.text("value");
+	public static class config extends AFTable{
+		public static final DBField key = DBField.primaryText("key");
+		public static final DBField value = DBField.text("value");
 	}
 	
-	public static class ImageCache extends BaseTable {
-		public static final dbField _id = dbField.primaryText("_id");
-		public static final dbField path = dbField.text("path");
-		public static final dbField file = dbField.text("file");
-		public static final dbField createTime = dbField.text("create_time");
+	public static class ImageCache extends AFTable {
+		public static final DBField _id = DBField.primaryText("_id");
+		public static final DBField path = DBField.text("path");
+		public static final DBField file = DBField.text("file");
+		public static final DBField createTime = DBField.text("create_time");
 	}
 }

@@ -1,5 +1,8 @@
 package org.chenye.andfree.obj;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.chenye.andfree.conf.AndfreeConf;
 import org.chenye.andfree.conf.AndfreeDebug;
 
@@ -16,20 +19,27 @@ public final class AFLog {
 		return "[" + cls + "@" + cls.hashCode() + "] ";
 	}
 	
-	public static void e(Object cls, String funcName, Exception ex){
-		e(getObj(cls) + "[" + funcName + "] " + getMsgFromException(ex));
-	}
 	
 	public static void e(Object cls, Object obj){
-		if (obj.getClass().getSimpleName().toLowerCase().contains("exception")){
-			e(cls, (Exception) obj);
-			return;
+		if ( ! AndfreeDebug.LOG.DO()) return;
+		String str = "";
+		if (obj instanceof Exception){
+			str = getMsgFromException((Exception) obj);
+		} else {
+			str = obj.toString();
 		}
-		e(cls, obj.toString());
+		Log.e(AndfreeConf.LOG_TAG, String.format("%s %s", getObj(cls), str));
 	}
 	
-	public static void e(Object cls, Exception ex){
-		e(getObj(cls) + getMsgFromException(ex));
+	private static String getMsgFromException(Exception ex){
+		String msg = ex.getMessage();
+		if (msg == null) {
+			msg = ex.toString();
+		}
+		StringWriter str = new StringWriter();
+		ex.printStackTrace(new PrintWriter(str));
+		msg += String.format("\n%s", str);
+		return msg;
 	}
 	
 	public static void i(Object obj, Object... object){
@@ -84,13 +94,7 @@ public final class AFLog {
 		Log.i(AndfreeConf.LOG_TAG, str);
 	}
 	
-	public static void e(Object obj, String str){
-		e(getObj(obj) + str);
-	}
-	private static void e(String str){
-		if ( ! AndfreeDebug.LOG.DO()) return;
-		Log.e(AndfreeConf.LOG_TAG, str);
-	}
+
 	
 	public static void d(Object obj, String str){
 		d(getObj(obj) + str);
@@ -119,13 +123,7 @@ public final class AFLog {
 		Log.v(AndfreeConf.LOG_TAG, str);
 	}
 	
-	private static String getMsgFromException(Exception ex){
-		String msg = ex.getMessage();
-		if (msg == null) {
-			msg = ex.toString();
-		}
-		return msg;
-	}
+
 	
 	
 	public static void toast(Context m,int str){

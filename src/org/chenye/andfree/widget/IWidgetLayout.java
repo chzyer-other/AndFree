@@ -11,12 +11,18 @@ public interface IWidgetLayout<T> {
 	public T addViewEqualDiv(View v, int width, int height);
 	public T addViewEqualDiv(View v);
 	public T addViewEqualDiv(IWidget<?, ?> v);
+	public T addTopView(IWidget<?, ?> v);
+	public T addTopView(View v);
+	public T addBottomView(IWidget<?, ?> v);
+	public T addBottomView(View v);
 	
 	/**
 	 * remove all views
 	 * @return
 	 */
 	public T removeAllViews();
+	public T removeView(View v);
+	public T removeView(IWidget<?, ?> v);
 	public T setMargins(int left, int top, int right, int bottom);
 	
 	/**

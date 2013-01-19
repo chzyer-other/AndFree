@@ -55,10 +55,6 @@ public class AFText extends IWidget<AFText, TextView> implements IWidgetText<AFT
 		_e.setTextColor(color);
 		return this;
 	}
-	
-	public AFText copy() {
-		return new AFText(newChildInstance());
-	}
 
 	public AFText setTextColor(String color) {
 		return setTextColor(Color.parseColor(color));

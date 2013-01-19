@@ -56,10 +56,6 @@ public class AFEdit extends IWidget<AFEdit, EditText> implements IWidgetText<AFE
 		return this;
 	}
 
-	public AFEdit copy() {
-		return new AFEdit(newChildInstance());
-	}
-
 	public AFEdit setTextColor(String color) {
 		return setTextColor(Color.parseColor(color));
 	}

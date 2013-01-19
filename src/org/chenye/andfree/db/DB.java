@@ -1,13 +1,9 @@
 package org.chenye.andfree.db;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import org.chenye.andfree.obj.AFLogActivity;
-import org.chenye.andfree.obj.Line;
 import org.chenye.andfree.obj.AFCursor;
 import org.chenye.andfree.obj.AFLog;
-
+import org.chenye.andfree.obj.AFLogObj;
+import org.chenye.andfree.obj.Line;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,7 +11,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-public class DB extends AFLogActivity{
+public class DB extends AFLogObj{
 	private Context mContext;
 	public SQLiteDatabase conn;
 	public dbInit dbinit;
@@ -75,7 +71,7 @@ public class DB extends AFLogActivity{
 			if ( ! conn.isOpen()) return null;
 			Cursor cur = conn.rawQuery(sql, args);			
 			if (cur == null){
-				e("fetch get null cursor");
+				error("fetch get null cursor");
 				return null;
 			}			
 			AFCursor c = new AFCursor(cur);
@@ -83,7 +79,7 @@ public class DB extends AFLogActivity{
 			c.close();
 			return l;
 		}catch(Exception ex){
-			e(ex);
+			error(ex);
 			return null;
 		}
 	}
@@ -95,7 +91,7 @@ public class DB extends AFLogActivity{
 			conn.execSQL(sql);
 			return true;
 		}catch(SQLException ex){
-			e(ex);
+			error(ex);
 			return false;
 		}
 	}
@@ -124,7 +120,7 @@ public class DB extends AFLogActivity{
 			instance = null;
 			dbinit.close();
 		}catch(Exception ex){
-			e(ex);
+			error(ex);
 		}
 	}
 	
@@ -133,7 +129,7 @@ public class DB extends AFLogActivity{
 			if ( ! conn.isOpen()) return -1;
 			return conn.update(table, values, whereClause, null);
 		}catch(SQLException ex){
-			e(ex);
+			error(ex);
 			return -1;
 		}
 	}
@@ -144,22 +140,8 @@ public class DB extends AFLogActivity{
 			
 			return conn.insert(tablename, idField, data);
 		}catch(Exception ex){
-			e(ex);
+			error(ex);
 			return 0;
 		}
-	}
-	
-	private void e(String str){
-		AFLog.e(this, str);
-	}
-	
-	private void e(Exception ex){
-		StringWriter str = new StringWriter();
-		ex.printStackTrace(new PrintWriter(str));
-		e(str.toString());
-	}
-	
-	private void d(String str){
-		AFLog.d(this, str);
 	}
 }

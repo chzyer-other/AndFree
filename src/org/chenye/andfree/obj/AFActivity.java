@@ -3,7 +3,6 @@ package org.chenye.andfree.obj;
 import org.chenye.andfree.conf.AndfreeHook;
 import org.chenye.andfree.conf.AndfreeHookSetup;
 import org.chenye.andfree.func.FuncStr;
-import org.chenye.andfree.obj.ActivityResult.onActivityResult;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,13 +30,13 @@ public class AFActivity extends Activity{
     	if (intent != null){
     		Uri uri = intent.getData();
     		if (uri != null){
-    			onIntent(new Line(uri.toString()));
+    			onLine(new Line(uri.toString()));
     		}
     	}
     	onInit();
     }
     protected void onInit(){}
-    protected void onIntent(Line data){}
+    protected void onLine(Line data){}
     
     protected static Context instance;
     public static Context getContext(){
@@ -90,6 +89,18 @@ public class AFActivity extends Activity{
 		finish();
 	}
 	
+	onActivityResult _activity_result;
+	public void startActivityForResult(Class<?> cls, onActivityResult result){
+		Intent intent = new Intent(this, cls);
+		_activity_result = result;
+		startActivityForResult(intent, 0);
+	}
+	
+	public void startActivityForResult(Class<?> cls, Line data, onActivityResult result) {
+		_activity_result = result;
+		startActivityForResult(data.toIntent(this, cls), 0);
+	}
+	
 	public AFActivity setResult(Line line){
 		setResult(true, line.toIntent());
 		return this;
@@ -107,23 +118,14 @@ public class AFActivity extends Activity{
 		AFLog.i(this, obj);
 	}
 
-	ActivityResult activityResult = new ActivityResult();
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		super.onActivityResult(requestCode, resultCode, data);
-		activityResult.call(requestCode, resultCode, data);
+		if (requestCode == 0 && _activity_result != null) {
+			_activity_result.callback(resultCode != 0, data);
+			_activity_result = null;
+		}
 	}
-	
-	public void registerActivityResult(String command, onActivityResult callback){
-		activityResult.register(command, callback);
-	}
-	
-	public void unregisterActivityResult(String command){
-		activityResult.unregister(command);
-	}
-	
-	public int getActivityResultCode(String key){
-		return activityResult.getCode(key);
-	}
+
 	
 }

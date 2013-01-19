@@ -81,8 +81,4 @@ public class AFRadioList extends IWidget<AFRadioList, AFRadio>{
 			r.setTags(S.index, i);
 		}
 	}
-
-	public AFRadioList copy() {
-		return new AFRadioList(newChildInstance());
-	}
 }

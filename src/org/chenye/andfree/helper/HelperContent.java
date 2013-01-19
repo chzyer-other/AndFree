@@ -3,7 +3,7 @@ package org.chenye.andfree.helper;
 import java.util.Hashtable;
 
 import org.chenye.andfree.db.DB;
-import org.chenye.andfree.obj.AFLogActivity;
+import org.chenye.andfree.obj.AFLogObj;
 import org.chenye.andfree.obj.Line;
 import org.chenye.andfree.obj.AFCursor;
 import org.chenye.andfree.obj.AFLog;
@@ -11,7 +11,7 @@ import org.chenye.andfree.obj.AFLog;
 import android.content.ContentResolver;
 import android.net.Uri;
 
-public class HelperContent extends AFLogActivity{
+public class HelperContent extends AFLogObj{
 	private static final String TYPE_SMS = "content://sms";
 	private static final String TYPE_THREAD = "content://thread"; // canonical_addresses
 	private static final String TYPE_MMS = "content://mms";

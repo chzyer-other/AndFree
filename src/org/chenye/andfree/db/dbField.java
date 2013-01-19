@@ -2,14 +2,14 @@ package org.chenye.andfree.db;
 
 import org.chenye.andfree.obj.Line;
 
-public class dbField{
+public class DBField{
 	private int t = 0; // 0:null, 1: text, 2:integer
 	private String type;
 	private int len;
 	private boolean primary;
 	private String def;
 	private String name;
-	dbField(String name, String type, int len, boolean primary, String def){
+	DBField(String name, String type, int len, boolean primary, String def){
 		if (type.equals("TEXT")){
 			t = 1;
 		}else if (type.equals("INTEGER")){
@@ -21,8 +21,16 @@ public class dbField{
 		this.def = def;
 		this.name = name;
 	}
-	dbField(String name, String type, int len, boolean primary){
+	DBField(String name, String type, int len, boolean primary){
 		this(name, type, len, primary, null);
+	}
+	
+	public String ASC(){
+		return String.format("`%s` ASC", name);
+	}
+	
+	public String DESC(){
+		return String.format("`%s` DESC", name);
 	}
 	
 	public void setName(String name){
@@ -118,77 +126,77 @@ public class dbField{
 	}
 	
 	
-	public static dbField primaryText(String name){
+	public static DBField primaryText(String name){
 		return primaryText(name, -1);
 	}
 	
-	public static dbField primaryText(String name, int len){
+	public static DBField primaryText(String name, int len){
 		return text(name, len, true);
 	}
 	
-	public static dbField text(String name){
+	public static DBField text(String name){
 		return text(name, -1);
 	}
 	
-	public static dbField text(String name, int len, boolean primary){
-		return new dbField(name, "TEXT", len, primary);
+	public static DBField text(String name, int len, boolean primary){
+		return new DBField(name, "TEXT", len, primary);
 	}
-	public static dbField dateline(String name){
+	public static DBField dateline(String name){
 		return text(name, 13);
 	}
 	
-	public static dbField text(String name, int len){
+	public static DBField text(String name, int len){
 		return text(name, len, false);
 	}
 	
-	public static dbField integer(String name, boolean primary){
+	public static DBField integer(String name, boolean primary){
 		return integer(name, -1, null, primary);
 	}
 	
-	public static dbField integer(String name, int defaults){
+	public static DBField integer(String name, int defaults){
 		return integer(name, -1, "" + defaults, false);
 	}
-	public static dbField integer(String name, int len, String defaults){
+	public static DBField integer(String name, int len, String defaults){
 		return integer(name, len, defaults, false);
 	}
 	
-	public static dbField integer(String name, String defaults){
+	public static DBField integer(String name, String defaults){
 		return integer(name, -1, defaults, false);
 	}
 	
-	public static dbField integer(String name, int len, boolean primary){
+	public static DBField integer(String name, int len, boolean primary){
 		return integer(name, len, null, primary);
 	}
 	
-	public static dbField integer(String name, int len, String def, boolean primary){
-		return new dbField(name, "INTEGER", len, primary, def);
+	public static DBField integer(String name, int len, String def, boolean primary){
+		return new DBField(name, "INTEGER", len, primary, def);
 	}
 	
-	public static dbField integer(String name){
+	public static DBField integer(String name){
 		return integer(name, -1);
 	}
 	
-	public static dbField obj(String name){
+	public static DBField obj(String name){
 		return integer(name, 8);
 	}
 	
-	public static dbField obj(String name, dbField field){
+	public static DBField obj(String name, DBField field){
 		return integer(name, 8);
 	}
 	
-	public static dbField boolInt(String name){
+	public static DBField boolInt(String name){
 		return boolInt(name, 0);
 	}
 	
-	public static dbField boolInt(String name, int defaults){
+	public static DBField boolInt(String name, int defaults){
 		return integer(name, 1, defaults + "");
 	}
 	
-	public static dbField primaryInt(String name){
+	public static DBField primaryInt(String name){
 		return primaryInt(name, 8);
 	}
 	
-	public static dbField primaryInt(String name, int len){
+	public static DBField primaryInt(String name, int len){
 		return integer(name, len, true);
 	}
 	

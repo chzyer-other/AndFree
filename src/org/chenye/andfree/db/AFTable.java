@@ -1,7 +1,7 @@
 package org.chenye.andfree.db;
 
-public class BaseTable extends Tables{
-	public BaseTable() {
+public class AFTable extends Tables{
+	public AFTable() {
 		Class<?> cls = getClass();
 		setDBParse(cls);
 	}

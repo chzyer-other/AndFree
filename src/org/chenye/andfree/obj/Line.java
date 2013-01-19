@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.chenye.andfree.db.Tables;
-import org.chenye.andfree.db.dbField;
+import org.chenye.andfree.db.DBField;
 import org.chenye.andfree.db.dbParse;
 import org.chenye.andfree.func.FuncTime;
 import org.chenye.andfree.msgpack.IDictPicker;
@@ -108,7 +108,10 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 	
 	public static Line Put(Object key, boolean ret){
 		return def().put(key, ret);
-		
+	}
+	
+	public static Line PutId(int _id) {
+		return def().put("_id", _id);
 	}
 	
 	public int id(){
@@ -526,8 +529,8 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 	}
 	
 	public Object get(Object key){
-		if (key != null && key instanceof dbField){
-			key = ((dbField) key).getName();
+		if (key != null && key instanceof DBField){
+			key = ((DBField) key).getName();
 		}
 		
 		if (key instanceof String){
@@ -539,8 +542,8 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 	
 	
 	public String str(Object key){
- 		if (key != null && key instanceof dbField){
-			key = ((dbField) key).getName();
+ 		if (key != null && key instanceof DBField){
+			key = ((DBField) key).getName();
 		}
 		
 		String ret;
@@ -769,10 +772,10 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 		return save(_field());
 	}
 	
-	public long save(dbField... field){
+	public long save(DBField... field){
 		String[] fields = new String[field.length];
 		int i = 0;
-		for (dbField f:field){
+		for (DBField f:field){
 			fields[i] = f.toString();
 			i++;
 		}
@@ -949,10 +952,10 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 		dataString = "";
 	}
 	
-	public boolean checkTablesExist(dbField... field){
+	public boolean checkTablesExist(DBField... field){
 		String[] wheres = new String[field.length];
 		int i=0;
-		for (dbField f: field){
+		for (DBField f: field){
 			wheres[i] = f.equal(str(f));
 			i++;
 		}
@@ -979,7 +982,7 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 		return getType() == OBJ;
 	}
 
-	public boolean isset(dbField mark) {
+	public boolean isset(DBField mark) {
 		if ( ! contains(mark)){
 			return false;
 		}

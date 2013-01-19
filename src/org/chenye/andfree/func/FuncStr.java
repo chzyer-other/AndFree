@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.chenye.andfree.obj.AFLogActivity;
+import org.chenye.andfree.obj.AFLogObj;
 import org.chenye.andfree.obj.Line;
 
 
@@ -16,7 +16,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Base64;
 
-public class FuncStr extends AFLogActivity{
+public class FuncStr extends AFLogObj{
 	public static String arraytoString(String[] arrays, String split){
 		String str = "";
 		for (String array: arrays){
@@ -290,5 +290,16 @@ public class FuncStr extends AFLogActivity{
 		}
 		
 		return datas;
+	}
+
+	public static String Join(String[] str, String string) {
+		StringBuilder sb = new StringBuilder();
+		for (String s: str) {
+			if (sb.length() > 0){
+				sb.append(string);
+			}
+			sb.append(s);
+		}
+		return sb.toString();
 	}
 }
