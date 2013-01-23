@@ -38,9 +38,9 @@ public class dbInit extends SQLiteOpenHelper{
 	}
 	
 	public void onChange(DB db){
-		BaseConfig.first.LAST_INSTALL_DATE.set(FuncTime.time());
-		BaseConfig.first.RATE_REMINDED.set(false);
-		BaseConfig.first.RUN.set(true);
+		AFDBConfig.first.LAST_INSTALL_DATE.set(FuncTime.time());
+		AFDBConfig.first.RATE_REMINDED.set(false);
+		AFDBConfig.first.RUN.set(true);
 	}
 	
 	public static void UpdateTable(DB db){

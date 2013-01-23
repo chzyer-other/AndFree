@@ -28,9 +28,9 @@ public class AndfreeHookSetup implements HookItem{
 	
 	public void onProgramStart() {
 		setupDatabaseCore();
+		setupConf();
 		setupDatabase(ba);
 		setupMsgpack();
-		setupConf();
 		setupIWidgetLayoutRange();
 		setupWidth();
 	}

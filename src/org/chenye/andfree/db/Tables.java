@@ -323,6 +323,7 @@ public class Tables extends AFLogObj{
 	
 	public final static Tables[] All(){
 		Class<?>[] dbnames = dbParse.all();
+        if (dbnames == null) return new Tables[0];
 		Tables[] tables = new Tables[dbnames.length];
 		for(int i=0; i<dbnames.length; i++){
 			tables[i] = new Tables(dbnames[i]);

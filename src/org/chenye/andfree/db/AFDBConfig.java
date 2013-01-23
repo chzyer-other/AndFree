@@ -1,0 +1,131 @@
+package org.chenye.andfree.db;
+
+import org.chenye.andfree.conf.AndfreeConf;
+import org.chenye.andfree.obj.Line;
+
+import android.text.Editable;
+
+public class AFDBConfig {
+	public final static class first{
+		static final String pack = "first";
+		public static final ConfigField LAST_INSTALL_DATE = _f(pack, "installDate", 0);
+		public static final ConfigField RATE_REMINDED = _f(pack, "rateReminded", false);
+		public static final ConfigField RUN = _f(pack, "run", true);
+		public static final ConfigField LAST_REMIND_VERSION = _f(pack, "lastRemindVersion", AndfreeConf.VERTION);
+	}
+	
+	private static String getClsName(Object obj){
+		String cls_name = obj.getClass().getSimpleName();
+		if (cls_name.toLowerCase().equals("class")){
+			cls_name = ((Class<?>) obj).getSimpleName();
+		} else if (cls_name.toLowerCase().equals("string")){
+			cls_name = obj + "";
+		}
+		return cls_name;
+	}
+	
+	protected static ConfigField _f(Object obj, String name){
+		return new ConfigField(getClsName(obj), name, "");
+	}
+	
+	protected static ConfigField _f(Object obj, String name, int def){
+		return _f(getClsName(obj), name, def + "");
+	}
+	
+	protected static ConfigField _f(Object obj, String name, boolean def){
+		return _f(getClsName(obj), name, def ? "true" : "false");
+	}
+	
+	protected static ConfigField _f(Object obj, String name, String def){
+		return new ConfigField(getClsName(obj), name, def);
+	}
+	
+	public static class ConfigField{
+		String pack;
+		String name;
+		String def;
+		public ConfigField(String pack, String name, String def){
+			this.pack = pack;
+			this.name = name;
+			this.def = def;
+		}
+		
+		public boolean Changed(){
+			return ! str().equals(def);
+		}
+		
+		public String def(){
+			return def;
+		}
+		
+		public String toString(){
+			return (pack + "_" + name).toUpperCase();
+		}
+		
+		public String sql(){
+			return "`key` = '" + toString() + "'";
+		}
+		
+		public String str(){
+			if (new AFCore.config().where(sql()).count() == 0){
+				set(def);
+				return def;
+			}
+			String str = new AFCore.config().select(AFCore.config.value).where(sql()).getField();
+			return str;
+		}
+		
+		public String bool(String true_string, String false_string){
+			return bool() ? true_string : false_string;
+		}
+		public boolean bool(){
+			return Boolean.parseBoolean(str());
+		}
+		
+		public Line line(){
+			return new Line(str());
+		}
+		
+		public int Int(){
+			return Integer.parseInt(str());
+		}
+		
+		public long Long(){
+			return Long.parseLong(str());
+		}
+		
+		public void set(long data){
+			set(data + "");
+		}
+		
+		public void set(boolean data){
+			set(data + "");
+		}
+		public void set(Editable data){
+			set(data.toString());
+		}
+		
+		public void set(Line data){
+			set(data.toString());
+		}
+		
+		public void set(String data){
+			Line line = new Line(AFCore.config.class);
+			line.put(AFCore.config.key, toString());
+			line.put(AFCore.config.value, data);
+			line.save();
+		}
+		
+		public void setDefault(){
+			set(def);
+		}
+		
+		public boolean equals(Object key){
+			return str().equals(key);
+		}
+		
+		public int length(){
+			return str().length();
+		}
+	}
+}

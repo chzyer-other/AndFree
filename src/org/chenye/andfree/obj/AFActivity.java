@@ -13,7 +13,7 @@ import android.os.Bundle;
 public class AFActivity extends Activity{
 	protected AFActivity m = this;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getContext() == null){
         	instance = m;

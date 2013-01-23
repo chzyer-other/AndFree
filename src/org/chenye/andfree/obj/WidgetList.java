@@ -2,16 +2,8 @@ package org.chenye.andfree.obj;
 
 import java.lang.reflect.Field;
 
-import org.chenye.andfree.widget.AFButton;
-import org.chenye.andfree.widget.AFCheck;
-import org.chenye.andfree.widget.AFEdit;
-import org.chenye.andfree.widget.AFImage;
-import org.chenye.andfree.widget.AFLlayout;
-import org.chenye.andfree.widget.AFRadio;
-import org.chenye.andfree.widget.AFRadioList;
-import org.chenye.andfree.widget.AFRlayout;
-import org.chenye.andfree.widget.AFText;
-import org.chenye.andfree.widget.IWidget;
+import org.chenye.andfree.widget.*;
+import org.chenye.andfree.widget.AFLLayout;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -102,15 +94,15 @@ public class WidgetList {
 		return new AFImage(id);
 	}
 	
-	protected AFRlayout rlayout(int id){
-		return new AFRlayout(id);
+	protected AFRLayout rlayout(int id){
+		return new AFRLayout(id);
 	}
 	
-	protected AFLlayout llayout(){
-		return new AFLlayout();
+	protected AFLLayout llayout(){
+		return new AFLLayout();
 	}
-	protected AFLlayout llayout(int id){
-		return new AFLlayout(id);
+	protected AFLLayout llayout(int id){
+		return new AFLLayout(id);
 	}
 	
 	protected AFEdit edt(int id){

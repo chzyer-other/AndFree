@@ -1,6 +1,7 @@
 package org.chenye.andfree.obj;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,6 +58,10 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 	public Line(){
 		type = -1;
 	}
+
+    public Line(byte[] bb) {
+        this(new String(bb));
+    }
 	
 	public static Line fromMsgPack(byte[] b){
 		Object obj = MsgPackUnpack.parse(b);
@@ -97,7 +102,19 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 	public static Line def(){
 		return new Line();
 	}
-	
+
+    public static Line PutArray(Object ...objs) {
+        Line line = new Line();
+        for (Object obj: objs) {
+            line.put(obj);
+        }
+        return line;
+    }
+
+    public static Line Put(Object obj) {
+        return def().put(obj);
+    }
+
 	public static Line Put(Object key, String ret){
 		return def().put(key, ret);
 	}
@@ -585,7 +602,9 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 	
 	public boolean bool(Object key){
 		String value = str(key);
-		if (value == null || ! (value.equals("true") || value.equals("1"))) return false;
+		if (value == null) return false;
+        if (value.equals("false")) return false;
+        if (value.equals("0")) return false;
 		return true;
 	}
 	
@@ -911,7 +930,27 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 		}
 		return sb.toString();
 	}
-	
+
+    public String toPostData(){
+        StringBuffer sb = new StringBuffer();
+        for (Map.Entry<Object, Object> kv: valueSet()) {
+            String value;
+            try{
+                value = URLEncoder.encode(kv.getValue().toString(), "utf-8");
+            } catch (UnsupportedEncodingException ex) {
+                continue;
+            }
+
+            sb.append("&");
+            sb.append(kv.getKey().toString());
+            sb.append("=");
+            sb.append(value);
+        }
+        String str = sb.toString();
+        if (str.length() > 0) str = str.substring(1);
+        return str;
+    }
+
 	public Intent toIntent(Context m, Class<?> cls){
 		return toIntent().setClass(m, cls);
 	}

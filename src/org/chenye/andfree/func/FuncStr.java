@@ -3,6 +3,7 @@ package org.chenye.andfree.func;
 import java.io.UnsupportedEncodingException;
 
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,15 @@ import android.net.Uri;
 import android.util.Base64;
 
 public class FuncStr extends AFLogObj{
+	public static Line GetParams(String url){
+		Line l = new Line();
+		Uri u = Uri.parse(url);
+		for (String name: u.getQueryParameterNames()){
+			 l.put(name, u.getQueryParameter(name));
+		}
+		return l;
+	}
+
 	public static String arraytoString(String[] arrays, String split){
 		String str = "";
 		for (String array: arrays){
@@ -277,19 +287,27 @@ public class FuncStr extends AFLogObj{
 	}
 	
 	public static Line findall(String regex, String source) {
-		Pattern p = Pattern.compile(regex);
-		Matcher m = p.matcher(source);
-		Line datas = new Line();
-		while (m.find()){
-			Line d = new Line();
-			for (int i=1; i<m.groupCount(); i++){
-				d.put(m.group(i));
-			}
-			if (d.invalid()) continue;
-			datas.put(d.length() == 1 ? d.str(0) : d);
-		}
-		
-		return datas;
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(source);
+        Line groups = new Line();
+        while (m.find()) {
+            Line group = new Line();
+            for (int i = 1; i <= m.groupCount(); i++) {
+                group.put(m.group(i));
+            }
+            if (group.length() == 0) continue;
+            if (group.length() == 1) {
+                groups.put(group.get(0));
+                continue;
+            }
+            groups.put(group);
+        }
+        if (groups.length() == 1) {
+            if (groups.line(0).valid()){
+                groups = groups.line(0);
+            }
+        }
+        return groups;
 	}
 
 	public static String Join(String[] str, String string) {
