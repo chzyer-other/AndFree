@@ -44,5 +44,5 @@ AndFree是一套代码, 只要把AndFree放到项目目录里面并且设置为�
 
 其他功能?
 -----
-点击[AndFree](http://andfree.chenye.org), 查看`AndFree`的详细文档吧.
-[使用AndFree入门安卓](https://gist.github.com/4564639)
+* 点击[AndFree](http://andfree.chenye.org), 查看`AndFree`的详细文档吧.
+* [使用AndFree入门安卓](https://gist.github.com/4564639)
