@@ -46,3 +46,90 @@ AndFree是一套代码, 只要把AndFree放到项目目录里面并且设置为�
 -----
 * 点击[AndFree](http://andfree.chenye.org), 查看`AndFree`的详细文档吧.
 * [使用AndFree入门安卓](https://gist.github.com/4564639)
+* 
+
+
+# AndFree 重构计划
+
+目录
+----
+   1. 数据库封装 (db)
+	2. 控件封装 (widget)
+	3. ContentProvider和数据库对等封装 (rdb)
+	4. 网络库封装 (net)
+	5. 辅助函数 (helper)
+	6. 其他
+
+一. 数据库封装 (org.chenye.db)
+----
+1. 数据库操作
+
+	a. 构造:
+	```java
+select()
+from()
+where()
+limit()
+	```
+	b. 查询
+	```java
+result()
+get()
+	```
+	c. 操作:
+	```java
+update()
+insert()
+delete()
+	```
+
+2. 数据库构造:
+	类型:
+	- DBInt
+	- DBBool
+	- DBText
+
+3. 用法实例
+
+```java
+// 构造sql
+Account acc = new Account();
+acc.user.set("aaa");
+acc.pasw.set("123");
+acc.select(acc.pasw).orderBy(acc.user);
+acc.toSql(); // sql语句
+
+// 执行查询
+Line data = acc.result();
+
+// 插入
+Account acc = new Account();
+acc.user = "aa";
+acc.insert();
+
+// 更新
+Account acc = new Account();
+acc.user.set("aa");
+acc.pasw.set("123");
+acc.update(acc.user);
+
+// 定义
+public static Account extends Table {
+	public DBInt id;
+	public DBText user;
+	public DBBool pasw;
+}
+
+```
+
+
+二. Widget (org.chenye.widget)
+----
+待添加
+
+
+三. ContentProvider (org.chenye.rdb)
+----
+待添加
+
+
