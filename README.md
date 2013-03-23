@@ -42,13 +42,6 @@ AndFree是一套代码, 只要把AndFree放到项目目录里面并且设置为�
    - 代码定义数据库结构, 好处是程序能根据代码自动更新数据库结构, 对, AndFree会自动更新数据库结构(前提是你要修改数据库的版本号AndFree才会检查)
    - 特性大概就这么多, 目的只有一个, 让安卓的开发更加快速, 下面还会有详细的使用说明
 
-其他功能?
------
-<<<<<<< HEAD
-* 点击[AndFree](http://andfree.chenye.org), 查看`AndFree`的详细文档吧.
-* [使用AndFree入门安卓](https://gist.github.com/4564639)
-* 
-
 
 # AndFree 重构计划
 
@@ -132,8 +125,3 @@ public static Account extends Table {
 三. ContentProvider (org.chenye.rdb)
 ----
 待添加
-
-
-=======
-点击[AndFree](http://andfree.chenye.org), 查看`AndFree`的详细文档吧.
->>>>>>> update
