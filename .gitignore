@@ -1,3 +1,5 @@
 .hg/*
 .gitignore
 
+
+.DS_Store

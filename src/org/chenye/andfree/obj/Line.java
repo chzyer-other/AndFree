@@ -44,6 +44,29 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 	private boolean showString = false;
 	private boolean debug_string = true;
 	public String _str;
+
+	public boolean isValid(String field) {
+		if ( ! contains(field)) return false;
+		Object obj = get(field);
+		if (obj == null) return false;
+		String str = obj.toString().trim();
+		if (str.length() == 0) return false;
+		if (str.equals("null")) return false;
+		return true;
+	}
+
+	public Line split(int max) {
+		Line l = new Line();
+		for (int i = 0; i < max; i++) {
+			l.put(get(i));
+		}
+		return l;
+	}
+
+	public boolean isValid(DBField thumbnail) {
+		return isValid(thumbnail.getName());
+	}
+
 	private class nullClass{
 		@Override
 		public String toString() {
@@ -569,13 +592,13 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 		} else {
 			ret = array.get((Integer) key) + "";
 		}
-		return ret.equals("null") ? null : ret;
+		return ret.trim().equals("null") ? null : ret;
 	}
 	
 	public Line line(Object key){
 		Line ret;
 		Object tmp;
-		if (key.getClass().getSimpleName().equals("String") || key.getClass().getSimpleName().equals("dbField")){
+		if (key instanceof String || key instanceof DBField){
 			tmp = data.get(key + "");
 		} else {
 			int index = (Integer) key;
@@ -587,8 +610,14 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 		}
 		
 		if (tmp == null) return Line.def();
-		if (tmp.getClass().getSimpleName().equals("String")) ret = new Line(tmp.toString());
-		else ret = (Line) tmp;
+		if (tmp instanceof String) ret = new Line(tmp.toString());
+		else {
+			try {
+				ret = (Line) tmp;
+			} catch (Exception ex) {
+				ret = Line.def();
+			}
+		}
 		
 		ret.setTable(dbp);
 		return ret;
@@ -800,6 +829,19 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 		}
 		return save(fields);
 	}
+
+	public boolean isExist(DBField... fields) {
+		Tables obj;
+		try {
+			 obj = (Tables) dbp.getTableClass().newInstance();
+		} catch (Exception e) {
+			return false;
+		}
+		for (DBField f: fields) {
+			obj.whereAndPrevAll(f.equal(get(f)));
+		}
+		return obj.count() > 0;
+	}
 	
 	public long save(String... uniqueFields){
 		if (getType() != OBJ) {
@@ -937,7 +979,7 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
             String value;
             try{
                 value = URLEncoder.encode(kv.getValue().toString(), "utf-8");
-            } catch (UnsupportedEncodingException ex) {
+            } catch (Exception ex) {
                 continue;
             }
 
@@ -975,7 +1017,9 @@ public class Line implements Iterable<Line>, IDictPicker, IListPicker{
 	public Line toFieldLine(String field){
 		Line l = new Line();
 		for (Line ll: this){
-			l.put(ll.str(field));
+			String value = ll.str(field);
+			if (value == null) continue;
+			l.put(value);
 		}
 		return l;
 	}

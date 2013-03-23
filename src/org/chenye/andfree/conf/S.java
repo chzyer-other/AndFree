@@ -17,4 +17,8 @@ public class S {
 	public static final int index = start_id++;
 	public static final int parent_widget = start_id++;
 	public static final int checked = start_id++;
+	public static final int bitmap = start_id++;
+	public static final int url = start_id++;
+	public static final int largeUrl = start_id++;
+	public static final int more = start_id++;
 }

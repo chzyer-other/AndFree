@@ -24,12 +24,54 @@ public class Tables extends AFLogObj{
 	}
 	
 	public void setDBParse(Class<?> name){
-		dbp = new dbParse(name);
+		setDBParse(new dbParse(name));
+	}
+
+	public void setDBParse(String name) {
+		setDBParse(new dbParse(name));
+	}
+
+	public void setDBParse(dbParse dp) {
+		dbp = dp;
 	}
 	
 	@Override
 	public String toString(){
 		return "[Table]" + dbp.getName();
+	}
+
+	public String toSqlAS(String aliasName) {
+		return toSqlAS(null, aliasName);
+	}
+
+	public String toSqlAS(String field, String aliasName) {
+		if (field != null) {
+			select(field);
+		}
+		return String.format("(%s) as %s", toSQL(), aliasName);
+	}
+
+	public String toSQL(){
+		String sql = "";
+		_queryData.putIfNotExist("select", "*");
+		if (dbp.getName().length() == 0){
+			error("please set dbParse before use {{}} ");
+			return null;
+		}
+		sql += String.format("SELECT %s FROM %s", _queryData.str("select"), dbp.getName());
+
+		if (_queryData.contains("join")){
+			sql += " LEFT JOIN " + _queryData.str("join");
+		}
+
+		_queryData.putIfNotExist("where", "1=1");
+		_queryData.putIfNotExist("order", String.format("%s DESC", dbp.getPrimaryKeyObj().getColumnNameSQL()));
+		sql += String.format(" WHERE %s ORDER BY %s", _queryData.str("where"), _queryData.str("order"));
+
+		if (_queryData.contains("limit")) {
+			sql += " LIMIT " + _queryData.str("limit");
+		}
+		return sql;
 	}
 	
 	public Tables select(DBField... fields){
@@ -46,8 +88,8 @@ public class Tables extends AFLogObj{
 		_queryData.put("select", fields);
 		return this;
 	}
-	
-	public Tables where(String... wheres){
+
+	public String makeWhere(String... wheres) {
 		String where = "";
 		for (String w: wheres){
 			if (w.length() == 0) continue;
@@ -61,6 +103,11 @@ public class Tables extends AFLogObj{
 		} else if (where.startsWith(" OR ")){
 			where = where.substring(4);
 		}
+		return String.format("(%s)", where);
+	}
+	
+	public Tables where(String... wheres){
+		String where = makeWhere(wheres);
 		_queryData.put("where", where);
 		return this;
 	}
@@ -77,14 +124,22 @@ public class Tables extends AFLogObj{
 		return this;
 	}
 	
-	public Tables wherePrev(String where){
+	public Tables whereOrPrev(String... wheres){
+
 		if ( ! _queryData.contains("where") ||
 				_queryData.str("where").length() <= 0){
-			whereContinue(where);
+			whereContinue(makeWhere(wheres));
 			return this;
 		}
-		
-		where = "(" + _queryData.str("where") + ")" + where;
+
+
+		String where = _queryData.str("where") + " OR " + makeWhere(wheres) + "";
+		_queryData.put("where", where);
+		return this;
+	}
+
+	public Tables whereAndPrevAll(String ...wheres) {
+		String where = "(" + _queryData.str("where") + ") AND " + makeWhere(wheres);
 		_queryData.put("where", where);
 		return this;
 	}
@@ -126,31 +181,26 @@ public class Tables extends AFLogObj{
 		_queryData.put("join", sql);
 		return this;
 	}
+
+	public Tables join(DBField field1, DBField field2) {
+		String tableName = field1.getDatabaseName();
+		String currentTableName = dbp.getName() + ".";
+		if (currentTableName.equals(field1.getDatabaseName())){
+			tableName = field2.getDatabaseName();
+		}
+
+		String join = String.format("%s ON %s = %s", tableName.substring(0, tableName.length() - 1), field1.getColumnNameSQL(), field2.getColumnNameSQL());
+		join(join);
+		return this;
+	}
 	
 	public Line result(){
-		String sql = "";
-		_queryData.putIfNotExist("select", "*");
-		if (dbp.getName().length() == 0){
-			error("please set dbParse before use {{}} ");
-			return null;
-		}
-		sql += String.format("SELECT %s FROM %s %s", _queryData.str("select"), dbp.getName(), dbp.getName().substring(0, 1));
-		
-		if (_queryData.contains("join")){
-			sql += " LEFT JOIN " + _queryData.str("join");
-		}
-				
-		_queryData.putIfNotExist("where", "1=1");
-		_queryData.putIfNotExist("order", String.format("%s DESC", dbp.getPrimaryKey()));
-		sql += String.format(" WHERE %s ORDER BY %s", _queryData.str("where"), _queryData.str("order"));
-		
-		if (_queryData.contains("limit")) {
-			sql += " LIMIT " + _queryData.str("limit");
-		}
+		String sql = toSQL();
 		return query(sql);
 	}
 	
 	public Line get(){
+		_queryData.putIfNotExist("limit", "0, 1");
 		Line d = result().line(0);
 		if (_queryData.str("select").contains(",")) return d;
 		if (Line.isLine(_queryData.str("select"))){
@@ -158,7 +208,7 @@ public class Tables extends AFLogObj{
 		}
 		return d;
 	}
-	
+
 	public Line getByPrimaryKey(int id){
 		where(String.format("`%s` = %s", dbp.getPrimaryKey(), id));
 		return get();
@@ -270,7 +320,7 @@ public class Tables extends AFLogObj{
 	
 	/**
 	 * delete the cur data automatic(find the id field)
-	 * @param cur
+	 * @param line
 	 */
 	public void delete(Line line){
 		if (line._field().length() <= 0) {
@@ -283,7 +333,7 @@ public class Tables extends AFLogObj{
 	
 	/**
 	 * delete with where string 
-	 * @param where
+	 * @param wheres
 	 */
 	public void delete(String... wheres){
 		if (wheres[0].startsWith(" OR ")){

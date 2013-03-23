@@ -1,8 +1,10 @@
 package org.chenye.andfree.func;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.chenye.andfree.obj.AFLog;
 
@@ -14,6 +16,31 @@ public class FuncTime {
 	}
 	public static String getWeek_cn(){
 		return weekDays_cn[getWeekOfDate()];
+	}
+
+	/**
+	 * EEE MMM dd HH:mm:ss Z yyyy
+	 * @param a
+	 * @return
+	 */
+	public static long ParseStringToLong(String a){
+		if (sdf == null) {
+			sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.US);
+		}
+		return ParseStringToLong(a, sdf);
+	}
+
+	private static SimpleDateFormat sdf;
+	public static long ParseStringToLong(String time, String format, Locale locale){
+		return ParseStringToLong(time,  new SimpleDateFormat(format, locale));
+	}
+	public static long ParseStringToLong(String time, SimpleDateFormat s){
+		try {
+			Date date = s.parse(time);
+			return date.getTime();
+		} catch (Exception ex) {
+			return 0;
+		}
 	}
 	
 	public interface onTimeSpend{
@@ -75,7 +102,7 @@ public class FuncTime {
 		if (getDate(time()).compareTo(getDate(time)) == 0){
 			date = getTime(time);
 		}else{
-			date = getDate(time);
+			date = getDate(time) + " " + getTime(time);
 		}
 		
 		return date;
@@ -106,7 +133,7 @@ public class FuncTime {
 	
 	public static String getDate(long time, String format){
 		SimpleDateFormat formatter = new SimpleDateFormat (format);
-		Date curDate = new Date(time);//��ȡ��ǰʱ��     
+		Date curDate = new Date(time);
 		String str = formatter.format(curDate);     
 		return str;
 	}

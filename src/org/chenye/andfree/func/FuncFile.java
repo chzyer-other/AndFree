@@ -15,7 +15,7 @@ import android.os.Environment;
 
 public class FuncFile {
 	static boolean enable_gzip = true;
-	static boolean encrypt = true;
+	static boolean encrypt = false;
 	public static void save(String dir, String filename, Line line){
 		save(dir, filename, line.toString());
 	}
@@ -27,11 +27,13 @@ public class FuncFile {
 	public static void save(String dir, String filename, String str){
 		save(dir, filename, enable_gzip ? FuncGzip.compressToByte(str) : str.getBytes());
 	}
+
+	public static String GetSDCardPath() {
+		return String.format("%s/%s/", Environment.getExternalStorageDirectory().getPath(), AndfreeConf.APP_NAME);
+	}
 	
 	public static File saveToSDCard(String filename, byte[] binaryData){
-		String dir = Environment.getExternalStorageDirectory().getPath();
-		dir += "/" + AndfreeConf.APP_NAME + "/";
-		return save(dir, filename, binaryData);
+		return save(GetSDCardPath(), filename, binaryData);
 	}
 	
 	public static File save(String dir, String filename, byte[] content){
@@ -95,5 +97,10 @@ public class FuncFile {
 	
 	public static void i(Object o){
 		AFLog.i(new FuncFile(), o);
+	}
+
+	public static boolean IsExistInSDCard(String fileName) {
+		File f = new File(GetSDCardPath() + fileName);
+		return f.exists();
 	}
 }

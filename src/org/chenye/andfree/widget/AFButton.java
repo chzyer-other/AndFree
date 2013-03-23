@@ -65,7 +65,12 @@ public class AFButton extends IWidget<AFButton, Button> implements IWidgetText<A
 		_e.setHint(hint);
 		return this;
 	}
-	
-	
+
+	@Override
+	public AFButton setGravity(int gravity) {
+		_e.setGravity(gravity);
+		return this;
+	}
+
 
 }

@@ -21,16 +21,26 @@ public class AFActivity extends Activity{
         AndfreeHookSetup.setup(this);
         AndfreeHook.RunHookProgramStart();
         AndfreeHook.RunHookActivityEnter(this);
+        try{
         init();
+        } catch (Exception ex) {
+        	error(ex);
+        }
     }
     
     private void init(){
     	Intent intent = getIntent();
     	
     	if (intent != null){
+		    String str = intent.getStringExtra("user");
     		Uri uri = intent.getData();
     		if (uri != null){
-    			onLine(new Line(uri.toString()));
+			    Line data = new Line(uri.toString());
+			    if (data.valid()) {
+    			    onLine(data);
+			    } else {
+				    onLine(FuncStr.GetParams(intent.getDataString()));
+			    }
     		}
     	}
     	onInit();
@@ -45,6 +55,7 @@ public class AFActivity extends Activity{
 	
 	@Override
 	public void onDestroy(){
+		AndfreeHook.RunHookActivityLeave(this);
 		super.onDestroy();
 	}
 	

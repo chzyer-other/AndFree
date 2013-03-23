@@ -5,9 +5,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 
+import android.graphics.drawable.ColorDrawable;
+import android.view.MotionEvent;
 import org.chenye.andfree.animate.Fade;
 import org.chenye.andfree.animate.Shake;
 import org.chenye.andfree.conf.S;
+import org.chenye.andfree.func.FuncUI;
 import org.chenye.andfree.obj.AFLogObj;
 
 import android.app.Activity;
@@ -54,6 +57,10 @@ public abstract class IWidget<T, E> extends AFLogObj {
 	int _id = 0;
 	View v;
 	T self;
+
+	public Context getContext(){
+		return v.getContext();
+	}
 	
 	public void inflate(ViewGroup vg){
 		if (isInflated()) return;
@@ -152,7 +159,13 @@ public abstract class IWidget<T, E> extends AFLogObj {
 			return;
 		}
 		
-		inflate(a.findViewById(_id));
+		View v = a.findViewById(_id);
+		try {
+			if (v == null) throw new Exception("got null view in inflate (" + _id);
+			inflate(v);
+		} catch (Exception ex) {
+			error(ex);
+		}
 	}
 	
 	public void inflate(Dialog d){
@@ -211,6 +224,14 @@ public abstract class IWidget<T, E> extends AFLogObj {
 	}
 	
 	protected void inflate(View view){
+		if (view == null) {
+			try {
+				throw new Exception("got null view in inflate");
+			} catch (Exception e) {
+				error(e);
+				return;
+			}
+		}
 		_e = v2e(view);
 		v = view;
 	}
@@ -405,6 +426,11 @@ public abstract class IWidget<T, E> extends AFLogObj {
 	 */
 	public T hide(){
 		v.setVisibility(View.GONE);
+		return self;
+	}
+
+	public T invisible(){
+		v.setVisibility(View.INVISIBLE);
 		return self;
 	}
 	
@@ -618,24 +644,8 @@ public abstract class IWidget<T, E> extends AFLogObj {
 			_m = ((View) e).getContext();
 			_e = e;
 			v = (View) e;
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			error(e);
 		}
 		return self;
 	}
@@ -643,5 +653,36 @@ public abstract class IWidget<T, E> extends AFLogObj {
 	public T setOnLongClickListener(View.OnLongClickListener click) {
 		v.setOnLongClickListener(click);
 		return self;
+	}
+
+	public T setBackgroundHoverColor(String s) {
+		ColorDrawable cd = new ColorDrawable(Color.parseColor(s));
+		setTags(S.hover, cd);
+		setTags(S.drawable, v.getBackground());
+		v.setOnTouchListener(new View.OnTouchListener() {
+
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL){
+					v.setBackgroundDrawable((Drawable)v.getTag(S.drawable));
+				}else{
+					v.setBackgroundDrawable((Drawable) v.getTag(S.hover));
+				}
+				return false;
+			}
+		});
+		return self;
+	}
+
+	/**
+	 * remove self from parent(the class must equal @ViewGroup)
+	 */
+	public T removeFromParent(){
+		((ViewGroup) v.getParent()).removeView(v);
+		return self;
+	}
+
+	public static View Inflater(Context m, int layoutid) {
+		LayoutInflater l = LayoutInflater.from(m);
+		return l.inflate(layoutid, null);
 	}
 }

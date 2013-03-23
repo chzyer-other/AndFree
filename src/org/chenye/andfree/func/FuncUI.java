@@ -32,6 +32,7 @@ public class FuncUI {
 		};
 		
 		Object obj = null;
+
 		if ( ! (view.getTag(S.hover) instanceof String)){
 			obj = view.getBackground();
 		}

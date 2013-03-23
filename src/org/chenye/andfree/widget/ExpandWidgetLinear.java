@@ -2,6 +2,9 @@ package org.chenye.andfree.widget;
 
 import java.lang.reflect.Field;
 
+import android.graphics.drawable.Drawable;
+import in.hitme.android.R;
+import org.chenye.andfree.obj.AFLog;
 import org.chenye.andfree.obj.WidgetList;
 
 import android.content.Context;
@@ -11,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public abstract class ExpandWidgetLinear extends LinearLayout {
+	public final static int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
+	public final static int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
 
 	public ExpandWidgetLinear(Context context) {
 		super(context);
@@ -62,6 +67,10 @@ public abstract class ExpandWidgetLinear extends LinearLayout {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void log(Object obj) {
+		AFLog.i(this, obj);
 	}
 	
 }

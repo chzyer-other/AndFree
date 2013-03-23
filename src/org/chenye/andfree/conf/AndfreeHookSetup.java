@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import org.chenye.andfree.conf.AndfreeHook.HookItem;
 import org.chenye.andfree.db.DB;
+import org.chenye.andfree.db.dbParse;
 import org.chenye.andfree.func.FuncClass;
 import org.chenye.andfree.msgpack.IDictPicker;
 import org.chenye.andfree.msgpack.IListPicker;
@@ -33,6 +34,7 @@ public class AndfreeHookSetup implements HookItem{
 		setupMsgpack();
 		setupIWidgetLayoutRange();
 		setupWidth();
+		setupDBParse();
 	}
 
 	public void onActivityEnter(AFActivity bact) {
@@ -102,7 +104,6 @@ public class AndfreeHookSetup implements HookItem{
 				return new Line();
 			}
 		});
-		
 		MsgPackUnpack.setGetList(new IGetListPicker() {
 			
 			public IListPicker ret() {
@@ -111,4 +112,7 @@ public class AndfreeHookSetup implements HookItem{
 		});
 	}
 
+	private void setupDBParse(){
+		dbParse.InitAll();
+	}
 }

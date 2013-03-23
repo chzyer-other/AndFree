@@ -9,6 +9,7 @@ public class DBField{
 	private boolean primary;
 	private String def;
 	private String name;
+	private String databaseName = "";
 	DBField(String name, String type, int len, boolean primary, String def){
 		if (type.equals("TEXT")){
 			t = 1;
@@ -32,45 +33,86 @@ public class DBField{
 	public String DESC(){
 		return String.format("`%s` DESC", name);
 	}
+
+	public void setDatabaseName(String name) {
+		databaseName = name + ".";
+	}
+
+	public String getColumnNameSQL(){
+		return String.format("%s`%s`", databaseName, name);
+	}
+
+	public String getDatabaseName(){
+		return databaseName;
+	}
 	
 	public void setName(String name){
 		this.name = name;
 	}
 	
 	public String like(String field){
-		return " AND `" + name + "` LIKE '" + field + "'";
+		return " AND " + getColumnNameSQL() + " LIKE '" + field + "'";
 	}
 	
 	public String orLike(String field){
 		return " OR " + like(field).substring(5);
 	}
-	
+
+	public String equal(DBField field) {
+		return " AND " + getColumnNameSQL() + " = " + field.getColumnNameSQL();
+	}
+
+	public String equal(Object obj) {
+		if (obj == null) return "1=0";
+		if (obj instanceof Integer) {
+			return equal((Integer) obj);
+		}
+
+		if (obj instanceof Boolean) {
+			return equal((Boolean) obj);
+		}
+
+		return equal(obj + "");
+	}
+
 	public String equal(boolean i){
 		return equal(i ? 1 : 0);
 	}
 	
-	public String equal(int i){
-		return " AND `" + name + "` = " + i;
+	public String equal(long i){
+		return " AND " + getColumnNameSQL() + " = " + i;
 	}
 	
 	public String notEqual(int i){
-		return " AND `" + name + "` != " + i;
+		return " AND " + getColumnNameSQL() + " != " + i;
 	}
 
 	public String equal(String i){
-		return " AND `" + name + "` = '" + i + "'";
+		return " AND " + getColumnNameSQL() + " = '" + i + "'";
 	}
 	
-	public String bigger(int i){
-		return " AND `" + name + "` > " + i + "";
+	public String bigger(long i){
+		return " AND " + getColumnNameSQL() + " > " + i + "";
+	}
+
+	public String biggerEqual(long i) {
+		return " AND " + getColumnNameSQL() + " >= " + i + "";
 	}
 	
-	public String smaller(int i){
-		return " AND `" + name + "` < " + i + "";
+	public String smaller(long i){
+		return " AND " + getColumnNameSQL() + " < " + i + "";
+	}
+
+	public String smallerEqual(long i){
+		return " AND " + getColumnNameSQL() + " <= " + i + "";
 	}
 	
 	public String in(Line data){
-		return " AND `" + name + "` in (" + data.toSQL() + ")";
+		return " AND " + getColumnNameSQL() + " in (" + data.toSQL() + ")";
+	}
+
+	public String notIn(Line data){
+		return " AND " + getColumnNameSQL() + " not in (" + data.toSQL() + ")";
 	}
 	
 	public String orEquals(int i){
@@ -95,6 +137,10 @@ public class DBField{
 	
 	public String orSmaller(int i){
 		return " OR " + smaller(i).substring(5);
+	}
+
+	public String notNull() {
+		return String.format(" AND %s IS NOT NULL", getColumnNameSQL());
 	}
 	
 	@Override
@@ -203,4 +249,5 @@ public class DBField{
 	public boolean primary(){
 		return primary;
 	}
+
 }

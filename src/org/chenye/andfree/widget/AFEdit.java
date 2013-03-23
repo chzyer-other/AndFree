@@ -70,6 +70,12 @@ public class AFEdit extends IWidget<AFEdit, EditText> implements IWidgetText<AFE
 		return this;
 	}
 
+	@Override
+	public AFEdit setGravity(int gravity) {
+		_e.setGravity(gravity);
+		return this;
+	}
+
 	public AFEdit bindOnEnterPress(final IWidget<?, ?> iw){
 		_e.setImeOptions(EditorInfo.IME_ACTION_GO);
 		_e.setOnKeyListener(new View.OnKeyListener() {

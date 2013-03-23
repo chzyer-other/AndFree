@@ -15,4 +15,5 @@ public interface IWidgetText<T> {
 	public T setTextColor(String color);
 	
 	public T setHint(String hint);
+	public T setGravity(int gravity);
 }

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public final class AFLog {
+	private static String _log;
 	private static String getObj(Object cls){
 		if ( ! (cls instanceof String)) {
 			cls = cls.getClass().getSimpleName();
@@ -28,7 +29,9 @@ public final class AFLog {
 		} else {
 			str = obj.toString();
 		}
-		Log.e(AndfreeConf.LOG_TAG, String.format("%s %s", getObj(cls), str));
+
+		String string = String.format("%s %s", getObj(cls), str);
+		Log.e(AndfreeConf.LOG_TAG, string);
 	}
 	
 	private static String getMsgFromException(Exception ex){
@@ -93,9 +96,11 @@ public final class AFLog {
 		if ( ! AndfreeDebug.LOG.DO()) return;
 		Log.i(AndfreeConf.LOG_TAG, str);
 	}
-	
 
-	
+	public static String getAllLog(){
+		return _log;
+	}
+
 	public static void d(Object obj, String str){
 		d(getObj(obj) + str);
 	}

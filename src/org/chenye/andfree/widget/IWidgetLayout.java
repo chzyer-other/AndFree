@@ -6,7 +6,9 @@ import android.view.ViewGroup;
 
 public interface IWidgetLayout<T> {
 	public T addView(View v);
+	public T addView(View v, int width, int height);
 	public T addView(IWidget<?, ?> v);
+	public T addView(IWidget<?, ?> v, int width, int height);
 	public T addView(View v, ViewGroup.LayoutParams lp);
 	public T addViewEqualDiv(View v, int width, int height);
 	public T addViewEqualDiv(View v);

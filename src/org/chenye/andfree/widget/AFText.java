@@ -65,4 +65,8 @@ public class AFText extends IWidget<AFText, TextView> implements IWidgetText<AFT
 		return this;
 	}
 
+	public AFText setGravity(int gravity) {
+		_e.setGravity(gravity);
+		return this;
+	}
 }

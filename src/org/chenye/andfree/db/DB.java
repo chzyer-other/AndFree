@@ -83,6 +83,15 @@ public class DB extends AFLogObj{
 			return null;
 		}
 	}
+
+	public void beginTransaction(){
+		conn.beginTransaction();
+	};
+
+	public void endTransaction(){
+		conn.setTransactionSuccessful();
+		conn.endTransaction();
+	}
 	
 	public boolean query(String sql){
 		log(sql);
@@ -95,6 +104,8 @@ public class DB extends AFLogObj{
 			return false;
 		}
 	}
+
+
 	
 	private boolean delayclose = false;
 	public void delayclose(){

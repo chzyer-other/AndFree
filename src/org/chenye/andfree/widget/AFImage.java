@@ -47,6 +47,10 @@ public class AFImage extends IWidget<AFImage, ImageView>{
 	}
 	
 	public AFImage setImageBitmap(Bitmap bm){
+		if (bm == null) {
+			_e.setImageDrawable(null);
+			return this;
+		}
 		_e.setImageBitmap(bm);
 		return this;
 	}
@@ -67,6 +71,8 @@ public class AFImage extends IWidget<AFImage, ImageView>{
 		setLayoutParams(lp);
 		return this;
 	}
+
+
 	
 	int tryTime = 0;
 	public AFImage setImageUrl(final String url){

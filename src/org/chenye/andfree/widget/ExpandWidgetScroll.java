@@ -1,5 +1,6 @@
 package org.chenye.andfree.widget;
 
+import org.chenye.andfree.func.FuncTime;
 import org.chenye.andfree.obj.AFLog;
 
 import android.content.Context;
@@ -10,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 public abstract class ExpandWidgetScroll extends ScrollView {
+	public static final int MATCH_PARENT = ExpandWidget.MATCH_PARENT;
+	public static final int WRAP_CONTENT = ExpandWidget.WRAP_CONTENT;
 
 	public ExpandWidgetScroll(Context context) {
 		super(context);
@@ -66,7 +69,20 @@ public abstract class ExpandWidgetScroll extends ScrollView {
 	public void addView(View child){
 		getViewGroup().addView(child);
 	}
-	
+
+	public void addView(View child, int index){
+		try {
+			int count = getViewGroup().getChildCount();
+			getViewGroup().addView(child, index);
+		} catch (Exception ex) {
+			error(ex);
+		}
+	}
+
+	public void error(Exception ex) {
+		AFLog.e(this, ex);
+	}
+
 	public void addView(IWidget<?, ?> child){
 		addView(child.view());
 	}
@@ -88,23 +104,48 @@ public abstract class ExpandWidgetScroll extends ScrollView {
 		super.onSizeChanged(w, h, oldw, oldh);
 		AFLog.i(this, "onSizeChanged", w, h, oldw, oldh);
 	}
-	
+
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		int specMode = MeasureSpec.getMode(heightMeasureSpec);
         int specSize = MeasureSpec.getSize(MeasureSpec.getMode(heightMeasureSpec));
-        AFLog.i(this, MeasureSpec.getSize(heightMeasureSpec));
+//        AFLog.i(this, MeasureSpec.getSize(heightMeasureSpec));
 
 		AFLog.i(this, "onMeasure", specMode, specSize, widthMeasureSpec, heightMeasureSpec);
+
 	};
-	
+
+	protected int[] ddd = new int[2];
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		if (isIgnore) {
+			isIgnore = false;
+			return;
+		}
 		super.onLayout(changed, l, t, r, b);
+		ddd[0] = r;
+		ddd[1] = b;
 		AFLog.i(this, "onLayout", changed, l, t, r, b);
 	};
 	
 	AFEdit _edt;
 	public void setAFEditFocusHandler(AFEdit et) {
 		_edt = et;
+	}
+
+	public void log(Object obj) {
+		AFLog.i(this, obj);
+	}
+
+	public void removeAllViews(){
+		getViewGroup().removeAllViews();
+	}
+
+	public void runOnNewThread(Runnable run){
+		new Thread(run).start();
+	}
+
+	boolean isIgnore = false;
+	public void  ignoreMeasure() {
+		isIgnore = true;
 	}
 }

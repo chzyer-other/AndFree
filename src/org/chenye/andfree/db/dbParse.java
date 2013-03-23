@@ -65,6 +65,19 @@ public class dbParse extends AFLogObj{
 			return null;
 		}
 	}
+
+	public static void InitAll() {
+		Class<?>[] clses = all();
+		for (Class<?> cls: clses) {
+			for (Field f: cls.getFields()){
+				try {
+					((DBField) f.get(null)).setDatabaseName(cls.getSimpleName());
+				} catch (IllegalAccessException e) {
+
+				}
+			}
+		}
+	}
 	
 	public String getId(){
 		return getPrimaryKey();
@@ -87,7 +100,7 @@ public class dbParse extends AFLogObj{
 		return cs.getSimpleName();
 	}
 	
-	public String[] getColumnsName(){
+	public String[] getColumnsName() {
 		if (columnsName != null) return columnsName;
 		String[] cols = new String[fields.length];
 		for (int i=0; i<cols.length; i++){
@@ -98,10 +111,10 @@ public class dbParse extends AFLogObj{
 	}
 	
 	public int findColumn(String key){
-		getColumnsName();
+		getColumnsObj();
 		int i=0;
-		for (String c:columnsName){
-			if (c.equals(key)) return i;
+		for (DBField c:columnsObj){
+			if (c.getName().equals(key)) return i;
 			i++;
 		}
 		return -1;
@@ -185,5 +198,15 @@ public class dbParse extends AFLogObj{
 			}
 		}
 	}
-	
+
+	public DBField getPrimaryKeyObj() {
+		DBField[] objs = getColumnsObj();
+
+		for(DBField obj:objs){
+			if (obj.primary()){
+				return obj;
+			}
+		}
+		return null;
+	}
 }

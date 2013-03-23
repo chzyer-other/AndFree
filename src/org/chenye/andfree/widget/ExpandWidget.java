@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 public abstract class ExpandWidget extends RelativeLayout {
-	public final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
-	public final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
+	public final static int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
+	public final static int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
 	
 	public ExpandWidget(Context context) {
 		super(context);
