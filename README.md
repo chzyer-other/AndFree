@@ -48,11 +48,11 @@ AndFree是一套代码, 只要把AndFree放到项目目录里面并且设置为�
 目录
 ----
    1. 数据库封装 (db)
-	2. 控件封装 (widget)
-	3. ContentProvider和数据库对等封装 (rdb)
-	4. 网络库封装 (net)
-	5. 辅助函数 (helper)
-	6. 其他
+   2. 控件封装 (widget)
+   3. ContentProvider和数据库对等封装 (rdb)
+   4. 网络库封装 (net)
+   5. 辅助函数 (helper)
+   6. 其他
 
 一. 数据库封装 (org.chenye.db)
 ----
